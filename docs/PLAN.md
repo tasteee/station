@@ -485,7 +485,7 @@ apps/
 
 1. **Foundations** — tokens, **light + dark themes**, layout primitives, text, icon, token playground page (live knob sliders + theme toggle).
    - ✅ Done: knobs, generated scales (gray, alpha, accent, status), semantic tokens, light/dark/system themes, density, size cascade, layout primitives, `st-text`, `st-heading`, `st-surface`, `st-scroll-area`, `st-divider`, `st-spacer`, `st-icon` + Tabler registry, `st-kbd`, playground, tests.
-   - ⏭ Left: Custom Elements Manifest + per-framework typings, Storybook, visual regression baselines.
+   - ✅ Also: one metadata source → Custom Elements Manifest, VS Code data, React/Preact/Solid/Vue/Svelte typings (type-tested), Storybook, visual baselines (light + dark).
 2. **Core controls** — Tier 1, with tests + visual regression.
 3. **Structure + overlays** — Tier 2. Playground becomes a real inspector.
 4. **Editor-grade** — tree, split, table, color picker, command palette.

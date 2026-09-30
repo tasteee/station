@@ -13,7 +13,11 @@ const require = createRequire(import.meta.url);
 const pkgDir = join(dirname(require.resolve("@tabler/icons/outline/plus.svg")), "../..");
 const version = JSON.parse(readFileSync(join(pkgDir, "package.json"), "utf8")).version;
 
-if (existsSync(out) && readFileSync(out, "utf8").includes(`@tabler/icons@${version} `)) {
+if (
+  existsSync(join(dirname(out), "tabler-all.ts")) &&
+  existsSync(out) &&
+  readFileSync(out, "utf8").includes(`@tabler/icons@${version} `)
+) {
   console.log(`icons: tabler ${version} already generated`);
   process.exit(0);
 }
@@ -34,6 +38,7 @@ const lines = [
 ];
 
 let count = 0;
+const all = [];
 for (const type of ["outline", "filled"]) {
   const nodes = JSON.parse(readFileSync(join(pkgDir, `tabler-nodes-${type}.json`), "utf8"));
   for (const [name, children] of Object.entries(nodes)) {
@@ -41,10 +46,27 @@ for (const type of ["outline", "filled"]) {
     lines.push(
       `export const ${id} = /* @__PURE__ */ ${type === "filled" ? "f" : "o"}(${JSON.stringify(children)});`,
     );
+    all.push([type === "filled" ? `${name}-filled` : name, id]);
     count++;
   }
 }
 
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, `${lines.join("\n")}\n`);
+
+// Name → icon record for demos and docs. Not tree-shakeable: it references every icon.
+writeFileSync(
+  join(dirname(out), "tabler-all.ts"),
+  [
+    `// Generated from @tabler/icons@${version} (MIT). Do not edit.`,
+    'import type { IconDefinition } from "../types.ts";',
+    'import * as I from "./tabler.ts";',
+    "",
+    "/** Every Tabler icon by name (filled ones end in -filled). Pulls in the whole set; use for demos only. */",
+    "export const tablerIcons: Record<string, IconDefinition> = {",
+    ...all.map(([n, id]) => `  ${JSON.stringify(n)}: I.${id},`),
+    "};",
+    "",
+  ].join("\n"),
+);
 console.log(`icons: generated ${count} tabler icons`);

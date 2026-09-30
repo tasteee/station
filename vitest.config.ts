@@ -13,7 +13,7 @@ export default defineConfig({
         test: {
           name: "node",
           include: ["packages/*/test/**/*.test.ts"],
-          exclude: ["**/*.browser.test.*"],
+          exclude: ["**/*.browser.test.*", "**/*.visual.test.*"],
           environment: "node",
         },
       },
@@ -22,12 +22,35 @@ export default defineConfig({
         optimizeDeps: { include: ["atomico", "atomico/jsx-runtime", "atomico/jsx-dev-runtime"] },
         test: {
           name: "browser",
-          include: ["packages/*/test/**/*.browser.test.{ts,tsx}"],
+          include: ["packages/*/test/**/*.browser.test.{ts,tsx}", "apps/*/test/**/*.browser.test.{ts,tsx}"],
           browser: {
             enabled: true,
             headless: true,
             provider: playwright({ launchOptions: executablePath ? { executablePath } : {} }),
             instances: [{ browser: "chromium" }],
+          },
+        },
+      },
+      {
+        oxc: { jsx: { runtime: "automatic", importSource: "atomico" } },
+        optimizeDeps: { include: ["atomico", "atomico/jsx-runtime", "atomico/jsx-dev-runtime"] },
+        test: {
+          name: "visual",
+          include: ["packages/*/test/**/*.visual.test.{ts,tsx}"],
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright({ launchOptions: executablePath ? { executablePath } : {} }),
+            instances: [{ browser: "chromium" }],
+            viewport: { width: 800, height: 600 },
+            expect: {
+              toMatchScreenshot: {
+                // Baselines are committed. Regenerate with `pnpm test:visual --update`.
+                screenshotDirectory: "__visual__",
+                comparatorName: "pixelmatch",
+                comparatorOptions: { threshold: 0.2, allowedMismatchedPixelRatio: 0.002 },
+              },
+            },
           },
         },
       },

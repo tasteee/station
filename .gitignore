@@ -4,3 +4,6 @@ dist
 packages/icons/src/generated
 .vitest-attachments
 __screenshots__
+packages/components/types
+packages/components/custom-elements.json
+packages/components/vscode.html-data.json

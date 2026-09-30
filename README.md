@@ -18,6 +18,8 @@ See [`docs/PLAN.md`](docs/PLAN.md) for the full design plan.
 | `@station/icons` | Icon registry + all 6,000+ Tabler icons as tree-shakeable exports |
 | `@station/behaviors` | Framework-free logic: shortcut formatting, dev warnings |
 | `apps/playground` | A mini editor shell to see and tune everything |
+| `apps/storybook` | Component workshop with theme + density toolbar |
+| `apps/interop` | Type fixtures for React, Preact, Solid, Vue, Svelte + React runtime test |
 
 ## Quick start
 
@@ -74,14 +76,32 @@ Set on `:root`, or on any `[theme]` / `[density]` element to scope them.
 
 Themes: `theme="light" | "dark" | "system"` on any element. Works on subtrees.
 
+## Framework typings
+
+Generated from one metadata source (`packages/components/meta`). Add one line to get typed tags and attributes:
+
+```ts
+import type {} from "@station/components/react";  // or /preact, /solid, /vue, /svelte
+```
+
+- `HTMLElementTagNameMap` is augmented globally, so `document.createElement("st-kbd")` is typed everywhere.
+- `@station/components/custom-elements.json`: Custom Elements Manifest.
+- `@station/components/vscode.html-data.json`: add to `html.customData` in VS Code for autocomplete in plain HTML.
+
+**Events.** Station uses native names (`input`, `change`) so `onChange` / `onInput` work in React 19, `@change` in Vue, `onchange` in Svelte. Other events are single lowercase words (React: `oncommit={…}`).
+
 ## Develop
 
 ```sh
 pnpm install
 pnpm dev        # playground at localhost:5173
 pnpm test       # node + real-browser tests (Vitest + Playwright)
+pnpm test:visual  # screenshot tests; add -u to update baselines
+pnpm --filter storybook dev   # Storybook at localhost:6006
 pnpm typecheck
 pnpm lint
 ```
 
 Browser tests launch Chromium through Playwright. Set `STATION_CHROMIUM` to use a specific binary.
+
+Visual baselines live in `test/__visual__/` and depend on the exact Chromium build and fonts, so they are **not** part of CI yet. Run them locally before and after visual changes.

@@ -11,9 +11,10 @@
     "dev": "pnpm generate && pnpm --filter playground dev",
     "build": "pnpm generate && pnpm -r --if-present build",
     "typecheck": "pnpm generate && pnpm -r --if-present typecheck",
-    "test": "pnpm generate && vitest run",
+    "test": "pnpm generate && vitest run --project node --project browser",
     "lint": "biome check .",
-    "format": "biome check --write ."
+    "format": "biome check --write .",
+    "test:visual": "pnpm generate && vitest run --project visual"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.15",

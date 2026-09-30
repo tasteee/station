@@ -7,7 +7,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
-    "./tabler": "./src/generated/tabler.ts"
+    "./tabler": "./src/generated/tabler.ts",
+    "./tabler/all": "./src/generated/tabler-all.ts"
   },
   "publishConfig": {
     "exports": {
@@ -18,6 +19,10 @@
       "./tabler": {
         "types": "./dist/generated/tabler.d.ts",
         "default": "./dist/generated/tabler.js"
+      },
+      "./tabler/all": {
+        "types": "./dist/generated/tabler-all.d.ts",
+        "default": "./dist/generated/tabler-all.js"
       }
     }
   },
