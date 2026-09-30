@@ -1,0 +1,52 @@
+{
+  "name": "@station/components",
+  "version": "0.0.0",
+  "description": "Station web components, built with Atomico.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": [
+    "./src/define/*",
+    "./dist/define/*",
+    "./src/index.ts",
+    "./dist/index.js"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./icon": "./src/define/icon.ts",
+    "./kbd": "./src/define/kbd.ts",
+    "./elements": "./src/elements.ts"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./icon": {
+        "types": "./dist/define/icon.d.ts",
+        "default": "./dist/define/icon.js"
+      },
+      "./kbd": {
+        "types": "./dist/define/kbd.d.ts",
+        "default": "./dist/define/kbd.js"
+      },
+      "./elements": {
+        "types": "./dist/elements.d.ts",
+        "default": "./dist/elements.js"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@station/behaviors": "workspace:*",
+    "@station/icons": "workspace:*",
+    "@station/tokens": "workspace:*",
+    "atomico": "^2.2.0"
+  }
+}

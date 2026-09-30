@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Station Playground</title>
+    <link rel="icon" href="data:," />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <st-column class="app">
+      <!-- Top bar -->
+      <st-surface level="panel">
+        <st-row class="bar" padding-x="3" gap="2">
+          <st-icon name="stack"></st-icon>
+          <st-heading>Station</st-heading>
+          <st-text tone="muted">Playground</st-text>
+          <st-spacer></st-spacer>
+          <st-surface level="well" rounded="small">
+            <st-row class="segmented" padding="0.5" gap="0.5" data-knob-group="theme">
+              <button type="button" class="seg" data-theme="light" aria-pressed="true"><st-icon name="sun"></st-icon>Light</button>
+              <button type="button" class="seg" data-theme="dark" aria-pressed="false"><st-icon name="moon"></st-icon>Dark</button>
+            </st-row>
+          </st-surface>
+          <st-surface level="well" rounded="small">
+            <st-row class="segmented" padding="0.5" gap="0.5">
+              <button type="button" class="seg" data-density="compact" aria-pressed="false">Compact</button>
+              <button type="button" class="seg" data-density="default" aria-pressed="true">Default</button>
+              <button type="button" class="seg" data-density="comfortable" aria-pressed="false">Comfy</button>
+            </st-row>
+          </st-surface>
+        </st-row>
+      </st-surface>
+      <st-divider></st-divider>
+
+      <st-row grow y-align="stretch">
+        <!-- Layers panel -->
+        <st-surface level="panel" class="side">
+          <st-column style="height: 100%">
+            <st-row class="panel-header" padding-x="3" x-align="between">
+              <st-heading>Layers</st-heading>
+              <st-kbd shortcut="Alt+1"></st-kbd>
+            </st-row>
+            <st-scroll-area grow axis="y">
+              <st-column padding-y="1" id="layers"></st-column>
+            </st-scroll-area>
+            <st-divider></st-divider>
+            <st-row padding-x="3" padding-y="2" x-align="between">
+              <st-text size="small" tone="muted" id="layer-count"></st-text>
+              <st-surface level="well" rounded="small">
+                <st-row padding="0.5" gap="0.5" size="small">
+                  <button type="button" class="icon-btn" title="Add layer"><st-icon name="plus" label="Add layer"></st-icon></button>
+                  <button type="button" class="icon-btn" title="Group layers"><st-icon name="folder" label="Group layers"></st-icon></button>
+                  <button type="button" class="icon-btn" title="Delete layer"><st-icon name="trash" label="Delete layer"></st-icon></button>
+                </st-row>
+              </st-surface>
+            </st-row>
+          </st-column>
+        </st-surface>
+        <st-divider></st-divider>
+
+        <!-- Canvas -->
+        <st-surface level="canvas" grow class="canvas">
+          <st-scroll-area style="height: 100%">
+            <st-column padding="8" gap="6" x-align="center">
+              <st-surface level="panel" bordered rounded class="artboard">
+                <st-column padding="5" gap="5">
+                  <st-column gap="1">
+                    <st-heading size="large">Tokens</st-heading>
+                    <st-text tone="muted">Drag the knobs on the right. Everything derives from them.</st-text>
+                  </st-column>
+
+                  <st-column gap="2">
+                    <st-heading size="small" tone="muted">GRAY · 12 STEPS</st-heading>
+                    <div class="swatches" data-scale="gray"></div>
+                  </st-column>
+                  <st-column gap="2">
+                    <st-heading size="small" tone="muted">GRAY ALPHA · ON A WELL</st-heading>
+                    <st-surface level="well" rounded="small"><div class="swatches" data-scale="gray-a"></div></st-surface>
+                  </st-column>
+                  <st-column gap="2">
+                    <st-heading size="small" tone="muted">ACCENT · MONOCHROME BY DEFAULT</st-heading>
+                    <div class="swatches" data-scale="accent"></div>
+                  </st-column>
+                  <st-column gap="2">
+                    <st-heading size="small" tone="muted">STATUS</st-heading>
+                    <div class="swatches" data-scale="danger"></div>
+                    <div class="swatches" data-scale="warning"></div>
+                    <div class="swatches" data-scale="success"></div>
+                  </st-column>
+
+                  <st-divider></st-divider>
+
+                  <st-row gap="6" y-align="start" wrap>
+                    <st-column gap="1.5" class="ladder">
+                      <st-heading size="small" tone="muted">TEXT LADDER</st-heading>
+                      <st-text tone="strong" weight="medium">Strong — titles, selected names</st-text>
+                      <st-text>Default — body text</st-text>
+                      <st-text tone="muted">Muted — labels, metadata</st-text>
+                      <st-text tone="faint">Faint — placeholder, disabled</st-text>
+                    </st-column>
+                    <st-column gap="1.5">
+                      <st-heading size="small" tone="muted">TYPE SCALE</st-heading>
+                      <div class="type-scale"></div>
+                    </st-column>
+                    <st-column gap="1.5">
+                      <st-heading size="small" tone="muted">SHORTCUTS</st-heading>
+                      <st-row gap="2"><st-kbd shortcut="Mod+Shift+D"></st-kbd><st-kbd shortcut="Alt+Backspace"></st-kbd></st-row>
+                      <st-row gap="1"><st-kbd kind="boxed" shortcut="Mod+K"></st-kbd><st-kbd kind="boxed" shortcut="Shift+?"></st-kbd></st-row>
+                    </st-column>
+                  </st-row>
+                </st-column>
+              </st-surface>
+            </st-column>
+          </st-scroll-area>
+
+          <!-- Floating toolbar: leaves the flow, so it gets a shadow. -->
+          <div class="floating">
+            <st-row padding="1" gap="0.5">
+              <button type="button" class="icon-btn" aria-pressed="true" title="Move"><st-icon name="pointer" label="Move"></st-icon></button>
+              <button type="button" class="icon-btn" title="Frame"><st-icon name="frame" label="Frame"></st-icon></button>
+              <button type="button" class="icon-btn" title="Rectangle"><st-icon name="square" label="Rectangle"></st-icon></button>
+              <button type="button" class="icon-btn" title="Pen"><st-icon name="vector-bezier-2" label="Pen"></st-icon></button>
+              <button type="button" class="icon-btn" title="Text"><st-icon name="typography" label="Text"></st-icon></button>
+              <st-divider></st-divider>
+              <button type="button" class="icon-btn" title="Comment"><st-icon name="message" label="Comment"></st-icon></button>
+            </st-row>
+          </div>
+        </st-surface>
+        <st-divider></st-divider>
+
+        <!-- Inspector: the knobs -->
+        <st-surface level="panel" class="side inspector">
+          <st-scroll-area style="height: 100%" axis="y">
+            <st-column id="knobs"></st-column>
+          </st-scroll-area>
+        </st-surface>
+      </st-row>
+
+      <st-divider></st-divider>
+      <st-surface level="panel">
+        <st-row class="status" padding-x="3" gap="3">
+          <st-row gap="1"><span class="dot"></span><st-text size="small" tone="muted">Tier 0 · tokens, themes, layout</st-text></st-row>
+          <st-spacer></st-spacer>
+          <st-text size="small" tone="faint" numeric id="zoom">100%</st-text>
+        </st-row>
+      </st-surface>
+    </st-column>
+  </body>
+</html>

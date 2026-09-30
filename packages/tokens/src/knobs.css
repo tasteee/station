@@ -1,0 +1,73 @@
+/*
+ * Knobs: the small set of variables that drive everything else.
+ * Change one here (or on any [theme] / [density] element) and every
+ * derived token updates. No rebuild.
+ */
+:root {
+  /* Color */
+  --st-gray-hue: 255;
+  --st-gray-chroma: 0.006;
+  --st-accent-hue: var(--st-gray-hue);
+  --st-accent-chroma: 0; /* 0 = monochrome near-black. Try 0.2 for a brand color. */
+  --st-status-chroma: 0.2;
+  --st-danger-hue: 25;
+  --st-warning-hue: 70;
+  --st-success-hue: 150;
+
+  /* Space + size */
+  --st-unit: 4px;
+  --st-density: 1;
+
+  /* Shape */
+  --st-radius: 4px;
+
+  /* Type */
+  --st-font-sans: "DM Sans Variable", "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --st-font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* DM Sans has no tabular figures, so numbers that must not jitter use DM Mono. */
+  --st-font-numeric: var(--st-font-mono);
+  --st-font-size: 12px;
+  --st-type-ratio: 1.125;
+
+  /* Icons */
+  --st-icon-stroke: 1.5;
+
+  /* Motion */
+  --st-motion: 1; /* 0 disables all transitions */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --st-motion: 0;
+  }
+}
+
+/* Density presets. Works on any element, cascades to its subtree. */
+[density="compact"] {
+  --st-density: 0.875;
+}
+[density="default"] {
+  --st-density: 1;
+}
+[density="comfortable"] {
+  --st-density: 1.125;
+}
+@media (pointer: coarse) {
+  :root:not([density]) {
+    --st-density: 1.125;
+  }
+}
+
+/* Themes. light-dark() in every color token resolves from color-scheme. */
+:root {
+  color-scheme: light;
+}
+[theme="light"] {
+  color-scheme: light;
+}
+[theme="dark"] {
+  color-scheme: dark;
+}
+[theme="system"] {
+  color-scheme: light dark;
+}

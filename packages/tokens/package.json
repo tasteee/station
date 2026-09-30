@@ -1,0 +1,36 @@
+{
+  "name": "@station/tokens",
+  "version": "0.0.0",
+  "description": "Station design tokens, themes and layout primitives. Pure CSS.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "src",
+    "scripts/palette.mjs"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.css"
+    },
+    "./fonts.css": {
+      "types": "./src/index.d.ts",
+      "default": "./src/fonts.css"
+    },
+    "./*.css": {
+      "types": "./src/index.d.ts",
+      "default": "./src/*.css"
+    },
+    "./palette": "./scripts/palette.mjs"
+  },
+  "scripts": {
+    "generate": "node scripts/generate.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource/dm-mono": "^5.3.0"
+  }
+}

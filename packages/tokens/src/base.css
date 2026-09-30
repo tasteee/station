@@ -1,0 +1,23 @@
+/* App-level defaults. Zero specificity, so any app style wins. */
+:where(:root) {
+  font-family: var(--st-font-sans);
+  font-size: var(--st-text-2);
+  line-height: var(--st-leading);
+  font-optical-sizing: auto;
+  color: var(--st-text);
+  background-color: var(--st-bg-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* A themed subtree must re-resolve text color, or it inherits the parent's. */
+:where([theme]) {
+  color: var(--st-text);
+}
+
+/* Layout + surface elements are flex/block containers, so `hidden` needs help. */
+:where(st-box, st-row, st-column, st-spacer, st-divider, st-surface, st-scroll-area, st-text, st-heading)[hidden] {
+  /* biome-ignore lint/complexity/noImportantStyles: `hidden` must beat attribute-driven display rules. */
+  display: none !important;
+}

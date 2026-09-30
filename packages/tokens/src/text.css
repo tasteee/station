@@ -1,0 +1,62 @@
+/*
+ * Typography. The contrast ladder carries hierarchy:
+ *   tone="strong"  titles, selected names
+ *   (default)      body
+ *   tone="muted"   labels, metadata
+ *   tone="faint"   placeholder, disabled
+ */
+:where(st-text) {
+  font-size: var(--st-text-2);
+  line-height: var(--st-leading);
+  color: var(--st-text);
+}
+:where(st-text, st-heading)[tone="strong"] { color: var(--st-text-strong); }
+:where(st-text, st-heading)[tone="muted"] { color: var(--st-text-muted); }
+:where(st-text, st-heading)[tone="faint"] { color: var(--st-text-faint); }
+:where(st-text, st-heading)[tone="accent"] { color: var(--st-accent-text); }
+:where(st-text, st-heading)[tone="danger"] { color: var(--st-danger-text); }
+:where(st-text, st-heading)[tone="warning"] { color: var(--st-warning-text); }
+:where(st-text, st-heading)[tone="success"] { color: var(--st-success-text); }
+
+:where(st-text)[size="small"] { font-size: var(--st-text-1); }
+:where(st-text)[size="medium"] { font-size: var(--st-text-2); }
+:where(st-text)[size="large"] { font-size: var(--st-text-3); }
+
+:where(st-text, st-heading)[weight="normal"] { font-weight: var(--st-weight-normal); }
+:where(st-text, st-heading)[weight="medium"] { font-weight: var(--st-weight-medium); }
+:where(st-text, st-heading)[weight="strong"] { font-weight: var(--st-weight-strong); }
+
+:where(st-text)[mono] {
+  font-family: var(--st-font-mono);
+}
+:where(st-text)[numeric] {
+  font-family: var(--st-font-numeric);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+:where(st-text, st-heading)[truncate] {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- st-heading: panel + section titles ---- */
+:where(st-heading) {
+  display: block;
+  margin: 0;
+  font-size: var(--st-text-2);
+  line-height: var(--st-leading-tight);
+  font-weight: var(--st-weight-strong);
+  color: var(--st-text-strong);
+  letter-spacing: -0.005em;
+}
+:where(st-heading)[size="small"] {
+  font-size: var(--st-text-1);
+  letter-spacing: 0.02em;
+}
+:where(st-heading)[size="large"] {
+  font-size: var(--st-text-4);
+  letter-spacing: -0.01em;
+}

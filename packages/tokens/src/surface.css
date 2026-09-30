@@ -1,0 +1,37 @@
+/*
+ * Surfaces. Hierarchy comes from background, not shadow.
+ *   level="canvas"   workspace behind everything
+ *   level="panel"    docked panels (default)
+ *   level="section"  a group inside a panel
+ *   level="well"     recessed bed for grouped controls
+ */
+:where(st-surface) {
+  display: block;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  color: var(--st-text);
+  background-color: var(--st-bg-panel);
+}
+:where(st-surface)[level="canvas"] { background-color: var(--st-bg-canvas); }
+:where(st-surface)[level="panel"] { background-color: var(--st-bg-panel); }
+:where(st-surface)[level="section"] { background-color: var(--st-bg-section); }
+:where(st-surface)[level="well"] { background-color: var(--st-bg-well); }
+
+:where(st-surface)[bordered] { border: 1px solid var(--st-border-subtle); }
+:where(st-surface)[rounded] { border-radius: var(--st-radius-3); }
+:where(st-surface)[rounded="small"] { border-radius: var(--st-radius-2); }
+
+/* ---- st-scroll-area: thin, quiet scrollbars ---- */
+:where(st-scroll-area) {
+  display: block;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--st-gray-a7) transparent;
+}
+:where(st-scroll-area)[axis="y"] { overflow: hidden auto; }
+:where(st-scroll-area)[axis="x"] { overflow: auto hidden; }

@@ -1,0 +1,183 @@
+/*
+ * Playground-only styles. Tier 1 controls (buttons, fields) don't exist yet,
+ * so a few native elements are styled here with Station tokens.
+ */
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+.app {
+  height: 100vh;
+}
+.bar {
+  height: 40px;
+}
+.side {
+  width: 248px;
+  flex: none;
+}
+.panel-header {
+  height: 36px;
+}
+.section-title {
+  height: 24px;
+}
+.status {
+  height: 24px;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--st-success-solid);
+}
+
+/* ---- Layer rows: hover and selection come from alpha layers ---- */
+.layer {
+  height: calc(var(--st-control-height) + 4px);
+  padding-inline-start: calc(var(--st-space-2) + var(--depth) * var(--st-space-4));
+  color: var(--st-text);
+  cursor: default;
+  --st-icon-size: 14px;
+}
+.layer .kind,
+.layer .caret {
+  color: var(--st-text-muted);
+}
+.layer .flag {
+  color: var(--st-text-faint);
+}
+.layer .vis {
+  visibility: hidden;
+}
+.layer:hover {
+  background: var(--st-bg-hover);
+}
+.layer:hover .vis,
+.layer[data-hidden] .vis {
+  visibility: visible;
+}
+.layer[data-hidden] st-text {
+  color: var(--st-text-faint);
+}
+.layer[aria-selected="true"] {
+  background: var(--st-bg-selected);
+}
+.layer[aria-selected="true"] st-text,
+.layer[aria-selected="true"] .kind {
+  color: var(--st-text-strong);
+  font-weight: var(--st-weight-medium);
+}
+
+/* ---- Temporary icon button (real one lands in Tier 1) ---- */
+.icon-btn {
+  all: unset;
+  display: inline-grid;
+  place-items: center;
+  width: var(--st-control-height);
+  height: var(--st-control-height);
+  border-radius: var(--st-radius-2);
+  color: var(--st-text-muted);
+  transition: background-color var(--st-duration-fast) var(--st-ease), color var(--st-duration-fast) var(--st-ease);
+}
+.icon-btn:hover {
+  background: var(--st-bg-hover);
+  color: var(--st-text-strong);
+}
+.icon-btn:active {
+  background: var(--st-bg-pressed);
+}
+.icon-btn[aria-pressed="true"] {
+  background: var(--st-bg-selected-strong);
+  color: var(--st-text-on-accent);
+}
+.icon-btn:focus-visible,
+.seg:focus-visible,
+input[type="range"]:focus-visible {
+  outline: var(--st-focus-ring-width) solid var(--st-border-focus);
+  outline-offset: var(--st-focus-ring-offset);
+}
+
+/* ---- Temporary segmented control ---- */
+.seg {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--st-space-1);
+  height: calc(var(--st-control-height) - 4px);
+  padding-inline: var(--st-space-2);
+  border-radius: var(--st-radius-1);
+  font-size: var(--st-text-1);
+  font-weight: var(--st-weight-medium);
+  color: var(--st-text-muted);
+  --st-icon-size: 14px;
+}
+.seg:hover {
+  color: var(--st-text-strong);
+}
+.seg[aria-pressed="true"] {
+  background: var(--st-bg-panel);
+  color: var(--st-text-strong);
+  box-shadow: 0 0 0 1px var(--st-border-subtle);
+}
+
+/* ---- Canvas ---- */
+.canvas {
+  position: relative;
+}
+.artboard {
+  width: min(720px, 100%);
+}
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2px;
+}
+.swatch {
+  height: 32px;
+  border-radius: var(--st-radius-1);
+  display: flex;
+  align-items: flex-end;
+  padding: 3px 4px;
+  box-sizing: border-box;
+}
+.swatch span {
+  font-size: 10px;
+  color: var(--st-gray-12);
+  opacity: 0.7;
+}
+.swatch:nth-child(n + 9) span {
+  color: var(--st-gray-1);
+}
+.floating {
+  position: absolute;
+  bottom: var(--st-space-4);
+  left: 50%;
+  translate: -50% 0;
+  background: var(--st-bg-panel);
+  border-radius: var(--st-radius-3);
+  box-shadow: var(--st-shadow-floating);
+}
+
+/* ---- Inspector rows ---- */
+.prop {
+  height: var(--st-control-height);
+}
+.prop-label {
+  width: 56px;
+  flex: none;
+}
+.prop-value {
+  width: 40px;
+  flex: none;
+  text-align: end;
+  color: var(--st-text-strong);
+}
+.prop input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  accent-color: var(--st-accent-solid);
+  height: 4px;
+}

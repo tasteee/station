@@ -1,0 +1,125 @@
+/*
+ * Semantic tokens. Components read ONLY these.
+ * Declared on :root and every [theme] / [density] element so knob
+ * overrides on a subtree are picked up there.
+ */
+:where(:root, [theme], [density]) {
+  /* ---- Surfaces (solid, opaque) ---- */
+  --st-bg-canvas: light-dark(var(--st-gray-3), var(--st-gray-1));
+  --st-bg-panel: light-dark(var(--st-gray-1), var(--st-gray-2));
+  --st-bg-section: light-dark(var(--st-gray-2), var(--st-gray-3));
+  --st-bg-well: light-dark(var(--st-gray-3), var(--st-gray-1));
+
+  /* ---- Interaction layers (alpha, stack on any surface) ---- */
+  --st-bg-field: var(--st-gray-a3);
+  --st-bg-field-hover: var(--st-gray-a4);
+  --st-bg-hover: var(--st-gray-a3);
+  --st-bg-pressed: var(--st-gray-a5);
+  --st-bg-selected: var(--st-gray-a4);
+  --st-bg-selected-strong: var(--st-accent-solid);
+
+  /* ---- Borders ---- */
+  --st-border-subtle: var(--st-gray-6);
+  --st-border: var(--st-gray-7);
+  --st-border-strong: var(--st-gray-8);
+  --st-border-focus: var(--st-accent-solid);
+
+  /* ---- Text: the contrast ladder ---- */
+  --st-text-strong: var(--st-gray-12); /* titles, selected names, active icons */
+  --st-text: var(--st-gray-11); /* body */
+  --st-text-muted: var(--st-gray-10); /* labels, metadata */
+  --st-text-faint: var(--st-gray-9); /* placeholder, disabled */
+  --st-text-on-accent: var(--st-gray-1);
+
+  /* ---- Accent ---- */
+  --st-accent-solid: var(--st-accent-12);
+  --st-accent-solid-hover: var(--st-accent-11);
+  --st-accent-bg: var(--st-accent-3);
+  --st-accent-text: var(--st-accent-11);
+
+  /* ---- Status ---- */
+  --st-danger-solid: var(--st-danger-9);
+  --st-danger-solid-hover: var(--st-danger-10);
+  --st-danger-bg: var(--st-danger-3);
+  --st-danger-border: var(--st-danger-7);
+  --st-danger-text: var(--st-danger-11);
+  --st-warning-solid: var(--st-warning-9);
+  --st-warning-bg: var(--st-warning-3);
+  --st-warning-border: var(--st-warning-7);
+  --st-warning-text: var(--st-warning-11);
+  --st-success-solid: var(--st-success-9);
+  --st-success-bg: var(--st-success-3);
+  --st-success-border: var(--st-success-7);
+  --st-success-text: var(--st-success-11);
+
+  /* ---- Elevation: ONLY for things outside the page flow ---- */
+  --st-shadow-popover:
+    0 0 0 1px var(--st-gray-a5),
+    0 4px 12px -2px light-dark(oklch(0% 0 0 / 0.12), oklch(0% 0 0 / 0.5));
+  --st-shadow-floating:
+    0 0 0 1px var(--st-gray-a5),
+    0 8px 24px -4px light-dark(oklch(0% 0 0 / 0.14), oklch(0% 0 0 / 0.55));
+  --st-shadow-dialog:
+    0 0 0 1px var(--st-gray-a5),
+    0 16px 48px -8px light-dark(oklch(0% 0 0 / 0.2), oklch(0% 0 0 / 0.65));
+
+  /* ---- Focus ---- */
+  --st-focus-ring-width: 1.5px;
+  --st-focus-ring-offset: 1px;
+
+  /* ---- Controls ---- */
+  --st-control-small: calc(var(--st-unit) * 5 * var(--st-density)); /* 20px */
+  --st-control-medium: calc(var(--st-unit) * 6 * var(--st-density)); /* 24px */
+  --st-control-large: calc(var(--st-unit) * 7 * var(--st-density)); /* 28px */
+  --st-icon-small: 14px;
+  --st-icon-medium: 16px;
+  --st-icon-large: 16px;
+
+  /* Current control size. `size` attributes rewrite these; children inherit. */
+  --st-control-height: var(--st-control-medium);
+  --st-icon-size: var(--st-icon-medium);
+  --st-control-font-size: var(--st-text-2);
+
+  /* ---- Radius ---- */
+  --st-radius-1: calc(var(--st-radius) * 0.5);
+  --st-radius-2: var(--st-radius);
+  --st-radius-3: calc(var(--st-radius) * 1.5);
+  --st-radius-4: calc(var(--st-radius) * 2);
+  --st-radius-full: 9999px;
+
+  /* ---- Type ---- */
+  --st-text-1: calc(var(--st-font-size) * pow(var(--st-type-ratio), -1));
+  --st-text-2: var(--st-font-size);
+  --st-text-3: calc(var(--st-font-size) * pow(var(--st-type-ratio), 1));
+  --st-text-4: calc(var(--st-font-size) * pow(var(--st-type-ratio), 2));
+  --st-text-5: calc(var(--st-font-size) * pow(var(--st-type-ratio), 3));
+  --st-text-6: calc(var(--st-font-size) * pow(var(--st-type-ratio), 4));
+  --st-leading-tight: 1.2;
+  --st-leading: 1.4;
+  --st-weight-normal: 400;
+  --st-weight-medium: 500;
+  --st-weight-strong: 600;
+
+  /* ---- Motion ---- */
+  --st-duration-fast: calc(80ms * var(--st-motion));
+  --st-duration: calc(120ms * var(--st-motion));
+  --st-duration-slow: calc(160ms * var(--st-motion));
+  --st-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* `size` cascades: any element with size="…" resizes its whole subtree. */
+[size="small"] {
+  --st-control-height: var(--st-control-small);
+  --st-icon-size: var(--st-icon-small);
+  --st-control-font-size: var(--st-text-1);
+}
+[size="medium"] {
+  --st-control-height: var(--st-control-medium);
+  --st-icon-size: var(--st-icon-medium);
+  --st-control-font-size: var(--st-text-2);
+}
+[size="large"] {
+  --st-control-height: var(--st-control-large);
+  --st-icon-size: var(--st-icon-large);
+  --st-control-font-size: var(--st-text-2);
+}

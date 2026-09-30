@@ -1,0 +1,35 @@
+{
+  "name": "@station/icons",
+  "version": "0.0.0",
+  "description": "Icon registry for Station plus the full Tabler icon set as tree-shakeable exports.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./tabler": "./src/generated/tabler.ts"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./tabler": {
+        "types": "./dist/generated/tabler.d.ts",
+        "default": "./dist/generated/tabler.js"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@tabler/icons": "^3.48.0"
+  }
+}

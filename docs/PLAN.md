@@ -225,7 +225,7 @@ Set `--st-radius: 0` for a hard-edged look. Rule: **inner radius = outer radius 
 
 - **DM Sans has an optical-size axis (9–40).** Use `font-optical-sizing: auto`. Big win at 11–12px.
 - Weights: 400 body, 500 labels/titles, 600 rare emphasis.
-- Numbers in fields/tables: `font-variant-numeric: tabular-nums`. Verify DM Sans supports `tnum`; fall back to DM Mono for numeric inputs if not.
+- Numbers in fields/tables: **DM Sans has no tabular figures** (verified), so numeric text uses `--st-font-numeric`, which defaults to DM Mono. Override it with any sans that has `tnum`.
 - Self-host via `@fontsource-variable/dm-sans`. Ship font loading as opt-in CSS.
 
 ### 2.10 Elevation (shadows)
@@ -484,6 +484,8 @@ apps/
 ## 10. Roadmap
 
 1. **Foundations** — tokens, **light + dark themes**, layout primitives, text, icon, token playground page (live knob sliders + theme toggle).
+   - ✅ Done: knobs, generated scales (gray, alpha, accent, status), semantic tokens, light/dark/system themes, density, size cascade, layout primitives, `st-text`, `st-heading`, `st-surface`, `st-scroll-area`, `st-divider`, `st-spacer`, `st-icon` + Tabler registry, `st-kbd`, playground, tests.
+   - ⏭ Left: Custom Elements Manifest + per-framework typings, Storybook, visual regression baselines.
 2. **Core controls** — Tier 1, with tests + visual regression.
 3. **Structure + overlays** — Tier 2. Playground becomes a real inspector.
 4. **Editor-grade** — tree, split, table, color picker, command palette.

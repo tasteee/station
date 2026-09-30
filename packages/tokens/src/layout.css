@@ -1,0 +1,90 @@
+/*
+ * Layout primitives. Pure CSS: no JS, no shadow DOM, zero runtime cost.
+ * Think in x and y. Never main axis / cross axis.
+ *
+ *   st-row     x-align → justify-content   y-align → align-items
+ *   st-column  x-align → align-items       y-align → justify-content
+ */
+:where(st-box, st-row, st-column) {
+  display: flex;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+}
+:where(st-row) {
+  flex-direction: row;
+  align-items: center; /* editor rows almost always center vertically */
+}
+:where(st-column) {
+  flex-direction: column;
+}
+
+:where(st-box, st-row, st-column)[inline] {
+  display: inline-flex;
+}
+:where(st-box, st-row, st-column)[wrap] {
+  flex-wrap: wrap;
+}
+
+/* Sizing helpers for any primitive used as a flex child. */
+:where(st-box, st-row, st-column, st-surface, st-scroll-area, st-text)[grow] {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+}
+:where(st-box, st-row, st-column, st-surface, st-scroll-area, st-text)[shrink="none"] {
+  flex-shrink: 0;
+}
+
+/* ---- st-row ---- */
+:where(st-row)[x-align="start"] { justify-content: flex-start; }
+:where(st-row)[x-align="center"] { justify-content: center; }
+:where(st-row)[x-align="end"] { justify-content: flex-end; }
+:where(st-row)[x-align="between"] { justify-content: space-between; }
+:where(st-row)[x-align="around"] { justify-content: space-around; }
+:where(st-row)[x-align="evenly"] { justify-content: space-evenly; }
+:where(st-row)[y-align="start"] { align-items: flex-start; }
+:where(st-row)[y-align="center"] { align-items: center; }
+:where(st-row)[y-align="end"] { align-items: flex-end; }
+:where(st-row)[y-align="stretch"] { align-items: stretch; }
+:where(st-row)[y-align="baseline"] { align-items: baseline; }
+
+/* ---- st-column ---- */
+:where(st-column)[x-align="start"] { align-items: flex-start; }
+:where(st-column)[x-align="center"] { align-items: center; }
+:where(st-column)[x-align="end"] { align-items: flex-end; }
+:where(st-column)[x-align="stretch"] { align-items: stretch; }
+:where(st-column)[y-align="start"] { justify-content: flex-start; }
+:where(st-column)[y-align="center"] { justify-content: center; }
+:where(st-column)[y-align="end"] { justify-content: flex-end; }
+:where(st-column)[y-align="between"] { justify-content: space-between; }
+:where(st-column)[y-align="around"] { justify-content: space-around; }
+:where(st-column)[y-align="evenly"] { justify-content: space-evenly; }
+
+/* ---- st-spacer: pushes siblings apart ---- */
+:where(st-spacer) {
+  display: block;
+  flex: 1 1 auto;
+  align-self: stretch;
+}
+
+/* ---- st-divider: horizontal by default, vertical inside a row ---- */
+:where(st-divider) {
+  display: block;
+  flex: none;
+  align-self: stretch;
+  block-size: 1px;
+  background-color: var(--st-border-subtle);
+}
+:where(st-row, st-box) > :where(st-divider),
+:where(st-divider)[orientation="vertical"] {
+  block-size: auto;
+  inline-size: 1px;
+}
+:where(st-row, st-box) > :where(st-divider)[orientation="horizontal"] {
+  block-size: 1px;
+  inline-size: auto;
+}
+:where(st-divider)[tone="strong"] {
+  background-color: var(--st-border);
+}

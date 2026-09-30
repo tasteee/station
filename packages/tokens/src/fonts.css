@@ -1,0 +1,5 @@
+/* Opt-in font loading. Self-hosted. DM Sans ships with its optical-size axis (9–40). */
+@import url("@fontsource-variable/dm-sans/opsz.css");
+@import url("@fontsource-variable/dm-sans/opsz-italic.css");
+@import url("@fontsource/dm-mono/400.css");
+@import url("@fontsource/dm-mono/500.css");

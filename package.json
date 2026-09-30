@@ -1,0 +1,28 @@
+{
+  "name": "station",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generate": "pnpm -r --if-present generate",
+    "dev": "pnpm generate && pnpm --filter playground dev",
+    "build": "pnpm generate && pnpm -r --if-present build",
+    "typecheck": "pnpm generate && pnpm -r --if-present typecheck",
+    "test": "pnpm generate && vitest run",
+    "lint": "biome check .",
+    "format": "biome check --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@types/node": "^26.6.3",
+    "@vitest/browser": "^5.0.3",
+    "@vitest/browser-playwright": "^5.0.3",
+    "playwright": "^1.63.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.3"
+  }
+}
