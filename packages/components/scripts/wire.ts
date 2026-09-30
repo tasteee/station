@@ -30,6 +30,8 @@ writeFileSync(
     'export { define } from "./shared/define.ts";',
     'export { confirm, type ConfirmOptions } from "./dialog/alert-dialog.tsx";',
     'export { toast, type ToastOptions } from "./feedback/toast.tsx";',
+    'export { type MoveDetail, moveItems, type TreeItem, type TreeToggle, updateItem } from "./tree/model.ts";',
+    'export type { Command } from "./palette/command-palette.tsx";',
     "",
   ].join("\n"),
 );

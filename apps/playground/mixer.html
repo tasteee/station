@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" theme="dark" density="compact">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Station · Audio Mixer</title>
+    <link rel="icon" href="data:," />
+    <script type="module" src="/src/mixer.ts"></script>
+  </head>
+  <body>
+    <st-column class="app">
+      <st-surface level="panel">
+        <st-row class="transport" padding-x="3" gap="3">
+          <st-icon name="wave-sine" class="logo"></st-icon>
+          <st-segmented-control class="page-nav" size="small" value="mixer" label="Playground page">
+            <st-segment value="design">UI design</st-segment>
+            <st-segment value="paint">Image editor</st-segment>
+            <st-segment value="mixer">Audio mixer</st-segment>
+          </st-segmented-control>
+          <st-spacer></st-spacer>
+          <st-toolbar label="Transport">
+            <st-icon-button icon="player-skip-back" label="Return to start" shortcut="Home" id="rewind"></st-icon-button>
+            <st-toggle-button icon="player-play" label="Play" shortcut="Space" tone="accent" id="play"></st-toggle-button>
+            <st-icon-button icon="player-stop" label="Stop" id="stop"></st-icon-button>
+            <st-toggle-button icon="player-record" label="Record" shortcut="R" id="record"></st-toggle-button>
+            <st-toggle-button icon="repeat" label="Loop" shortcut="L" pressed></st-toggle-button>
+            <st-toggle-button icon="metronome" label="Metronome"></st-toggle-button>
+          </st-toolbar>
+          <st-surface level="well" rounded="small" class="lcd">
+            <st-row gap="3" padding-x="2">
+              <st-text numeric tone="strong" id="clock">0:00.0</st-text>
+              <st-divider></st-divider>
+              <st-number-field kind="ghost" size="small" label="Tempo" abbr="BPM" value="124" min="20" max="999" step="1" precision="1" style="width:88px"></st-number-field>
+              <st-select kind="ghost" size="small" value="4/4" label="Time signature" style="width:64px">
+                <st-option value="3/4">3/4</st-option>
+                <st-option value="4/4">4/4</st-option>
+                <st-option value="6/8">6/8</st-option>
+                <st-option value="7/8">7/8</st-option>
+              </st-select>
+            </st-row>
+          </st-surface>
+          <st-spacer></st-spacer>
+          <st-row gap="1.5">
+            <st-text size="small" tone="muted">CPU</st-text>
+            <st-meter id="cpu" orientation="horizontal" label="CPU load" min="0" max="100" warn="60" danger="85" value="18" style="width:64px"></st-meter>
+          </st-row>
+        </st-row>
+      </st-surface>
+      <st-divider></st-divider>
+
+      <st-split orientation="vertical" grow autosave="mixer-main">
+        <st-pane>
+          <st-column grow class="arrange">
+            <st-row class="ruler-row">
+              <span class="track-head-spacer"></span>
+              <st-ruler id="timeline-ruler" format="time" zoom="24" grow></st-ruler>
+            </st-row>
+            <st-scroll-area grow axis="y" id="tracks"></st-scroll-area>
+          </st-column>
+        </st-pane>
+        <st-pane size="330" min="240" max="520" collapsible>
+          <st-scroll-area axis="x" class="mixer" id="mixer"></st-scroll-area>
+        </st-pane>
+      </st-split>
+    </st-column>
+  </body>
+</html>

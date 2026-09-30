@@ -56,8 +56,8 @@ it("fields", async () => {
       <st-row gap="2"><st-text-field label="Name" value="Frame 12"></st-text-field><st-text-field label="Empty" placeholder="Placeholder" kind="outline"></st-text-field></st-row>
       <st-row gap="2"><st-search-field label="Search" value="icon"></st-search-field><st-select label="Blend" value="a"><st-option value="a">Normal</st-option></st-select></st-row>
       <st-row gap="2">
-        <st-number-field label="W" prefix="W" value="120" unit="px"></st-number-field>
-        <st-number-field label="R" prefix="R" mixed></st-number-field>
+        <st-number-field label="W" abbr="W" value="120" unit="px"></st-number-field>
+        <st-number-field label="R" abbr="R" mixed></st-number-field>
         <st-slider label="Opacity" value="60"></st-slider>
       </st-row>
       <st-textarea label="Notes" rows="2" value="Two lines"></st-textarea>

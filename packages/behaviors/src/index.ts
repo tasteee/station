@@ -1,4 +1,6 @@
+export { formatHex, type Hsva, hsvToRgb, isLight, parseColor, type Rgba, rgbToHsv } from "./color.ts";
 export { devWarn, isDev } from "./dev.ts";
+export { type FuzzyMatch, fuzzyMatch } from "./fuzzy.ts";
 export { matchesShortcut } from "./hotkey.ts";
 export { uniqueId } from "./id.ts";
 export { evaluate } from "./math.ts";

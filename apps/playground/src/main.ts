@@ -3,50 +3,9 @@ import "@station/tokens/fonts.css";
 import "@station/components";
 import "./playground.css";
 import { confirm, toast } from "@station/components";
-import { registerIcons } from "@station/icons";
-import * as I from "@station/icons/tabler";
 
-// Only these icons end up in the bundle.
-registerIcons({
-  "align-center": I.IconAlignCenter,
-  "arrow-bar-to-up": I.IconArrowBarToUp,
-  copy: I.IconCopy,
-  dots: I.IconDots,
-  filter: I.IconFilter,
-  "grid-dots": I.IconGridDots,
-  "player-play": I.IconPlayerPlay,
-  search: I.IconSearch,
-  "align-left": I.IconAlignLeft,
-  "align-right": I.IconAlignRight,
-  angle: I.IconAngle,
-  bold: I.IconBold,
-  "border-radius": I.IconBorderRadius,
-  "chevron-right": I.IconChevronRight,
-  components: I.IconComponents,
-  download: I.IconDownload,
-  eye: I.IconEye,
-  "eye-off": I.IconEyeOff,
-  folder: I.IconFolder,
-  frame: I.IconFrame,
-  "hand-stop": I.IconHandStop,
-  italic: I.IconItalic,
-  "letter-t": I.IconLetterT,
-  link: I.IconLink,
-  lock: I.IconLock,
-  message: I.IconMessage,
-  moon: I.IconMoon,
-  photo: I.IconPhoto,
-  plus: I.IconPlus,
-  pointer: I.IconPointer,
-  rotate: I.IconRotate,
-  square: I.IconSquare,
-  stack: I.IconStack2,
-  sun: I.IconSun,
-  trash: I.IconTrash,
-  typography: I.IconTypography,
-  underline: I.IconUnderline,
-  "vector-bezier-2": I.IconVectorBezier2,
-});
+import "./icons.ts";
+import "./nav.ts";
 
 type Station = HTMLElement & { value: number; open: boolean; pressed: boolean };
 const $ = <T extends Element = Station>(sel: string) => document.querySelector(sel) as T;

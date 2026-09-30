@@ -53,6 +53,32 @@ const styles = css`
   :host([data-dragging]) .thumb[data-dragging] {
     scale: 1.15;
   }
+  /* Vertical (faders) */
+  :host([orientation="vertical"]) {
+    flex-direction: column;
+    width: var(--_height);
+    height: 120px;
+    min-width: 0;
+    min-height: 48px;
+  }
+  :host([orientation="vertical"]) .track {
+    inset-inline: auto;
+    inset-block: calc(var(--_thumb) / 2);
+    width: 4px;
+    height: auto;
+    left: 50%;
+    margin-left: -2px;
+  }
+  :host([orientation="vertical"]) .fill {
+    left: 0;
+    right: 0;
+  }
+  :host([orientation="vertical"]) .thumb {
+    top: auto;
+    left: 50%;
+    margin: 0 0 calc(var(--_thumb) / -2) calc(var(--_thumb) / -2);
+    translate: none;
+  }
   .thumb:focus-visible {
     outline: var(--st-focus-ring-width) solid var(--st-border-focus);
     outline-offset: var(--st-focus-ring-offset);
@@ -91,11 +117,15 @@ function createSlider(range: boolean) {
         }
       };
 
-      const valueAt = (clientX: number) => {
+      const vertical = (host.current as HTMLElement).getAttribute("orientation") === "vertical";
+      const valueAt = (clientX: number, clientY: number) => {
         const rect = track.current!.getBoundingClientRect();
-        const rtl = getComputedStyle(host.current).direction === "rtl";
-        let ratio = (clientX - rect.left) / rect.width;
-        if (rtl) ratio = 1 - ratio;
+        let ratio: number;
+        if (vertical) ratio = 1 - (clientY - rect.top) / rect.height;
+        else {
+          ratio = (clientX - rect.left) / rect.width;
+          if (getComputedStyle(host.current).direction === "rtl") ratio = 1 - ratio;
+        }
         return lo + clamp(ratio, 0, 1) * (hi - lo);
       };
 
@@ -114,7 +144,7 @@ function createSlider(range: boolean) {
 
       const onpointerdown = (e: PointerEvent) => {
         if (disabled || e.button !== 0) return;
-        const v = valueAt(e.clientX);
+        const v = valueAt(e.clientX, e.clientY);
         const thumb: Thumb =
           range && Math.abs(v - values.start) < Math.abs(v - values.end)
             ? "start"
@@ -131,7 +161,7 @@ function createSlider(range: boolean) {
         e.preventDefault();
       };
       const onpointermove = (e: PointerEvent) => {
-        if (dragging.current) set(dragging.current, valueAt(e.clientX), false);
+        if (dragging.current) set(dragging.current, valueAt(e.clientX, e.clientY), false);
       };
       const onpointerup = () => {
         if (!dragging.current) return;
@@ -174,7 +204,8 @@ function createSlider(range: boolean) {
           aria-valuemax={String(range && which === "start" ? values.end : hi)}
           aria-valuenow={String(values[which])}
           aria-disabled={disabled ? "true" : null}
-          style={`inset-inline-start:${pct(values[which])}%`}
+          aria-orientation={vertical ? "vertical" : null}
+          style={vertical ? `bottom:${pct(values[which])}%` : `inset-inline-start:${pct(values[which])}%`}
           onkeydown={onkeydown(which)}
         />
       );
@@ -191,7 +222,11 @@ function createSlider(range: boolean) {
             <span
               class="fill"
               part="fill"
-              style={`inset-inline-start:${range ? pct(values.start) : 0}%;inset-inline-end:${100 - pct(values.end)}%`}
+              style={
+                vertical
+                  ? `bottom:${range ? pct(values.start) : 0}%;top:${100 - pct(values.end)}%`
+                  : `inset-inline-start:${range ? pct(values.start) : 0}%;inset-inline-end:${100 - pct(values.end)}%`
+              }
             />
             {range && thumb("start", label ? `${label} minimum` : "Minimum")}
             {thumb("end", range ? (label ? `${label} maximum` : "Maximum") : label)}
@@ -212,6 +247,7 @@ function createSlider(range: boolean) {
             name: { type: String, reflect: true },
             size: { type: String, reflect: true },
             disabled: { type: Boolean, reflect: true },
+            orientation: { type: String, reflect: true },
           }
         : {
             value: { type: Number, reflect: false },
@@ -222,6 +258,7 @@ function createSlider(range: boolean) {
             name: { type: String, reflect: true },
             size: { type: String, reflect: true },
             disabled: { type: Boolean, reflect: true },
+            orientation: { type: String, reflect: true },
           },
       styles: [hostReset, controlBase, styles],
     },

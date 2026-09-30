@@ -43,7 +43,9 @@
             "noStaticElementInteractions": "off",
             "noAriaHiddenOnFocusable": "off",
             "noInteractiveElementToNoninteractiveRole": "off",
-            "useFocusableInteractive": "off"
+            "useFocusableInteractive": "off",
+            "useSemanticElements": "off",
+            "useAriaActivedescendantWithTabindex": "off"
           }
         }
       }

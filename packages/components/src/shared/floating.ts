@@ -25,10 +25,14 @@ export function createFloating(host: HTMLElement, getPlacement: () => Placement,
     closed() {
       stop?.();
       stop = null;
-      const active = document.activeElement;
-      const focusWasInside = !active || active === document.body || host.contains(active) || host === active;
-      if (focusWasInside && anchor instanceof HTMLElement && anchor.isConnected)
-        anchor.focus({ preventScroll: true });
+      const returnTo = anchor;
+      // Wait a frame: if another menu opened in the meantime it has taken focus, so leave it.
+      requestAnimationFrame(() => {
+        const active = document.activeElement;
+        const focusLost = !active || active === document.body || host.contains(active) || host === active;
+        if (focusLost && returnTo instanceof HTMLElement && returnTo.isConnected)
+          returnTo.focus({ preventScroll: true });
+      });
       anchor = null;
     },
   };

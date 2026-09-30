@@ -1,6 +1,6 @@
 # Station
 
-A web-component design system for **dense, interaction-heavy editor UIs**: think Figma, Photoshop, Ableton.
+A web-component design system for **dense, interaction-heavy editor UIs**: UI design tools (Figma), raster and vector editors (Photoshop, Illustrator), DAWs (Ableton), video tools and IDEs.
 
 - **Flat.** Hierarchy comes from surface color, borders and text contrast. Shadows only on things that float.
 - **Dense.** Controls are 20 / 24 / 28px. One `density` knob tightens the whole app.
@@ -17,7 +17,7 @@ See [`docs/PLAN.md`](docs/PLAN.md) for the full design plan.
 | `@station/components` | Atomico elements: controls (Tier 1) plus sections, property rows, tabs, menus, popover, dialogs, toasts, progress (Tier 2) |
 | `@station/icons` | Icon registry + all 6,000+ Tabler icons as tree-shakeable exports |
 | `@station/behaviors` | Framework-free logic: roving focus, typeahead, drag-to-scrub, safe math, popover positioning, shortcuts |
-| `apps/playground` | A mini editor shell to see and tune everything |
+| `apps/playground` | Three demo apps: UI design (Figma-like), image editor (Photoshop-like, dark), audio mixer (DAW-like) |
 | `apps/storybook` | Component workshop with theme + density toolbar |
 | `apps/interop` | Type fixtures for React, Preact, Solid, Vue, Svelte + React runtime test |
 
@@ -124,6 +124,20 @@ Every control: host is the control (focus, ARIA via `ElementInternals`), `input`
   <st-menu-item tone="danger">Delete</st-menu-item>
 </st-menu>
 ```
+
+## Editor-grade (Tier 3)
+
+| Element | Notes |
+|---|---|
+| `st-split` + `st-pane` | Resizable panes. `size` = fixed, no size = fills. Drag / arrow keys / double-click to collapse. `autosave` remembers sizes |
+| `st-tree` | Virtualized (10k+ rows). `items` + `toggles` properties (eye/lock columns, left or right), thumbnails, multi-select, F2 rename, drag reorder. Never mutates data; use `moveItems()` / `updateItem()` |
+| `st-menubar` | Application menus from child `st-menu label="…"`. Hover-switching, ←/→ across menus |
+| `st-toolbox`, `st-tool`, `st-tool-group` | Photoshop-style tool palette. Groups open a flyout (long-press, right-click, →). `hotkeys` = single-key tool shortcuts that cycle groups |
+| `st-color-picker`, `st-color-field`, `st-color-swatch`, `st-swatches` | SV area, hue/alpha, eyedropper, HEX/RGB/HSB; inspector field with popover; swatch palettes |
+| `st-ruler` | Canvas ruler: `zoom`, `offset`, `marker`, range, `format="time"`. `valueAt(clientX)` for guides |
+| `st-knob`, `st-meter` | DAW controls: rotary knob (bipolar, reset on double-click), level meter with peak hold |
+| `st-slider orientation="vertical"` | Faders |
+| `st-command-palette` | Fuzzy search over `commands`; `hotkey="Mod+K"` |
 
 ## Framework typings
 

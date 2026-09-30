@@ -13,29 +13,15 @@ type Host = HTMLElement & {
 
 /**
  * Numeric input built for inspectors.
- * - Drag the prefix (`prefix` text or `icon`) left/right to scrub. `label` is the accessible name.
+ * - Drag the prefix (`abbr` text or `icon`) left/right to scrub. `label` is the accessible name.
  * - ↑/↓ change by `step`; hold Shift for ×10, Alt for ×0.1.
  * - Type math: "12*2", "(100-8)/2". Enter commits, Escape reverts.
  * - `mixed` shows "Mixed" for multi-selections with different values.
  *
- * <st-number-field label="Width" prefix="W" value="120" unit="px" min="0"></st-number-field>
+ * <st-number-field label="Width" abbr="W" value="120" unit="px" min="0"></st-number-field>
  */
 export const NumberField = c(
-  ({
-    min,
-    max,
-    step,
-    unit,
-    label,
-    prefix: prefixText,
-    icon,
-    name,
-    disabled,
-    readonly,
-    placeholder,
-    mixed,
-    precision,
-  }) => {
+  ({ min, max, step, unit, label, abbr, icon, name, disabled, readonly, placeholder, mixed, precision }) => {
     const host = useHost<Host>();
     const internals = useInternals();
     const [value, setValue] = useProp<number | null>("value");
@@ -87,9 +73,9 @@ export const NumberField = c(
       if (value != null) el.setAttribute("aria-valuenow", String(value));
       else el.removeAttribute("aria-valuenow");
       el.setAttribute("aria-valuetext", mixed && value == null ? "Mixed" : `${display}${unit ?? ""}`);
-      const name = label ?? prefixText;
+      const name = label ?? abbr;
       if (name) el.setAttribute("aria-label", name);
-    }, [min, max, value, unit, label, prefixText, mixed]);
+    }, [min, max, value, unit, label, abbr, mixed]);
 
     // Scrub by dragging the prefix.
     useEffect(() => {
@@ -114,7 +100,7 @@ export const NumberField = c(
         onClick: () => input.current?.focus(),
       });
       return () => scrub.destroy();
-    }, [disabled, readonly, !!(prefixText || icon)]);
+    }, [disabled, readonly, !!(abbr || icon)]);
 
     const onkeydown = (e: KeyboardEvent) => {
       const el = e.target as HTMLInputElement;
@@ -147,10 +133,10 @@ export const NumberField = c(
     };
 
     return (
-      <host shadowDom={{ delegatesFocus: true }} data-scrub={prefixText || icon ? "" : null}>
-        {(prefixText || icon) && (
+      <host shadowDom={{ delegatesFocus: true }} data-scrub={abbr || icon ? "" : null}>
+        {(abbr || icon) && (
           <span ref={prefix} class="prefix" part="prefix" aria-hidden="true">
-            {icon ? <st-icon name={icon} /> : prefixText}
+            {icon ? <st-icon name={icon} /> : abbr}
           </span>
         )}
         <input
@@ -186,7 +172,7 @@ export const NumberField = c(
       precision: { type: Number, reflect: true },
       unit: { type: String, reflect: true },
       label: { type: String, reflect: true },
-      prefix: { type: String, reflect: true },
+      abbr: { type: String, reflect: true },
       icon: { type: String, reflect: true },
       name: { type: String, reflect: true },
       placeholder: { type: String, reflect: true },

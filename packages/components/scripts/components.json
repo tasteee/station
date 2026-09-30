@@ -220,5 +220,95 @@
     "class": "Spinner",
     "src": "feedback/progress.tsx",
     "tag": "st-spinner"
+  },
+  {
+    "file": "split",
+    "class": "Split",
+    "src": "split/split.tsx",
+    "tag": "st-split"
+  },
+  {
+    "file": "pane",
+    "class": "Pane",
+    "src": "split/split.tsx",
+    "tag": "st-pane"
+  },
+  {
+    "file": "tree",
+    "class": "Tree",
+    "src": "tree/tree.tsx",
+    "tag": "st-tree"
+  },
+  {
+    "file": "menubar",
+    "class": "Menubar",
+    "src": "menu/menubar.tsx",
+    "tag": "st-menubar"
+  },
+  {
+    "file": "toolbox",
+    "class": "Toolbox",
+    "src": "toolbox/toolbox.tsx",
+    "tag": "st-toolbox"
+  },
+  {
+    "file": "tool",
+    "class": "Tool",
+    "src": "toolbox/toolbox.tsx",
+    "tag": "st-tool"
+  },
+  {
+    "file": "tool-group",
+    "class": "ToolGroup",
+    "src": "toolbox/toolbox.tsx",
+    "tag": "st-tool-group"
+  },
+  {
+    "file": "color-swatch",
+    "class": "ColorSwatch",
+    "src": "color/swatch.tsx",
+    "tag": "st-color-swatch"
+  },
+  {
+    "file": "swatches",
+    "class": "Swatches",
+    "src": "color/swatch.tsx",
+    "tag": "st-swatches"
+  },
+  {
+    "file": "color-picker",
+    "class": "ColorPicker",
+    "src": "color/color-picker.tsx",
+    "tag": "st-color-picker"
+  },
+  {
+    "file": "color-field",
+    "class": "ColorField",
+    "src": "color/color-field.tsx",
+    "tag": "st-color-field"
+  },
+  {
+    "file": "ruler",
+    "class": "Ruler",
+    "src": "ruler/ruler.tsx",
+    "tag": "st-ruler"
+  },
+  {
+    "file": "knob",
+    "class": "Knob",
+    "src": "audio/knob.tsx",
+    "tag": "st-knob"
+  },
+  {
+    "file": "meter",
+    "class": "Meter",
+    "src": "audio/meter.tsx",
+    "tag": "st-meter"
+  },
+  {
+    "file": "command-palette",
+    "class": "CommandPalette",
+    "src": "palette/command-palette.tsx",
+    "tag": "st-command-palette"
   }
 ]

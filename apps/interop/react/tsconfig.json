@@ -1,5 +1,11 @@
 {
   "extends": "../../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "jsx": "react-jsx", "jsxImportSource": "react", "types": [] },
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": [],
+    "skipLibCheck": false
+  },
   "include": ["*.tsx"]
 }

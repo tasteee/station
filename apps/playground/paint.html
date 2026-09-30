@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en" theme="dark" density="compact">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Station · Image Editor</title>
+    <link rel="icon" href="data:," />
+    <script type="module" src="/src/paint.ts"></script>
+  </head>
+  <body>
+    <st-column class="app">
+      <!-- Menubar -->
+      <st-surface level="panel">
+        <st-row class="menubar-row" padding-x="2" gap="2">
+          <st-icon name="brush" class="logo"></st-icon>
+          <st-menubar label="Main menu">
+            <st-menu label="File">
+              <st-menu-item shortcut="Mod+N">New…</st-menu-item>
+              <st-menu-item shortcut="Mod+O">Open…</st-menu-item>
+              <st-menu-item>Open Recent
+                <st-menu>
+                  <st-menu-item>poster-final.psd</st-menu-item>
+                  <st-menu-item>album-cover.psd</st-menu-item>
+                  <st-menu-item>product-shot.tif</st-menu-item>
+                </st-menu>
+              </st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item shortcut="Mod+S">Save</st-menu-item>
+              <st-menu-item shortcut="Mod+Shift+S">Save As…</st-menu-item>
+              <st-menu-item>Export
+                <st-menu>
+                  <st-menu-item shortcut="Mod+Alt+Shift+W">Export As…</st-menu-item>
+                  <st-menu-item>Quick Export as PNG</st-menu-item>
+                  <st-menu-item>Layers to Files…</st-menu-item>
+                </st-menu>
+              </st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item shortcut="Mod+P">Print…</st-menu-item>
+            </st-menu>
+            <st-menu label="Edit">
+              <st-menu-item shortcut="Mod+Z">Undo Brush Stroke</st-menu-item>
+              <st-menu-item shortcut="Mod+Shift+Z">Redo</st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item shortcut="Mod+X">Cut</st-menu-item>
+              <st-menu-item shortcut="Mod+C">Copy</st-menu-item>
+              <st-menu-item shortcut="Mod+V">Paste</st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item shortcut="Shift+F5">Fill…</st-menu-item>
+              <st-menu-item shortcut="Mod+T">Free Transform</st-menu-item>
+              <st-menu-item>Transform
+                <st-menu>
+                  <st-menu-item>Scale</st-menu-item>
+                  <st-menu-item>Rotate</st-menu-item>
+                  <st-menu-item>Skew</st-menu-item>
+                  <st-menu-item>Perspective</st-menu-item>
+                  <st-divider></st-divider>
+                  <st-menu-item>Flip Horizontal</st-menu-item>
+                  <st-menu-item>Flip Vertical</st-menu-item>
+                </st-menu>
+              </st-menu-item>
+            </st-menu>
+            <st-menu label="Image">
+              <st-menu-label>Mode</st-menu-label>
+              <st-menu-item type="radio" group="mode" checked keep-open>RGB Color</st-menu-item>
+              <st-menu-item type="radio" group="mode" keep-open>CMYK Color</st-menu-item>
+              <st-menu-item type="radio" group="mode" keep-open>Grayscale</st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item>Adjustments
+                <st-menu>
+                  <st-menu-item shortcut="Mod+L">Levels…</st-menu-item>
+                  <st-menu-item shortcut="Mod+M">Curves…</st-menu-item>
+                  <st-menu-item>Exposure…</st-menu-item>
+                  <st-divider></st-divider>
+                  <st-menu-item shortcut="Mod+U">Hue/Saturation…</st-menu-item>
+                  <st-menu-item shortcut="Mod+B">Color Balance…</st-menu-item>
+                  <st-menu-item shortcut="Mod+Alt+Shift+B">Black &amp; White…</st-menu-item>
+                  <st-divider></st-divider>
+                  <st-menu-item shortcut="Mod+I">Invert</st-menu-item>
+                </st-menu>
+              </st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item shortcut="Mod+Alt+I">Image Size…</st-menu-item>
+              <st-menu-item shortcut="Mod+Alt+C">Canvas Size…</st-menu-item>
+              <st-menu-item>Crop</st-menu-item>
+            </st-menu>
+            <st-menu label="Layer">
+              <st-menu-item shortcut="Mod+Shift+N">New Layer…</st-menu-item>
+              <st-menu-item shortcut="Mod+J">Duplicate Layer</st-menu-item>
+              <st-menu-item tone="danger">Delete Layer</st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item shortcut="Mod+G">Group Layers</st-menu-item>
+              <st-menu-item shortcut="Mod+E">Merge Down</st-menu-item>
+              <st-menu-item>Flatten Image</st-menu-item>
+            </st-menu>
+            <st-menu label="Select">
+              <st-menu-item shortcut="Mod+A">All</st-menu-item>
+              <st-menu-item shortcut="Mod+D">Deselect</st-menu-item>
+              <st-menu-item shortcut="Mod+Shift+I">Inverse</st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item shortcut="Mod+Alt+R">Select and Mask…</st-menu-item>
+            </st-menu>
+            <st-menu label="Filter">
+              <st-menu-item>Blur
+                <st-menu>
+                  <st-menu-item>Gaussian Blur…</st-menu-item>
+                  <st-menu-item>Motion Blur…</st-menu-item>
+                  <st-menu-item>Lens Blur…</st-menu-item>
+                </st-menu>
+              </st-menu-item>
+              <st-menu-item>Sharpen
+                <st-menu>
+                  <st-menu-item>Unsharp Mask…</st-menu-item>
+                  <st-menu-item>Smart Sharpen…</st-menu-item>
+                </st-menu>
+              </st-menu-item>
+              <st-menu-item>Noise
+                <st-menu>
+                  <st-menu-item>Add Noise…</st-menu-item>
+                  <st-menu-item>Reduce Noise…</st-menu-item>
+                </st-menu>
+              </st-menu-item>
+            </st-menu>
+            <st-menu label="View">
+              <st-menu-item shortcut="Mod+=">Zoom In</st-menu-item>
+              <st-menu-item shortcut="Mod+-">Zoom Out</st-menu-item>
+              <st-menu-item shortcut="Mod+0">Fit on Screen</st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item type="checkbox" checked keep-open id="toggle-rulers" shortcut="Mod+R">Rulers</st-menu-item>
+              <st-menu-item type="checkbox" keep-open shortcut="Mod+'">Grid</st-menu-item>
+              <st-menu-item type="checkbox" checked keep-open shortcut="Mod+;">Guides</st-menu-item>
+            </st-menu>
+            <st-menu label="Window">
+              <st-menu-item type="checkbox" checked keep-open>Color</st-menu-item>
+              <st-menu-item type="checkbox" checked keep-open>Layers</st-menu-item>
+              <st-menu-item type="checkbox" keep-open>History</st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item shortcut="Mod+K">Command Palette…</st-menu-item>
+            </st-menu>
+          </st-menubar>
+          <st-spacer></st-spacer>
+          <st-segmented-control class="page-nav" size="small" value="paint" label="Playground page">
+            <st-segment value="design">UI design</st-segment>
+            <st-segment value="paint">Image editor</st-segment>
+            <st-segment value="mixer">Audio mixer</st-segment>
+          </st-segmented-control>
+          <st-icon-button id="open-palette" size="small" icon="command" label="Command palette" shortcut="Mod+K"></st-icon-button>
+        </st-row>
+      </st-surface>
+      <st-divider></st-divider>
+
+      <!-- Options bar: changes with the active tool -->
+      <st-surface level="panel">
+        <st-row class="options" padding-x="2" gap="3" id="options"></st-row>
+      </st-surface>
+      <st-divider></st-divider>
+
+      <st-row grow y-align="stretch">
+        <!-- Toolbox -->
+        <st-surface level="panel" class="toolbox-wrap">
+          <st-toolbox id="tools" value="brush" hotkeys columns="1" label="Tools">
+            <st-tool value="move" icon="arrows-move" label="Move" shortcut="V"></st-tool>
+            <st-tool-group label="Marquee tools">
+              <st-tool value="marquee-rect" icon="square-dashed" label="Rectangular Marquee" shortcut="M"></st-tool>
+              <st-tool value="marquee-ellipse" icon="circle-dashed" label="Elliptical Marquee" shortcut="M"></st-tool>
+            </st-tool-group>
+            <st-tool-group label="Lasso tools">
+              <st-tool value="lasso" icon="lasso" label="Lasso" shortcut="L"></st-tool>
+              <st-tool value="lasso-polygon" icon="lasso-polygon" label="Polygonal Lasso" shortcut="L"></st-tool>
+            </st-tool-group>
+            <st-tool value="wand" icon="wand" label="Magic Wand" shortcut="W"></st-tool>
+            <st-tool value="crop" icon="crop" label="Crop" shortcut="C"></st-tool>
+            <st-tool value="eyedropper" icon="color-picker" label="Eyedropper" shortcut="I"></st-tool>
+            <st-divider></st-divider>
+            <st-tool-group label="Healing tools">
+              <st-tool value="heal" icon="bandage" label="Healing Brush" shortcut="J"></st-tool>
+              <st-tool value="clone" icon="rubber-stamp" label="Clone Stamp" shortcut="S"></st-tool>
+            </st-tool-group>
+            <st-tool-group label="Brush tools">
+              <st-tool value="brush" icon="brush" label="Brush" shortcut="B"></st-tool>
+              <st-tool value="pencil" icon="pencil" label="Pencil" shortcut="B"></st-tool>
+            </st-tool-group>
+            <st-tool value="eraser" icon="eraser" label="Eraser" shortcut="E"></st-tool>
+            <st-tool-group label="Fill tools">
+              <st-tool value="gradient" icon="gradienter" label="Gradient" shortcut="G"></st-tool>
+              <st-tool value="bucket" icon="bucket-droplet" label="Paint Bucket" shortcut="G"></st-tool>
+            </st-tool-group>
+            <st-tool-group label="Toning tools">
+              <st-tool value="blur" icon="droplet" label="Blur"></st-tool>
+              <st-tool value="dodge" icon="sun-low" label="Dodge" shortcut="O"></st-tool>
+            </st-tool-group>
+            <st-divider></st-divider>
+            <st-tool value="pen" icon="vector-bezier-2" label="Pen" shortcut="P"></st-tool>
+            <st-tool value="type" icon="typography" label="Type" shortcut="T"></st-tool>
+            <st-tool-group label="Shape tools">
+              <st-tool value="rect" icon="square" label="Rectangle" shortcut="U"></st-tool>
+              <st-tool value="ellipse" icon="circle" label="Ellipse" shortcut="U"></st-tool>
+              <st-tool value="polygon" icon="polygon" label="Polygon" shortcut="U"></st-tool>
+              <st-tool value="line" icon="line" label="Line" shortcut="U"></st-tool>
+            </st-tool-group>
+            <st-divider></st-divider>
+            <st-tool value="hand" icon="hand-stop" label="Hand" shortcut="H"></st-tool>
+            <st-tool value="zoom" icon="zoom-in" label="Zoom" shortcut="Z"></st-tool>
+          </st-toolbox>
+          <div class="fgbg">
+            <button type="button" class="chip fg" id="fg" aria-label="Foreground color"></button>
+            <button type="button" class="chip bg" id="bg" aria-label="Background color"></button>
+            <st-icon-button class="swap" size="small" icon="arrows-exchange" label="Swap colors" shortcut="X" id="swap"></st-icon-button>
+          </div>
+        </st-surface>
+        <st-divider></st-divider>
+
+        <st-split grow autosave="paint-main">
+          <!-- Document -->
+          <st-pane>
+            <st-column grow class="doc-area">
+              <st-panel-header class="doc-tabs" plain>
+                <st-tabs value="poster" class="doc-tab-strip">
+                  <st-tab value="poster">poster-final.psd @ 66.7% (RGB/8)</st-tab>
+                  <st-tab value="cover">album-cover.psd @ 50%</st-tab>
+                </st-tabs>
+              </st-panel-header>
+              <div class="rulers" id="rulers">
+                <span class="corner"></span>
+                <st-ruler id="ruler-x"></st-ruler>
+                <st-ruler id="ruler-y" orientation="vertical"></st-ruler>
+                <div class="canvas" id="canvas">
+                  <div class="document" id="document">
+                    <svg viewBox="0 0 600 800" preserveAspectRatio="none" aria-label="Poster artwork">
+                      <defs>
+                        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0" stop-color="#1b1446" />
+                          <stop offset="0.55" stop-color="#b3386b" />
+                          <stop offset="1" stop-color="#f6a55a" />
+                        </linearGradient>
+                      </defs>
+                      <rect width="600" height="800" fill="url(#sky)" />
+                      <circle cx="300" cy="430" r="150" fill="#ffd27a" opacity="0.95" />
+                      <path d="M0 560 L120 470 L220 540 L330 440 L460 530 L600 460 L600 800 L0 800Z" fill="#2a1a3f" />
+                      <path d="M0 640 L160 560 L300 630 L440 570 L600 640 L600 800 L0 800Z" fill="#150d24" />
+                      <text x="300" y="130" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="64" fill="#fff" letter-spacing="8">STATION</text>
+                      <text x="300" y="175" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="20" fill="#ffffffb0" letter-spacing="6">SUMMER SESSIONS</text>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <st-row class="doc-status" padding-x="2" gap="3">
+                <st-select size="small" kind="ghost" value="66.7" id="zoom" label="Zoom" style="width:84px">
+                  <st-option value="25">25%</st-option>
+                  <st-option value="50">50%</st-option>
+                  <st-option value="66.7">66.7%</st-option>
+                  <st-option value="100">100%</st-option>
+                  <st-option value="200">200%</st-option>
+                </st-select>
+                <st-text size="small" tone="muted" numeric>600 × 800 px (72 ppi)</st-text>
+                <st-spacer></st-spacer>
+                <st-text size="small" tone="muted" id="cursor-pos" numeric></st-text>
+              </st-row>
+            </st-column>
+          </st-pane>
+
+          <!-- Panels dock -->
+          <st-pane size="288" min="240" max="420" collapsible>
+            <st-split orientation="vertical" grow autosave="paint-dock">
+              <st-pane size="300" min="180">
+                <st-panel grow>
+                  <st-tabs value="color" divided grow>
+                    <st-tab value="color">Color</st-tab>
+                    <st-tab value="swatches">Swatches</st-tab>
+                    <st-icon-button slot="actions" size="small" icon="dots" label="Color panel menu" id="color-menu"></st-icon-button>
+                    <st-tab-panel value="color">
+                      <st-column padding="3"><st-color-picker id="picker" value="#ffd27a"></st-color-picker></st-column>
+                    </st-tab-panel>
+                    <st-tab-panel value="swatches">
+                      <st-column padding="3"><st-swatches id="swatches" label="Swatches"></st-swatches></st-column>
+                    </st-tab-panel>
+                  </st-tabs>
+                  <st-menu for="color-menu">
+                    <st-menu-item type="radio" group="model" checked>HSB Sliders</st-menu-item>
+                    <st-menu-item type="radio" group="model">RGB Sliders</st-menu-item>
+                    <st-divider></st-divider>
+                    <st-menu-item>Close Tab Group</st-menu-item>
+                  </st-menu>
+                </st-panel>
+              </st-pane>
+              <st-pane>
+                <st-panel grow>
+                  <st-tabs value="layers" divided grow>
+                    <st-tab value="layers">Layers</st-tab>
+                    <st-tab value="channels">Channels</st-tab>
+                    <st-tab value="paths">Paths</st-tab>
+                    <st-tab-panel value="layers">
+                      <st-column padding-x="2" padding-y="1.5" gap="1.5" class="layer-controls">
+                        <st-row gap="1.5">
+                          <st-select size="small" value="normal" label="Blend mode" grow>
+                            <st-option value="normal">Normal</st-option>
+                            <st-option value="dissolve">Dissolve</st-option>
+                            <st-divider></st-divider>
+                            <st-option value="multiply">Multiply</st-option>
+                            <st-option value="screen">Screen</st-option>
+                            <st-option value="overlay">Overlay</st-option>
+                            <st-option value="soft-light">Soft Light</st-option>
+                          </st-select>
+                          <st-number-field size="small" label="Opacity" abbr="Op" value="100" min="0" max="100" unit="%" style="width:84px"></st-number-field>
+                        </st-row>
+                        <st-row gap="1">
+                          <st-text size="small" tone="muted">Lock</st-text>
+                          <st-toolbar size="small" label="Lock">
+                            <st-toggle-button icon="lock" label="Lock transparent pixels"></st-toggle-button>
+                            <st-toggle-button icon="brush" label="Lock image pixels"></st-toggle-button>
+                            <st-toggle-button icon="arrows-move" label="Lock position"></st-toggle-button>
+                          </st-toolbar>
+                          <st-spacer></st-spacer>
+                          <st-number-field size="small" label="Fill" abbr="Fill" value="100" min="0" max="100" unit="%" style="width:84px"></st-number-field>
+                        </st-row>
+                      </st-column>
+                      <st-divider></st-divider>
+                      <st-tree id="layers" grow label="Layers" renamable reorderable style="--st-tree-row-height:36px"></st-tree>
+                      <st-panel-footer>
+                        <st-spacer></st-spacer>
+                        <st-button-group size="small" label="Layer actions">
+                          <st-icon-button icon="link" label="Link layers"></st-icon-button>
+                          <st-icon-button icon="wand" label="Add a layer style"></st-icon-button>
+                          <st-icon-button icon="mask" label="Add layer mask"></st-icon-button>
+                          <st-icon-button icon="brightness-half" label="New adjustment layer"></st-icon-button>
+                          <st-icon-button icon="folder" label="New group" shortcut="Mod+G" id="new-group"></st-icon-button>
+                          <st-icon-button icon="plus" label="New layer" shortcut="Mod+Shift+N" id="new-layer"></st-icon-button>
+                          <st-icon-button icon="trash" label="Delete layer" id="delete-layer"></st-icon-button>
+                        </st-button-group>
+                      </st-panel-footer>
+                    </st-tab-panel>
+                    <st-tab-panel value="channels">
+                      <st-empty-state grow><st-icon name="palette"></st-icon><st-heading>RGB channels</st-heading><st-text size="small">Channel thumbnails go here.</st-text></st-empty-state>
+                    </st-tab-panel>
+                    <st-tab-panel value="paths">
+                      <st-empty-state grow><st-icon name="vector-bezier-2"></st-icon><st-heading>No paths</st-heading><st-text size="small">Draw with the Pen tool to create one.</st-text></st-empty-state>
+                    </st-tab-panel>
+                  </st-tabs>
+                </st-panel>
+              </st-pane>
+            </st-split>
+          </st-pane>
+        </st-split>
+      </st-row>
+    </st-column>
+
+    <st-menu for="layers" trigger="contextmenu" id="layer-menu">
+      <st-menu-item value="props">Layer Properties…</st-menu-item>
+      <st-menu-item value="style">Blending Options…</st-menu-item>
+      <st-divider></st-divider>
+      <st-menu-item value="duplicate" shortcut="Mod+J">Duplicate Layer</st-menu-item>
+      <st-menu-item value="rename" shortcut="F2">Rename Layer</st-menu-item>
+      <st-menu-item value="delete" tone="danger">Delete Layer</st-menu-item>
+      <st-divider></st-divider>
+      <st-menu-item value="smart">Convert to Smart Object</st-menu-item>
+      <st-menu-item value="rasterize">Rasterize Layer</st-menu-item>
+      <st-divider></st-divider>
+      <st-menu-item value="merge" shortcut="Mod+E">Merge Down</st-menu-item>
+      <st-menu-item value="flatten">Flatten Image</st-menu-item>
+    </st-menu>
+
+    <st-popover id="fg-popover" placement="right-start" label="Foreground color">
+      <st-color-picker id="fg-picker" value="#ffd27a"></st-color-picker>
+    </st-popover>
+
+    <st-command-palette id="palette" hotkey="Mod+K" placeholder="Search Photoshop-style commands…"></st-command-palette>
+  </body>
+</html>

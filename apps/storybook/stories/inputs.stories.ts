@@ -21,10 +21,10 @@ export const NumberFields: StoryObj = {
     <st-column gap="3">
       <st-text tone="muted" size="small">Drag the prefix. ↑/↓ steps (Shift ×10, Alt ×0.1). Type math like 12*2.</st-text>
       <div style="display:grid;grid-template-columns:repeat(2,100px);gap:6px 8px">
-        <st-number-field label="X" prefix="X" value="24" unit="px"></st-number-field>
-        <st-number-field label="Y" prefix="Y" value="16" unit="px"></st-number-field>
-        <st-number-field label="Width" prefix="W" value="120" min="0" unit="px"></st-number-field>
-        <st-number-field label="Height" prefix="H" value="80" min="0" unit="px"></st-number-field>
+        <st-number-field label="X" abbr="X" value="24" unit="px"></st-number-field>
+        <st-number-field label="Y" abbr="Y" value="16" unit="px"></st-number-field>
+        <st-number-field label="Width" abbr="W" value="120" min="0" unit="px"></st-number-field>
+        <st-number-field label="Height" abbr="H" value="80" min="0" unit="px"></st-number-field>
         <st-number-field label="Rotation" icon="angle" value="45" unit="°"></st-number-field>
         <st-number-field label="Radius" icon="border-radius" mixed></st-number-field>
       </div>

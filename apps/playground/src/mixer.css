@@ -1,0 +1,146 @@
+/* Audio mixer page layout. */
+:root {
+  --pps: 24px; /* pixels per second, matches the ruler zoom */
+  --playhead: 0;
+}
+.transport {
+  height: 44px;
+}
+.logo {
+  color: var(--st-text-strong);
+}
+.lcd st-row {
+  height: 28px;
+}
+.lcd st-divider {
+  margin-block: 6px;
+}
+#clock {
+  min-width: 56px;
+  font-size: var(--st-text-3);
+}
+.arrange {
+  height: 100%;
+  background: var(--st-bg-canvas);
+}
+.ruler-row {
+  flex: none;
+  border-bottom: 1px solid var(--st-border);
+}
+.track-head-spacer {
+  width: 180px;
+  flex: none;
+  align-self: stretch;
+  background: var(--st-bg-panel);
+  border-right: 1px solid var(--st-border-subtle);
+}
+.track {
+  height: 44px;
+  border-bottom: 1px solid var(--st-border-subtle);
+}
+.track-head {
+  width: 180px;
+  flex: none;
+  align-self: stretch;
+  background: var(--st-bg-panel);
+  border-right: 1px solid var(--st-border-subtle);
+}
+.swatch {
+  width: 4px;
+  align-self: stretch;
+  margin-block: 8px;
+  border-radius: 2px;
+}
+.ms {
+  width: 22px;
+  font-size: var(--st-text-1);
+}
+.ms[pressed] {
+  --_bg: var(--st-warning-9);
+  --_fg: var(--st-gray-1);
+  --_hover-bg: var(--st-warning-10);
+  --_hover-fg: var(--st-gray-1);
+}
+.ms.solo[pressed] {
+  --_bg: var(--st-success-9);
+}
+.arm[pressed] {
+  --_bg: var(--st-danger-9);
+  --_fg: var(--st-gray-1);
+  --_hover-bg: var(--st-danger-10);
+}
+.lane {
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  overflow: hidden;
+}
+.clip {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  border-radius: var(--st-radius-1);
+  background: color-mix(in oklch, var(--c) 35%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--c) 70%, transparent);
+  overflow: hidden;
+}
+.clip span {
+  display: block;
+  padding: 2px 6px;
+  font-size: var(--st-text-1);
+  color: var(--st-text-strong);
+  background: color-mix(in oklch, var(--c) 60%, transparent);
+}
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--playhead) * var(--pps));
+  width: 1px;
+  background: var(--st-border-focus);
+  pointer-events: none;
+}
+.mixer {
+  height: 100%;
+  background: var(--st-bg-panel);
+}
+.strips {
+  height: 100%;
+  width: max-content;
+}
+.strip {
+  width: 84px;
+  border-right: 1px solid var(--st-border-subtle);
+}
+.strip.master {
+  width: 96px;
+  background: var(--st-bg-section);
+}
+.strip-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+}
+.fader-row {
+  flex: 1;
+  min-height: 80px;
+}
+.fader {
+  height: auto;
+  min-height: 80px;
+}
+.meter {
+  height: auto;
+  width: 5px;
+}
+.db {
+  font-size: var(--st-text-1);
+  color: var(--st-text-muted);
+}

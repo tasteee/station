@@ -68,7 +68,22 @@
     "./toast": "./src/define/toast.ts",
     "./toaster": "./src/define/toaster.ts",
     "./progress": "./src/define/progress.ts",
-    "./spinner": "./src/define/spinner.ts"
+    "./spinner": "./src/define/spinner.ts",
+    "./split": "./src/define/split.ts",
+    "./pane": "./src/define/pane.ts",
+    "./tree": "./src/define/tree.ts",
+    "./menubar": "./src/define/menubar.ts",
+    "./toolbox": "./src/define/toolbox.ts",
+    "./tool": "./src/define/tool.ts",
+    "./tool-group": "./src/define/tool-group.ts",
+    "./color-swatch": "./src/define/color-swatch.ts",
+    "./swatches": "./src/define/swatches.ts",
+    "./color-picker": "./src/define/color-picker.ts",
+    "./color-field": "./src/define/color-field.ts",
+    "./ruler": "./src/define/ruler.ts",
+    "./knob": "./src/define/knob.ts",
+    "./meter": "./src/define/meter.ts",
+    "./command-palette": "./src/define/command-palette.ts"
   },
   "publishConfig": {
     "exports": {
@@ -243,6 +258,66 @@
       "./spinner": {
         "types": "./dist/define/spinner.d.ts",
         "default": "./dist/define/spinner.js"
+      },
+      "./split": {
+        "types": "./dist/define/split.d.ts",
+        "default": "./dist/define/split.js"
+      },
+      "./pane": {
+        "types": "./dist/define/pane.d.ts",
+        "default": "./dist/define/pane.js"
+      },
+      "./tree": {
+        "types": "./dist/define/tree.d.ts",
+        "default": "./dist/define/tree.js"
+      },
+      "./menubar": {
+        "types": "./dist/define/menubar.d.ts",
+        "default": "./dist/define/menubar.js"
+      },
+      "./toolbox": {
+        "types": "./dist/define/toolbox.d.ts",
+        "default": "./dist/define/toolbox.js"
+      },
+      "./tool": {
+        "types": "./dist/define/tool.d.ts",
+        "default": "./dist/define/tool.js"
+      },
+      "./tool-group": {
+        "types": "./dist/define/tool-group.d.ts",
+        "default": "./dist/define/tool-group.js"
+      },
+      "./color-swatch": {
+        "types": "./dist/define/color-swatch.d.ts",
+        "default": "./dist/define/color-swatch.js"
+      },
+      "./swatches": {
+        "types": "./dist/define/swatches.d.ts",
+        "default": "./dist/define/swatches.js"
+      },
+      "./color-picker": {
+        "types": "./dist/define/color-picker.d.ts",
+        "default": "./dist/define/color-picker.js"
+      },
+      "./color-field": {
+        "types": "./dist/define/color-field.d.ts",
+        "default": "./dist/define/color-field.js"
+      },
+      "./ruler": {
+        "types": "./dist/define/ruler.d.ts",
+        "default": "./dist/define/ruler.js"
+      },
+      "./knob": {
+        "types": "./dist/define/knob.d.ts",
+        "default": "./dist/define/knob.js"
+      },
+      "./meter": {
+        "types": "./dist/define/meter.d.ts",
+        "default": "./dist/define/meter.js"
+      },
+      "./command-palette": {
+        "types": "./dist/define/command-palette.d.ts",
+        "default": "./dist/define/command-palette.js"
       }
     }
   },

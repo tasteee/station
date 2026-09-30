@@ -19,6 +19,16 @@ describe("metadata matches the real elements", () => {
     });
   }
 
+  it("no property shadows a built-in DOM property", () => {
+    // e.g. `prefix` (Element.prefix) or `draggable` (native drag and drop) would break typings or behavior.
+    const clashes = elements.flatMap((el) =>
+      [...el.attributes.map((a) => a.property), ...(el.properties ?? []).map((p) => p.name)]
+        .filter((name): name is string => !!name && name in HTMLElement.prototype)
+        .map((name) => `${el.tag}.${name}`),
+    );
+    expect(clashes).toEqual([]);
+  });
+
   it("every JS element is registered under its tag", async () => {
     await import("../src/index.ts");
     for (const el of elements.filter((e) => e.className)) expect(customElements.get(el.tag)).toBeDefined();

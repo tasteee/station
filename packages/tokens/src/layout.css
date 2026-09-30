@@ -28,13 +28,13 @@
 
 /* Sizing helpers: on any primitive, and on any direct child of a layout primitive. */
 :where(st-box, st-row, st-column, st-surface, st-scroll-area, st-text, st-panel)[grow],
-:where(st-box, st-row, st-column, st-panel, st-tab-panel) > :where([grow]) {
+:where(st-box, st-row, st-column, st-panel, st-tab-panel, st-pane) > :where([grow]) {
   flex: 1 1 0;
   min-width: 0;
   min-height: 0;
 }
 :where(st-box, st-row, st-column, st-surface, st-scroll-area, st-text)[shrink="none"],
-:where(st-box, st-row, st-column, st-panel, st-tab-panel) > :where([shrink="none"]) {
+:where(st-box, st-row, st-column, st-panel, st-tab-panel, st-pane) > :where([shrink="none"]) {
   flex-shrink: 0;
 }
 

@@ -4,7 +4,7 @@
 //   types/elements.d.ts           attribute + element interfaces, HTMLElementTagNameMap
 //   types/{react,preact,solid,vue,svelte}.d.ts   JSX / template typings
 // Run: pnpm --filter @station/components generate
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { elements } from "../meta/index.ts";
@@ -22,6 +22,7 @@ const pascal = (tag: string) =>
     .join("");
 const attrsName = (el: ElementMeta) => `${pascal(el.tag)}Attributes`;
 const eventsName = (el: ElementMeta) => `${pascal(el.tag)}Events`;
+const propsName = (el: ElementMeta) => `${pascal(el.tag)}Properties`;
 const elementName = (el: ElementMeta) => `${pascal(el.tag)}Element`;
 const doc = (text: string, indent = "  ") => `${indent}/** ${text.replace(/\*\//g, "*\\/")} */\n`;
 const key = (name: string) => (/^[a-z_$][\w$]*$/i.test(name) ? name : JSON.stringify(name));
@@ -39,13 +40,20 @@ function attrDefault(a: AttributeMeta) {
 }
 
 // ---------- elements.d.ts ----------
-const common: string[] = [HEADER];
+// Data types are copied in so the typings stand alone (no source or JSX imports).
+const dataTypes = readFileSync(join(root, "src/data-types.ts"), "utf8");
+const common: string[] = [HEADER, dataTypes];
 for (const el of elements) {
   common.push(`/** <${el.tag}> — ${el.description} */`);
   common.push(`export interface ${attrsName(el)} {`);
   for (const a of el.attributes) {
     common.push(`${doc(a.description + attrDefault(a))}  ${key(a.name)}?: ${tsType(a.type, true)};`);
   }
+  common.push("}\n");
+
+  common.push(`/** JS-only properties (rich data) that frameworks set directly. */`);
+  common.push(`export interface ${propsName(el)} {`);
+  for (const p of el.properties ?? []) common.push(`${doc(p.description)}  ${key(p.name)}?: ${p.type};`);
   common.push("}\n");
 
   common.push(`export interface ${eventsName(el)} {`);
@@ -102,7 +110,7 @@ function jsxBlock(open: string, close: string, entry: (el: ElementMeta) => strin
   const lines = [
     HEADER,
     importLine,
-    `import type { ${elements.flatMap((el) => [attrsName(el), elementName(el)]).join(", ")} } from "./elements.js";`,
+    `import type { ${elements.flatMap((el) => [attrsName(el), propsName(el), elementName(el)]).join(", ")} } from "./elements.js";`,
     "",
     open,
   ];
@@ -119,7 +127,7 @@ writeFileSync(
     'declare module "react" {\n  namespace JSX {\n    interface IntrinsicElements {',
     "    }\n  }\n}",
     (el) =>
-      `React.DetailedHTMLProps<Omit<React.HTMLAttributes<${elementName(el)}>, keyof ${attrsName(el)}>, ${elementName(el)}> & ${attrsName(el)} & { class?: string; ${eventProps(el, (t) => `(event: ${t}) => void`, ["change", "input"])} }`,
+      `React.DetailedHTMLProps<Omit<React.HTMLAttributes<${elementName(el)}>, keyof ${attrsName(el)}>, ${elementName(el)}> & ${attrsName(el)} & ${propsName(el)} & { class?: string; ${eventProps(el, (t) => `(event: ${t}) => void`, ["change", "input"])} }`,
     'import type * as React from "react";',
   ),
 );
@@ -131,7 +139,7 @@ writeFileSync(
     'declare module "preact" {\n  namespace JSX {\n    interface IntrinsicElements {',
     "    }\n  }\n}",
     (el) =>
-      `Omit<JSX.HTMLAttributes<${elementName(el)}>, keyof ${attrsName(el)}> & ${attrsName(el)} & { ${eventProps(el, (t) => `(event: ${t}) => void`)} }`,
+      `Omit<JSX.HTMLAttributes<${elementName(el)}>, keyof ${attrsName(el)}> & ${attrsName(el)} & ${propsName(el)} & { ${eventProps(el, (t) => `(event: ${t}) => void`)} }`,
     'import type { JSX } from "preact";',
   ),
 );
@@ -157,7 +165,7 @@ writeFileSync(
   const lines = [
     HEADER,
     'import type { DefineComponent } from "vue";',
-    `import type { ${elements.map(attrsName).join(", ")} } from "./elements.js";`,
+    `import type { ${elements.flatMap((el) => [attrsName(el), propsName(el)]).join(", ")} } from "./elements.js";`,
     "",
     // biome-ignore lint/suspicious/noTemplateCurlyInString: emits a TS mapped type.
     "type Handlers<E> = { [K in keyof E as `on${Capitalize<K & string>}`]?: (event: E[K]) => void };",
@@ -167,7 +175,9 @@ writeFileSync(
   ];
   for (const el of elements) {
     const events = (el.events ?? []).map((e) => `${key(e.name)}: ${e.type ?? "Event"}`).join("; ");
-    lines.push(`    ${JSON.stringify(el.tag)}: DefineComponent<${attrsName(el)} & Handlers<{ ${events} }>>;`);
+    lines.push(
+      `    ${JSON.stringify(el.tag)}: DefineComponent<${attrsName(el)} & ${propsName(el)} & Handlers<{ ${events} }>>;`,
+    );
   }
   lines.push("  }", "}", "", "export {};", "");
   writeFileSync(join(typesDir, "vue.d.ts"), lines.join("\n"));
@@ -180,7 +190,7 @@ writeFileSync(
     'declare module "svelte/elements" {\n  export interface SvelteHTMLElements {\n    ',
     "  }\n}",
     (el) =>
-      `Omit<HTMLAttributes<${elementName(el)}>, keyof ${attrsName(el)}> & ${attrsName(el)} & { ${eventProps(el, (t) => `(event: ${t}) => void`, ["change", "input"])} }`,
+      `Omit<HTMLAttributes<${elementName(el)}>, keyof ${attrsName(el)}> & ${attrsName(el)} & ${propsName(el)} & { ${eventProps(el, (t) => `(event: ${t}) => void`, ["change", "input"])} }`,
     'import type { HTMLAttributes } from "svelte/elements";',
   ).replace("SvelteHTMLElements {\n    \n", "SvelteHTMLElements {\n"),
 );

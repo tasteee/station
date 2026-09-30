@@ -14,7 +14,11 @@
         <st-row class="bar" padding-x="3" gap="2">
           <st-icon name="stack"></st-icon>
           <st-heading>Station</st-heading>
-          <st-text tone="muted">Playground</st-text>
+          <st-segmented-control class="page-nav" size="small" value="design" label="Playground page">
+            <st-segment value="design">UI design</st-segment>
+            <st-segment value="paint">Image editor</st-segment>
+            <st-segment value="mixer">Audio mixer</st-segment>
+          </st-segmented-control>
           <st-spacer></st-spacer>
           <st-search-field class="search" size="small" label="Search layers" placeholder="Search layers"></st-search-field>
           <st-divider></st-divider>
@@ -181,10 +185,10 @@
                 <st-section heading="Layout" divided>
                   <st-icon-button slot="actions" icon="grid-dots" label="Layout grid"></st-icon-button>
                   <div class="grid2">
-                    <st-number-field label="X position" prefix="X" value="24" unit="px"></st-number-field>
-                    <st-number-field label="Y position" prefix="Y" value="16" unit="px"></st-number-field>
-                    <st-number-field label="Width" prefix="W" value="24" min="0" unit="px"></st-number-field>
-                    <st-number-field label="Height" prefix="H" value="24" min="0" unit="px"></st-number-field>
+                    <st-number-field label="X position" abbr="X" value="24" unit="px"></st-number-field>
+                    <st-number-field label="Y position" abbr="Y" value="16" unit="px"></st-number-field>
+                    <st-number-field label="Width" abbr="W" value="24" min="0" unit="px"></st-number-field>
+                    <st-number-field label="Height" abbr="H" value="24" min="0" unit="px"></st-number-field>
                     <st-number-field label="Rotation" icon="angle" value="0" unit="°"></st-number-field>
                     <st-number-field label="Corner radius" icon="border-radius" mixed min="0"></st-number-field>
                   </div>

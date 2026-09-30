@@ -57,7 +57,7 @@ describe("st-search-field", () => {
 
 describe("st-number-field", () => {
   async function numberField(attrs = "") {
-    const root = await mount(`<st-number-field label="Width" prefix="W" ${attrs}></st-number-field>`);
+    const root = await mount(`<st-number-field label="Width" abbr="W" ${attrs}></st-number-field>`);
     return $(root, "st-number-field");
   }
 

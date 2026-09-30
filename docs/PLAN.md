@@ -353,17 +353,34 @@ Attributes read like English. Same words everywhere.
 - `st-toast`
 - `st-badge`, `st-progress`, `st-spinner`, `st-empty-state`
 
-### Tier 3 — Editor-grade
-- **`st-tree`** — virtualized, multi-select, drag reorder, inline rename, row actions (eye/lock), keyboard nav
-- `st-list` / `st-listbox` — virtualized
+### Target editors
+
+Station is not a Figma kit. Every component is checked against these families:
+
+| Family | Examples | What they need that others don't |
+|---|---|---|
+| UI / vector design | Figma, Illustrator, Affinity Designer | Inspectors, layer trees, vector fields, color, rulers + guides |
+| Raster / photo | Photoshop, Affinity Photo, Krita | App menubar, vertical toolbox with flyout tool groups, options bar, FG/BG color, layer thumbnails + eye column, histograms/curves |
+| Audio / DAW | Ableton, Logic, Bitwig | Knobs, level meters, mixer strips, dense horizontal layouts, timelines |
+| Video / motion | Premiere, After Effects, DaVinci | Timelines, time rulers, keyframes, curve editors |
+| Code / data | VS Code, DB tools | File trees, command palette, data tables, split panes, status bars |
+
+### Tier 3 — Editor-grade (shared by every family)
+- **`st-split`** — resizable panes (row/column), min/max, collapse, keyboard resize
+- **`st-tree`** — virtualized, multi-select, drag reorder, inline rename, slots for leading columns (eye/lock) and trailing actions, optional thumbnails
+- **`st-menubar`** — application menus (File, Edit, Image…) with hover switching and full keyboard support
+- **`st-tool-group`** — toolbox tool with flyout alternates (Photoshop/Illustrator style), corner indicator, long-press or right-click
+- **Color:** `st-color-swatch`, `st-color-picker` (saturation/value area, hue, alpha, hex/RGB fields, eyedropper), `st-color-field` (swatch + hex input + popover picker)
+- **`st-ruler`** — horizontal/vertical, zoom + offset, units (px, in, cm, seconds, bars), cursor marker
+- **`st-knob`** — rotary control (DAWs, plugin UIs), drag + wheel + keys, bipolar mode
+- **`st-meter`** — level meter (peak + hold), horizontal/vertical, stereo
+- **`st-command-palette`** — fuzzy search over commands with shortcuts
+
+### Tier 4 — Domain kits
+- `st-dock` — dockable, tabbed panel groups that collapse to icon strips (Photoshop/After Effects)
 - `st-data-table` — virtualized, resizable columns, sort, cell editing
-- **`st-split`** — resizable panes, min/max, collapse, persisted sizes
-- `st-dock` — dockable/tabbed panel layout (big; maybe last)
-- `st-command-palette`
-- `st-color-swatch`, `st-color-field`, `st-color-picker` (OKLCH/HSV, alpha, eyedropper API)
-- `st-vector-field` (x/y/z), `st-angle-field`, `st-knob` (Ableton-style), `st-meter` (level meter)
-- `st-status-bar`, `st-menubar`, `st-breadcrumbs`, `st-zoom-control`
-- `st-inline-edit` (double-click to rename)
+- `st-timeline` + tracks + keyframes (video/DAW), `st-curve-editor` (curves/automation), `st-gradient-editor`, `st-histogram`
+- `st-vector-field` (x/y/z), `st-breadcrumbs`, `st-zoom-control`, `st-inline-edit`
 
 ---
 
@@ -493,11 +510,14 @@ apps/
    - ✅ Done: panel/header/footer, badge, empty state, menu label (all pure CSS); section, property row, tabs, menu + menu item (submenus, checkable, context menus), popover, dialog, alert dialog + `confirm()`, toast + `toast()`, progress, spinner.
    - Changed from the plan: no `st-menu-button` / `st-context-menu` wrappers. Menus and popovers attach with `for="id"` (plus `trigger="contextmenu"`), which works the same in every framework.
    - All overlays fire one event, `openchange` (`detail.open`), because React 19 doesn't deliver `onToggle` to custom elements.
-4. **Editor-grade** — tree, split, table, color picker, command palette.
-5. **Polish** — density presets, docs site, interop tests green, 1.0.
+4. **Editor-grade** — Tier 3 above. Playground grows a raster-editor page (menubar, toolbox, rulers, layers tree) and a mixer page (knobs, meters) so nothing is designed only for Figma-style apps.
+   - ✅ Done: split + pane, tree, menubar, toolbox + tool + tool-group, color picker/field/swatch/swatches, ruler, knob, meter, vertical slider, command palette. Behaviors: color math, fuzzy match.
+   - Naming guard: a test fails if any property shadows a built-in DOM property (`prefix` → `abbr` on number fields, `draggable` → `reorderable` on trees).
+5. **Domain kits** — Tier 4 above.
+6. **Polish** — docs site, interop tests green, 1.0.
 
 ---
 
 ## 11. Open decisions
 
-None right now. Next step: scaffold the monorepo and build Tier 0 (tokens, themes, layout primitives).
+None right now.

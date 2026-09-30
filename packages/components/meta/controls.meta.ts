@@ -248,7 +248,7 @@ export const controls: ElementMeta[] = [
       a("precision", "number", "Decimal places kept. Defaults to the step's precision + 1 (max 3)."),
       a("unit", "string", 'Suffix like "px" or "°". Accepted when typed.'),
       a("label", "string", "Accessible name."),
-      a("prefix", "string", 'Short text at the start ("W", "X"). Drag it to scrub.'),
+      a("abbr", "string", 'Short label at the start ("W", "X"). Drag it to scrub.'),
       a("icon", "string", "Icon at the start instead of prefix text. Drag it to scrub."),
       NAME,
       PLACEHOLDER,
@@ -341,6 +341,7 @@ export const controls: ElementMeta[] = [
       NAME,
       SIZE,
       DISABLED,
+      a("orientation", ["horizontal", "vertical"], "vertical = fader.", { default: "horizontal" }),
     ],
     events: [INPUT, CHANGE],
     parts: [
@@ -365,6 +366,7 @@ export const controls: ElementMeta[] = [
       NAME,
       SIZE,
       DISABLED,
+      a("orientation", ["horizontal", "vertical"], "Direction.", { default: "horizontal" }),
     ],
     events: [INPUT, CHANGE],
     parts: [
