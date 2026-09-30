@@ -2,12 +2,20 @@ import "@station/tokens";
 import "@station/tokens/fonts.css";
 import "@station/components";
 import "./playground.css";
+import { confirm, toast } from "@station/components";
 import { registerIcons } from "@station/icons";
 import * as I from "@station/icons/tabler";
 
 // Only these icons end up in the bundle.
 registerIcons({
   "align-center": I.IconAlignCenter,
+  "arrow-bar-to-up": I.IconArrowBarToUp,
+  copy: I.IconCopy,
+  dots: I.IconDots,
+  filter: I.IconFilter,
+  "grid-dots": I.IconGridDots,
+  "player-play": I.IconPlayerPlay,
+  search: I.IconSearch,
   "align-left": I.IconAlignLeft,
   "align-right": I.IconAlignRight,
   angle: I.IconAngle,
@@ -40,7 +48,7 @@ registerIcons({
   "vector-bezier-2": I.IconVectorBezier2,
 });
 
-type Station = HTMLElement & { value: number & string; pressed: boolean };
+type Station = HTMLElement & { value: number; open: boolean; pressed: boolean };
 const $ = <T extends Element = Station>(sel: string) => document.querySelector(sel) as T;
 const html = document.documentElement;
 
@@ -60,30 +68,79 @@ const LAYERS: [depth: number, icon: string, name: string, flags?: string][] = [
   [1, "components", "Footer actions"],
 ];
 
-$("#layers").innerHTML = LAYERS.map(
-  ([depth, icon, name, flags], i) => `
-  <st-row class="layer" gap="1.5" padding-x="3" style="--depth:${depth}" ${i === 3 ? 'aria-selected="true"' : ""} ${flags === "hidden" ? "data-hidden" : ""}>
-    <st-icon class="caret" name="chevron-right" ${icon === "frame" || icon === "folder" ? "" : 'style="visibility:hidden"'}></st-icon>
-    <st-icon class="kind" name="${icon}"></st-icon>
-    <st-text truncate grow>${name}</st-text>
-    ${flags === "lock" ? '<st-icon class="flag" name="lock" label="Locked"></st-icon>' : ""}
-    <st-icon class="flag vis" name="${flags === "hidden" ? "eye-off" : "eye"}"></st-icon>
-  </st-row>`,
-).join("");
-$("#layer-count").textContent = `${LAYERS.length} layers`;
+const layerList = $("#layers");
+let selected = 3;
 
-$("#layers").addEventListener("click", (e) => {
-  const row = (e.target as Element).closest(".layer");
+function renderLayers() {
+  layerList.innerHTML = LAYERS.map(
+    ([depth, icon, name, flags], i) => `
+    <st-row class="layer" gap="1.5" padding-x="3" data-index="${i}" style="--depth:${depth}" ${i === selected ? 'aria-selected="true"' : ""} ${flags === "hidden" ? "data-hidden" : ""}>
+      <st-icon class="caret" name="chevron-right" ${icon === "frame" || icon === "folder" ? "" : 'style="visibility:hidden"'}></st-icon>
+      <st-icon class="kind" name="${icon}"></st-icon>
+      <st-text truncate grow>${name}</st-text>
+      ${flags === "lock" ? '<st-icon class="flag" name="lock" label="Locked"></st-icon>' : ""}
+      <st-icon class="flag vis" name="${flags === "hidden" ? "eye-off" : "eye"}"></st-icon>
+    </st-row>`,
+  ).join("");
+  $("#layer-count").textContent = String(LAYERS.length);
+}
+renderLayers();
+
+const selectRow = (target: EventTarget | null) => {
+  const row = (target as Element | null)?.closest<HTMLElement>(".layer");
   if (!row) return;
-  for (const r of document.querySelectorAll(".layer")) r.removeAttribute("aria-selected");
+  selected = Number(row.dataset.index);
+  for (const r of layerList.querySelectorAll(".layer")) r.removeAttribute("aria-selected");
   row.setAttribute("aria-selected", "true");
+};
+layerList.addEventListener("click", (e) => selectRow(e.target));
+// The context menu opens on the scroll area; select the row that was right-clicked.
+layerList.addEventListener("contextmenu", (e) => selectRow(e.target));
+layerList.id = "layers";
+
+async function deleteSelected() {
+  const layer = LAYERS[selected];
+  if (!layer) return;
+  const ok = await confirm({
+    heading: `Delete “${layer[2]}”?`,
+    body: "The layer and everything inside it will be removed.",
+    confirmLabel: "Delete",
+    tone: "danger",
+  });
+  if (!ok) return;
+  const [removed] = LAYERS.splice(selected, 1);
+  const at = selected;
+  selected = Math.min(selected, LAYERS.length - 1);
+  renderLayers();
+  toast(`Deleted “${removed![2]}”`, {
+    action: {
+      label: "Undo",
+      onClick: () => {
+        LAYERS.splice(at, 0, removed!);
+        selected = at;
+        renderLayers();
+      },
+    },
+  });
+}
+
+$("#layer-menu").addEventListener("select", (e) => {
+  const { value } = (e as CustomEvent<{ value: string }>).detail;
+  const name = LAYERS[selected]?.[2] ?? "layer";
+  if (value === "delete") deleteSelected();
+  else if (value === "duplicate") toast(`Duplicated “${name}”`, { tone: "success" });
+  else if (value !== "visible") toast(`${(e.target as HTMLElement).textContent?.trim()} · ${name}`);
 });
+$("#delete-layer").addEventListener("click", deleteSelected);
 
 $("st-search-field").addEventListener("input", (e) => {
-  const q = ((e.currentTarget as HTMLElement & { value: string }).value ?? "").toLowerCase();
-  for (const row of document.querySelectorAll<HTMLElement>(".layer")) {
+  const q = String((e.currentTarget as Station).value ?? "").toLowerCase();
+  let visible = 0;
+  for (const row of layerList.querySelectorAll<HTMLElement>(".layer")) {
     row.hidden = !!q && !row.textContent!.toLowerCase().includes(q);
+    if (!row.hidden) visible++;
   }
+  $("#no-results").hidden = visible > 0;
 });
 
 // ---------- Swatches ----------
@@ -97,9 +154,11 @@ for (const el of document.querySelectorAll<HTMLElement>(".swatches")) {
 }
 
 // ---------- Theme + density ----------
-$("#theme").addEventListener("change", (e) => html.setAttribute("theme", (e.currentTarget as Station).value));
+$("#theme").addEventListener("change", (e) =>
+  html.setAttribute("theme", String((e.currentTarget as Station).value)),
+);
 $("#density").addEventListener("change", (e) =>
-  html.setAttribute("density", (e.currentTarget as Station).value),
+  html.setAttribute("density", String((e.currentTarget as Station).value)),
 );
 
 // ---------- Tools: exactly one pressed ----------
@@ -202,11 +261,10 @@ knobs.insertAdjacentHTML(
   "beforeend",
   KNOBS.map(
     (k, i) => `
-    <st-row class="prop" gap="2" data-knob="${i}">
-      <st-text tone="muted" class="prop-label" size="small">${k.label}</st-text>
-      <st-slider grow label="${k.label}" min="${k.min}" max="${k.max}" step="${k.step}" value="${k.value}"></st-slider>
-      <st-number-field class="narrow" label="${k.label}" min="${k.min}" max="${k.max}" step="${k.step}" precision="3" value="${k.value}" ${k.unit ? `unit="${k.unit}"` : ""}></st-number-field>
-    </st-row>`,
+    <st-property-row label="${k.label}" data-knob="${i}">
+      <st-slider min="${k.min}" max="${k.max}" step="${k.step}" value="${k.value}"></st-slider>
+      <st-number-field class="narrow" shrink="none" min="${k.min}" max="${k.max}" step="${k.step}" precision="3" value="${k.value}" ${k.unit ? `unit="${k.unit}"` : ""}></st-number-field>
+    </st-property-row>`,
   ).join(""),
 );
 
@@ -230,4 +288,29 @@ $("#reset").addEventListener("click", () => {
       el.value = k.value;
     }
   }
+});
+
+// ---------- Export dialog ----------
+const exportDialog = $("#export-dialog");
+for (const b of document.querySelectorAll(".open-export"))
+  b.addEventListener("click", () => (exportDialog.open = true));
+$("#export-cancel").addEventListener("click", () => (exportDialog.open = false));
+$("#export-go").addEventListener("click", () => {
+  const progress = $("#export-progress");
+  const status = $("#export-status");
+  progress.hidden = false;
+  status.hidden = false;
+  let n = 0;
+  const tick = setInterval(() => {
+    n += 20;
+    progress.value = n;
+    if (n >= 100) {
+      clearInterval(tick);
+      exportDialog.open = false;
+      progress.hidden = true;
+      progress.value = 0;
+      status.hidden = true;
+      toast("Exported 3 frames", { tone: "success", action: { label: "Show", onClick: () => {} } });
+    }
+  }, 180);
 });

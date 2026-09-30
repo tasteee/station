@@ -17,7 +17,7 @@
 }
 
 /* Layout + surface elements are flex/block containers, so `hidden` needs help. */
-:where(st-box, st-row, st-column, st-spacer, st-divider, st-surface, st-scroll-area, st-text, st-heading)[hidden] {
+:where(st-box, st-row, st-column, st-spacer, st-divider, st-surface, st-scroll-area, st-text, st-heading, st-panel, st-panel-header, st-panel-footer, st-empty-state, st-badge)[hidden] {
   /* biome-ignore lint/complexity/noImportantStyles: `hidden` must beat attribute-driven display rules. */
   display: none !important;
 }

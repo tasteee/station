@@ -28,33 +28,71 @@
             <st-segment value="comfortable">Comfy</st-segment>
           </st-segmented-control>
           <st-divider></st-divider>
-          <st-button size="small" kind="solid" tone="accent" icon="download">Export</st-button>
+          <st-icon-button id="view" size="small" icon="filter" label="View options"></st-icon-button>
+          <st-popover for="view" placement="bottom-end" label="View options">
+            <st-column gap="2" class="view-popover">
+              <st-heading size="small" tone="muted">VIEW</st-heading>
+              <st-checkbox checked>Pixel grid</st-checkbox>
+              <st-checkbox checked>Rulers</st-checkbox>
+              <st-checkbox>Outlines</st-checkbox>
+              <st-divider></st-divider>
+              <st-property-row label="Zoom"><st-slider value="100" min="10" max="400"></st-slider></st-property-row>
+            </st-column>
+          </st-popover>
+          <st-button size="small" kind="solid" tone="accent" icon="download" class="open-export">Export</st-button>
         </st-row>
       </st-surface>
       <st-divider></st-divider>
 
       <st-row grow y-align="stretch">
         <!-- Layers panel -->
-        <st-surface level="panel" class="side">
-          <st-column style="height: 100%">
-            <st-row class="panel-header" padding-x="3" x-align="between">
-              <st-heading>Layers</st-heading>
-              <st-kbd shortcut="Alt+1"></st-kbd>
-            </st-row>
-            <st-scroll-area grow axis="y">
-              <st-column padding-y="1" id="layers"></st-column>
-            </st-scroll-area>
+        <st-panel class="side">
+          <st-panel-header>
+            <st-heading>Layers</st-heading>
+            <st-badge id="layer-count"></st-badge>
+            <st-icon-button id="layers-more" size="small" icon="dots" label="Layer options"></st-icon-button>
+            <st-menu for="layers-more" label="Layer options">
+              <st-menu-label>Show</st-menu-label>
+              <st-menu-item type="checkbox" checked keep-open>Hidden layers</st-menu-item>
+              <st-menu-item type="checkbox" keep-open>Locked layers</st-menu-item>
+              <st-divider></st-divider>
+              <st-menu-item icon="arrow-bar-to-up" shortcut="Alt+L">Collapse all</st-menu-item>
+            </st-menu>
+          </st-panel-header>
+          <st-scroll-area grow axis="y">
+            <st-column padding-y="1" id="layers"></st-column>
+            <st-empty-state id="no-results" hidden>
+              <st-icon name="search"></st-icon>
+              <st-heading>No layers found</st-heading>
+              <st-text size="small">Try a different name.</st-text>
+            </st-empty-state>
+          </st-scroll-area>
+          <st-menu for="layers" trigger="contextmenu" id="layer-menu" label="Layer">
+            <st-menu-item value="duplicate" icon="copy" shortcut="Mod+D">Duplicate</st-menu-item>
+            <st-menu-item value="copy" shortcut="Mod+C">Copy</st-menu-item>
+            <st-menu-item value="paste" shortcut="Mod+V" disabled>Paste</st-menu-item>
             <st-divider></st-divider>
-            <st-row padding-x="3" padding-y="2" x-align="between">
-              <st-text size="small" tone="muted" id="layer-count"></st-text>
-              <st-button-group size="small" label="Layer actions">
-                <st-icon-button icon="plus" label="Add layer" shortcut="Mod+N"></st-icon-button>
-                <st-icon-button icon="folder" label="Group layers" shortcut="Mod+G"></st-icon-button>
-                <st-icon-button icon="trash" label="Delete layer" shortcut="Delete" tone="danger"></st-icon-button>
-              </st-button-group>
-            </st-row>
-          </st-column>
-        </st-surface>
+            <st-menu-item value="arrange">Arrange
+              <st-menu>
+                <st-menu-item value="front" shortcut="Mod+Shift+]">Bring to front</st-menu-item>
+                <st-menu-item value="forward" shortcut="Mod+]">Bring forward</st-menu-item>
+                <st-menu-item value="backward" shortcut="Mod+[">Send backward</st-menu-item>
+                <st-menu-item value="back" shortcut="Mod+Shift+[">Send to back</st-menu-item>
+              </st-menu>
+            </st-menu-item>
+            <st-menu-item value="visible" type="checkbox" checked shortcut="Mod+Shift+H">Visible</st-menu-item>
+            <st-divider></st-divider>
+            <st-menu-item value="delete" icon="trash" tone="danger" shortcut="Delete">Delete</st-menu-item>
+          </st-menu>
+          <st-panel-footer>
+            <st-text size="small" tone="muted">Right-click a layer</st-text>
+            <st-button-group size="small" label="Layer actions">
+              <st-icon-button icon="plus" label="Add layer" shortcut="Mod+N"></st-icon-button>
+              <st-icon-button icon="folder" label="Group layers" shortcut="Mod+G"></st-icon-button>
+              <st-icon-button id="delete-layer" icon="trash" label="Delete layer" shortcut="Delete" tone="danger"></st-icon-button>
+            </st-button-group>
+          </st-panel-footer>
+        </st-panel>
         <st-divider></st-divider>
 
         <!-- Canvas -->
@@ -131,96 +169,149 @@
         <st-divider></st-divider>
 
         <!-- Inspector -->
-        <st-surface level="panel" class="side inspector">
-          <st-scroll-area style="height: 100%" axis="y">
-            <st-column>
-              <st-row class="panel-header" padding-x="3" x-align="between">
-                <st-heading>Close button</st-heading>
-                <st-text size="small" tone="faint">Component</st-text>
-              </st-row>
-              <st-divider></st-divider>
+        <st-panel class="side inspector">
+          <st-tabs value="design" label="Inspector" divided grow>
+            <st-tab value="design">Design</st-tab>
+            <st-tab value="prototype">Prototype</st-tab>
+            <st-tab value="export">Export</st-tab>
+            <st-icon-button slot="actions" size="small" icon="player-play" label="Present" shortcut="Mod+Alt+Enter"></st-icon-button>
 
-              <section class="section">
-                <st-row class="section-title"><st-heading size="small" tone="muted">LAYOUT</st-heading></st-row>
-                <div class="grid2">
-                  <st-number-field label="X position" prefix="X" value="24" unit="px"></st-number-field>
-                  <st-number-field label="Y position" prefix="Y" value="16" unit="px"></st-number-field>
-                  <st-number-field label="Width" prefix="W" value="24" min="0" unit="px"></st-number-field>
-                  <st-number-field label="Height" prefix="H" value="24" min="0" unit="px"></st-number-field>
-                  <st-number-field label="Rotation" icon="angle" value="0" unit="°" step="1"></st-number-field>
-                  <st-number-field label="Corner radius" icon="border-radius" mixed min="0"></st-number-field>
-                </div>
-              </section>
-              <st-divider></st-divider>
+            <st-tab-panel value="design">
+              <st-scroll-area grow axis="y">
+                <st-section heading="Layout" divided>
+                  <st-icon-button slot="actions" icon="grid-dots" label="Layout grid"></st-icon-button>
+                  <div class="grid2">
+                    <st-number-field label="X position" prefix="X" value="24" unit="px"></st-number-field>
+                    <st-number-field label="Y position" prefix="Y" value="16" unit="px"></st-number-field>
+                    <st-number-field label="Width" prefix="W" value="24" min="0" unit="px"></st-number-field>
+                    <st-number-field label="Height" prefix="H" value="24" min="0" unit="px"></st-number-field>
+                    <st-number-field label="Rotation" icon="angle" value="0" unit="°"></st-number-field>
+                    <st-number-field label="Corner radius" icon="border-radius" mixed min="0"></st-number-field>
+                  </div>
+                </st-section>
+                <st-section heading="Appearance" divided>
+                  <st-property-row label="Opacity">
+                    <st-slider id="opacity" value="100"></st-slider>
+                    <st-number-field id="opacity-field" class="narrow" shrink="none" value="100" min="0" max="100" unit="%"></st-number-field>
+                  </st-property-row>
+                  <st-property-row label="Blend">
+                    <st-select value="normal">
+                      <st-option value="normal">Normal</st-option>
+                      <st-divider></st-divider>
+                      <st-option value="darken">Darken</st-option>
+                      <st-option value="multiply">Multiply</st-option>
+                      <st-option value="color-burn">Color burn</st-option>
+                      <st-divider></st-divider>
+                      <st-option value="lighten">Lighten</st-option>
+                      <st-option value="screen">Screen</st-option>
+                      <st-option value="overlay">Overlay</st-option>
+                    </st-select>
+                    <st-toggle-button icon="eye" label="Visible" pressed></st-toggle-button>
+                  </st-property-row>
+                  <st-property-row label="Content">
+                    <st-checkbox checked>Clip</st-checkbox>
+                    <st-switch>Auto layout</st-switch>
+                  </st-property-row>
+                </st-section>
+                <st-section heading="Text" divided>
+                  <st-property-row label="Font">
+                    <st-combobox value="dm-sans" allow-custom>
+                      <st-option value="dm-sans">DM Sans</st-option>
+                      <st-option value="dm-mono">DM Mono</st-option>
+                      <st-option value="inter">Inter</st-option>
+                      <st-option value="geist">Geist</st-option>
+                      <st-option value="ibm-plex">IBM Plex Sans</st-option>
+                    </st-combobox>
+                  </st-property-row>
+                  <st-property-row label="Align">
+                    <st-segmented-control block value="left" label="Text align">
+                      <st-segment value="left" icon="align-left" label="Align left"></st-segment>
+                      <st-segment value="center" icon="align-center" label="Align center"></st-segment>
+                      <st-segment value="right" icon="align-right" label="Align right"></st-segment>
+                    </st-segmented-control>
+                    <st-number-field class="narrow" shrink="none" label="Font size" value="12" min="1" unit="px"></st-number-field>
+                  </st-property-row>
+                </st-section>
+                <st-section heading="Effects" collapsible collapsed divided>
+                  <st-badge slot="heading">2</st-badge>
+                  <st-icon-button slot="actions" icon="plus" label="Add effect"></st-icon-button>
+                  <st-property-row label="Drop shadow"><st-switch checked></st-switch></st-property-row>
+                  <st-property-row label="Layer blur"><st-switch></st-switch></st-property-row>
+                </st-section>
+                <st-section heading="Design system knobs" collapsible id="knobs">
+                  <st-icon-button slot="actions" icon="rotate" label="Reset knobs" id="reset"></st-icon-button>
+                </st-section>
+              </st-scroll-area>
+            </st-tab-panel>
 
-              <section class="section">
-                <st-row class="section-title"><st-heading size="small" tone="muted">APPEARANCE</st-heading></st-row>
-                <st-row class="prop" gap="2">
-                  <st-slider id="opacity" grow label="Opacity" value="100"></st-slider>
-                  <st-number-field id="opacity-field" class="narrow" label="Opacity" value="100" min="0" max="100" unit="%"></st-number-field>
-                </st-row>
-                <st-row class="prop" gap="2">
-                  <st-select grow label="Blend mode" value="normal">
-                    <st-option value="normal">Normal</st-option>
-                    <st-divider></st-divider>
-                    <st-option value="darken">Darken</st-option>
-                    <st-option value="multiply">Multiply</st-option>
-                    <st-option value="color-burn">Color burn</st-option>
-                    <st-divider></st-divider>
-                    <st-option value="lighten">Lighten</st-option>
-                    <st-option value="screen">Screen</st-option>
-                    <st-option value="overlay">Overlay</st-option>
+            <st-tab-panel value="prototype">
+              <st-empty-state grow>
+                <st-icon name="player-play"></st-icon>
+                <st-heading>No interactions</st-heading>
+                <st-text size="small">Drag from a layer's handle to connect it to another frame.</st-text>
+              </st-empty-state>
+            </st-tab-panel>
+
+            <st-tab-panel value="export">
+              <st-section heading="Export settings">
+                <st-property-row label="Format">
+                  <st-select value="png" id="format">
+                    <st-option value="png">PNG</st-option>
+                    <st-option value="jpg">JPG</st-option>
+                    <st-option value="svg">SVG</st-option>
+                    <st-option value="pdf">PDF</st-option>
                   </st-select>
-                  <st-toggle-button icon="eye" label="Visible" pressed></st-toggle-button>
-                </st-row>
-                <st-row class="prop" gap="4">
-                  <st-checkbox checked>Clip content</st-checkbox>
-                  <st-switch>Auto layout</st-switch>
-                </st-row>
-              </section>
-              <st-divider></st-divider>
-
-              <section class="section">
-                <st-row class="section-title"><st-heading size="small" tone="muted">TEXT</st-heading></st-row>
-                <st-row class="prop">
-                  <st-combobox grow label="Font family" value="dm-sans" allow-custom>
-                    <st-option value="dm-sans">DM Sans</st-option>
-                    <st-option value="dm-mono">DM Mono</st-option>
-                    <st-option value="inter">Inter</st-option>
-                    <st-option value="geist">Geist</st-option>
-                    <st-option value="ibm-plex">IBM Plex Sans</st-option>
-                  </st-combobox>
-                </st-row>
-                <st-row class="prop" gap="2">
-                  <st-segmented-control grow block label="Text align" value="left">
-                    <st-segment value="left" icon="align-left" label="Align left"></st-segment>
-                    <st-segment value="center" icon="align-center" label="Align center"></st-segment>
-                    <st-segment value="right" icon="align-right" label="Align right"></st-segment>
+                </st-property-row>
+                <st-property-row label="Scale">
+                  <st-segmented-control block value="2">
+                    <st-segment value="1">1×</st-segment>
+                    <st-segment value="2">2×</st-segment>
+                    <st-segment value="3">3×</st-segment>
                   </st-segmented-control>
-                  <st-number-field class="narrow" label="Font size" value="12" min="1" unit="px"></st-number-field>
-                </st-row>
-              </section>
-              <st-divider></st-divider>
-
-              <section class="section" id="knobs">
-                <st-row class="section-title" x-align="between">
-                  <st-heading size="small" tone="muted">DESIGN SYSTEM KNOBS</st-heading>
-                  <st-icon-button size="small" icon="rotate" label="Reset knobs" id="reset"></st-icon-button>
-                </st-row>
-              </section>
-            </st-column>
-          </st-scroll-area>
-        </st-surface>
+                </st-property-row>
+                <st-button block kind="solid" tone="accent" icon="download" class="open-export">Export…</st-button>
+              </st-section>
+            </st-tab-panel>
+          </st-tabs>
+        </st-panel>
       </st-row>
 
       <st-divider></st-divider>
       <st-surface level="panel">
         <st-row class="status" padding-x="3" gap="3">
-          <st-row gap="1"><span class="dot"></span><st-text size="small" tone="muted">Tier 1 · controls</st-text></st-row>
+          <st-row gap="1"><st-badge dot tone="success"></st-badge><st-text size="small" tone="muted">Tier 2 · structure + overlays</st-text></st-row>
           <st-spacer></st-spacer>
+          <st-row gap="2" id="export-status" hidden>
+            <st-spinner size="small" label="Exporting"></st-spinner>
+            <st-text size="small" tone="muted">Exporting…</st-text>
+          </st-row>
           <st-text size="small" tone="faint" numeric>100%</st-text>
         </st-row>
       </st-surface>
+
+      <st-dialog id="export-dialog" heading="Export 3 frames">
+        <st-column gap="3">
+          <st-text tone="muted">Frames export at the scale and format below.</st-text>
+          <st-property-row label="Format">
+            <st-select value="png">
+              <st-option value="png">PNG</st-option>
+              <st-option value="jpg">JPG</st-option>
+              <st-option value="svg">SVG</st-option>
+            </st-select>
+          </st-property-row>
+          <st-property-row label="Scale">
+            <st-segmented-control block value="2">
+              <st-segment value="1">1×</st-segment>
+              <st-segment value="2">2×</st-segment>
+              <st-segment value="3">3×</st-segment>
+            </st-segmented-control>
+          </st-property-row>
+          <st-property-row label="Suffix"><st-text-field value="@2x"></st-text-field></st-property-row>
+          <st-progress id="export-progress" label="Export progress" hidden></st-progress>
+        </st-column>
+        <st-button slot="footer" kind="ghost" id="export-cancel">Cancel</st-button>
+        <st-button slot="footer" kind="solid" tone="accent" id="export-go">Export</st-button>
+      </st-dialog>
     </st-column>
   </body>
 </html>

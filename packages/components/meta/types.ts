@@ -34,6 +34,11 @@ export interface NamedMeta {
   description: string;
 }
 
+export interface MethodMeta extends NamedMeta {
+  /** TypeScript signature after the name. Default "(): void". */
+  signature?: string;
+}
+
 export interface ElementMeta {
   tag: `st-${string}`;
   description: string;
@@ -46,7 +51,7 @@ export interface ElementMeta {
   formAssociated?: boolean;
   attributes: AttributeMeta[];
   properties?: PropertyMeta[];
-  methods?: NamedMeta[];
+  methods?: MethodMeta[];
   events?: EventMeta[];
   slots?: NamedMeta[];
   parts?: NamedMeta[];

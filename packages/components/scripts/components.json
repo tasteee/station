@@ -136,5 +136,89 @@
     "class": "Combobox",
     "src": "select/combobox.tsx",
     "tag": "st-combobox"
+  },
+  {
+    "file": "section",
+    "class": "Section",
+    "src": "section/section.tsx",
+    "tag": "st-section"
+  },
+  {
+    "file": "property-row",
+    "class": "PropertyRow",
+    "src": "section/property-row.tsx",
+    "tag": "st-property-row"
+  },
+  {
+    "file": "tabs",
+    "class": "Tabs",
+    "src": "tabs/tabs.tsx",
+    "tag": "st-tabs"
+  },
+  {
+    "file": "tab",
+    "class": "TabItem",
+    "src": "tabs/tabs.tsx",
+    "tag": "st-tab"
+  },
+  {
+    "file": "tab-panel",
+    "class": "TabPanel",
+    "src": "tabs/tabs.tsx",
+    "tag": "st-tab-panel"
+  },
+  {
+    "file": "menu",
+    "class": "Menu",
+    "src": "menu/menu.tsx",
+    "tag": "st-menu"
+  },
+  {
+    "file": "menu-item",
+    "class": "MenuItem",
+    "src": "menu/menu-item.tsx",
+    "tag": "st-menu-item"
+  },
+  {
+    "file": "popover",
+    "class": "Popover",
+    "src": "menu/popover.tsx",
+    "tag": "st-popover"
+  },
+  {
+    "file": "dialog",
+    "class": "Dialog",
+    "src": "dialog/dialog.tsx",
+    "tag": "st-dialog"
+  },
+  {
+    "file": "alert-dialog",
+    "class": "AlertDialog",
+    "src": "dialog/alert-dialog.tsx",
+    "tag": "st-alert-dialog"
+  },
+  {
+    "file": "toast",
+    "class": "Toast",
+    "src": "feedback/toast.tsx",
+    "tag": "st-toast"
+  },
+  {
+    "file": "toaster",
+    "class": "Toaster",
+    "src": "feedback/toast.tsx",
+    "tag": "st-toaster"
+  },
+  {
+    "file": "progress",
+    "class": "Progress",
+    "src": "feedback/progress.tsx",
+    "tag": "st-progress"
+  },
+  {
+    "file": "spinner",
+    "class": "Spinner",
+    "src": "feedback/progress.tsx",
+    "tag": "st-spinner"
   }
 ]

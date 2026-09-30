@@ -12,3 +12,5 @@
 @import url("./layout.css") layer(station.base);
 @import url("./text.css") layer(station.base);
 @import url("./surface.css") layer(station.base);
+@import url("./panel.css") layer(station.base);
+@import url("./badge.css") layer(station.base);

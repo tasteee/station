@@ -102,12 +102,20 @@ export function computePosition(
   return { x, y, placement: align === "center" ? side : `${side}-${align}`, maxHeight };
 }
 
+/** Anything with a rect: an element, or a point for context menus. */
+export type Anchor = Element | { getBoundingClientRect(): Rect };
+
+/** A zero-size anchor at a viewport point (context menus). */
+export function pointAnchor(x: number, y: number): Anchor {
+  return { getBoundingClientRect: () => ({ x, y, width: 0, height: 0 }) };
+}
+
 /**
  * Keep `floating` (position: fixed, usually a [popover]) attached to `anchor`
  * while scrolling, resizing and content changes. Returns a cleanup function.
  */
 export function autoPosition(
-  anchor: Element,
+  anchor: Anchor,
   floating: HTMLElement,
   options: PositionOptions = {},
 ): () => void {
@@ -132,7 +140,7 @@ export function autoPosition(
   floating.style.margin = "0";
 
   const observer = new ResizeObserver(update);
-  observer.observe(anchor);
+  if (anchor instanceof Element) observer.observe(anchor);
   observer.observe(floating);
   window.addEventListener("scroll", update, true);
   window.addEventListener("resize", update);

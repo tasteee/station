@@ -1,0 +1,70 @@
+/*
+ * Panels: docked surfaces. Pure CSS.
+ *
+ * <st-panel>
+ *   <st-panel-header><st-heading>Layers</st-heading> …actions</st-panel-header>
+ *   …content
+ *   <st-panel-footer>…</st-panel-footer>
+ * </st-panel>
+ */
+:where(st-panel) {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  background-color: var(--st-bg-panel);
+  color: var(--st-text);
+}
+
+:where(st-panel-header, st-panel-footer) {
+  display: flex;
+  align-items: center;
+  gap: var(--st-space-2);
+  flex: none;
+  box-sizing: border-box;
+  min-height: calc(var(--st-control-height) + var(--st-space-3));
+  padding-inline: var(--st-space-3) var(--st-space-2);
+}
+:where(st-panel-header) > :where(st-heading),
+:where(st-panel-footer) > :where(st-text) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+:where(st-panel-header)[divided] {
+  border-block-end: 1px solid var(--st-border-subtle);
+}
+:where(st-panel-footer) {
+  border-block-start: 1px solid var(--st-border-subtle);
+}
+:where(st-panel-footer)[plain] {
+  border-block-start: 0;
+}
+
+/*
+ * Empty state: centered, quiet. Style comes from the children.
+ * <st-empty-state><st-icon name="stack"></st-icon><st-heading>No layers</st-heading>…</st-empty-state>
+ */
+:where(st-empty-state) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--st-space-1-5);
+  box-sizing: border-box;
+  padding: var(--st-space-6) var(--st-space-4);
+  text-align: center;
+  color: var(--st-text-muted);
+}
+:where(st-empty-state) > :where(st-icon) {
+  --st-icon-size: 24px;
+  margin-block-end: var(--st-space-1);
+  color: var(--st-text-faint);
+}
+:where(st-empty-state) > :where(st-text) {
+  max-width: 28ch;
+  color: var(--st-text-muted);
+}
+:where(st-empty-state) > :where(st-button, st-row) {
+  margin-block-start: var(--st-space-2);
+}

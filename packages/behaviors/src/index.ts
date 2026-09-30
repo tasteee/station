@@ -13,11 +13,13 @@ export {
 export { isApplePlatform } from "./platform.ts";
 export {
   type Align,
+  type Anchor,
   autoPosition,
   computePosition,
   type Placement,
   type PositionOptions,
   type PositionResult,
+  pointAnchor,
   type Rect,
   type Side,
 } from "./position.ts";

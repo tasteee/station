@@ -23,8 +23,8 @@ body {
 .inspector {
   width: 264px;
 }
-.panel-header {
-  height: 36px;
+.view-popover {
+  width: 200px;
 }
 .status {
   height: 24px;
@@ -112,15 +112,6 @@ body {
 }
 
 /* ---- Inspector ---- */
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--st-space-1-5);
-  padding: var(--st-space-2) var(--st-space-3) var(--st-space-3);
-}
-.section-title {
-  height: 24px;
-}
 .grid2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -129,15 +120,9 @@ body {
 .grid2 st-number-field {
   width: auto;
 }
-.prop {
-  min-height: var(--st-control-height);
-}
-.prop-label {
-  width: 80px;
-  flex: none;
-  white-space: nowrap;
-}
 .narrow {
   width: 64px;
-  flex: none;
+}
+.inspector {
+  --st-property-label-width: 72px;
 }

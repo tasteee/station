@@ -143,3 +143,26 @@ export const fieldBase = css`
     flex: none;
   }
 `;
+
+/** Surfaces that float above the page: menus, popovers, listboxes. The only place shadows appear. */
+export const floatingSurface = css`
+  :host {
+    box-sizing: border-box;
+    border: 0;
+    border-radius: var(--st-radius-3);
+    background: var(--st-bg-panel);
+    color: var(--st-text);
+    box-shadow: var(--st-shadow-popover);
+    font-family: var(--st-font-sans);
+    font-size: var(--st-text-2);
+  }
+  :host(:popover-open) {
+    animation: st-float-in var(--st-duration-fast) var(--st-ease);
+  }
+  @keyframes st-float-in {
+    from {
+      opacity: 0;
+      translate: 0 -2px;
+    }
+  }
+`;

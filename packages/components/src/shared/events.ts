@@ -6,3 +6,8 @@ export function fire(host: Element, type: "input" | "change" | string, detail?: 
       : new CustomEvent(type, { bubbles: true, composed: true, detail });
   return host.dispatchEvent(event);
 }
+
+/** Every disclosure and overlay reports open/close the same way. */
+export function fireOpenChange(host: Element, open: boolean) {
+  host.dispatchEvent(new CustomEvent("openchange", { bubbles: true, composed: true, detail: { open } }));
+}

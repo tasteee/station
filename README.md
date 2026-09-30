@@ -14,7 +14,7 @@ See [`docs/PLAN.md`](docs/PLAN.md) for the full design plan.
 | Package | What |
 |---|---|
 | `@station/tokens` | CSS only: knobs, 12-step scales, light + dark themes, semantic tokens, layout primitives, text, surfaces |
-| `@station/components` | Atomico elements: icon, kbd, buttons, toolbar, fields, number field, choices, sliders, select, combobox, tooltip |
+| `@station/components` | Atomico elements: controls (Tier 1) plus sections, property rows, tabs, menus, popover, dialogs, toasts, progress (Tier 2) |
 | `@station/icons` | Icon registry + all 6,000+ Tabler icons as tree-shakeable exports |
 | `@station/behaviors` | Framework-free logic: roving focus, typeahead, drag-to-scrub, safe math, popover positioning, shortcuts |
 | `apps/playground` | A mini editor shell to see and tune everything |
@@ -96,6 +96,34 @@ Themes: `theme="light" | "dark" | "system"` on any element. Works on subtrees.
 Every control: host is the control (focus, ARIA via `ElementInternals`), `input` while changing, `change` on commit, works in `<form>`.
 
 **Adding a component:** add it to `packages/components/scripts/components.json`, run `pnpm --filter @station/components wire`, then add its metadata in `meta/`. A test fails if metadata and props drift.
+
+## Structure + overlays (Tier 2)
+
+| Element | Notes |
+|---|---|
+| `st-panel`, `st-panel-header`, `st-panel-footer` | **Pure CSS.** Docked panel surfaces |
+| `st-badge`, `st-empty-state`, `st-menu-label` | **Pure CSS.** Counts/status, empty lists, menu group labels |
+| `st-section` | `heading`, `collapsible`, `collapsed`; `slot="actions"` for header buttons |
+| `st-property-row` | Inspector row with an aligned label column. Unlabeled controls get the row label as their name |
+| `st-tabs` + `st-tab` + `st-tab-panel` | No slot attributes needed; only the selected panel renders |
+| `st-menu` + `st-menu-item` | `for="triggerId"` wires a trigger. `trigger="contextmenu"` opens at the pointer. Nested `st-menu` = submenu. `type="checkbox|radio"`. Fires `select` |
+| `st-popover` | `for="triggerId"`; light-dismiss; focuses its first control |
+| `st-dialog` | Native modal `<dialog>`; `slot="footer"` for actions; `persistent` blocks Escape/backdrop |
+| `st-alert-dialog` | Confirm/cancel. Or `await confirm({ heading, confirmLabel, tone: "danger" })` |
+| `st-toast` | Usually `toast("Saved", { tone: "success", action: { label: "Undo", onClick } })` |
+| `st-progress`, `st-spinner` | Determinate or indeterminate |
+
+**Open/close events:** every disclosure and overlay fires `openchange` with `detail.open` (React: `onopenchange`).
+
+**Triggers use `for`**, like `<label for>`. No wrapper elements, so they work the same in every framework:
+
+```html
+<st-icon-button id="more" icon="dots" label="More"></st-icon-button>
+<st-menu for="more">
+  <st-menu-item shortcut="Mod+D">Duplicate</st-menu-item>
+  <st-menu-item tone="danger">Delete</st-menu-item>
+</st-menu>
+```
 
 ## Framework typings
 

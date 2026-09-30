@@ -33,3 +33,30 @@ export const controls = (
 );
 // @ts-expect-error: tone must be accent | danger
 export const badTone = <st-button tone="blue" />;
+
+export const structure = (
+  <st-panel>
+    <st-panel-header divided>
+      <st-heading>Layers</st-heading>
+      <st-badge tone="accent">12</st-badge>
+    </st-panel-header>
+    <st-section heading="Layout" collapsible onopenchange={(e) => e.detail.open}>
+      <st-property-row label="Opacity">
+        <st-slider value={50} />
+      </st-property-row>
+    </st-section>
+    <st-menu for="more" onselect={(e) => e.detail.value}>
+      <st-menu-item shortcut="Mod+D">Duplicate</st-menu-item>
+      <st-menu-item type="checkbox" checked>
+        Grid
+      </st-menu-item>
+    </st-menu>
+    <st-dialog heading="Export" width="small" onopenchange={(e) => e.detail.open} />
+    <st-progress value={40} />
+  </st-panel>
+);
+// @ts-expect-error: invalid placement
+export const badPlacement = <st-menu placement="middle" />;
+
+const menu = document.createElement("st-menu");
+menu.show({ x: 10, y: 10 });

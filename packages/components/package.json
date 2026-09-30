@@ -54,7 +54,21 @@
     "./range-slider": "./src/define/range-slider.ts",
     "./select": "./src/define/select.ts",
     "./option": "./src/define/option.ts",
-    "./combobox": "./src/define/combobox.ts"
+    "./combobox": "./src/define/combobox.ts",
+    "./section": "./src/define/section.ts",
+    "./property-row": "./src/define/property-row.ts",
+    "./tabs": "./src/define/tabs.ts",
+    "./tab": "./src/define/tab.ts",
+    "./tab-panel": "./src/define/tab-panel.ts",
+    "./menu": "./src/define/menu.ts",
+    "./menu-item": "./src/define/menu-item.ts",
+    "./popover": "./src/define/popover.ts",
+    "./dialog": "./src/define/dialog.ts",
+    "./alert-dialog": "./src/define/alert-dialog.ts",
+    "./toast": "./src/define/toast.ts",
+    "./toaster": "./src/define/toaster.ts",
+    "./progress": "./src/define/progress.ts",
+    "./spinner": "./src/define/spinner.ts"
   },
   "publishConfig": {
     "exports": {
@@ -173,6 +187,62 @@
       "./combobox": {
         "types": "./dist/define/combobox.d.ts",
         "default": "./dist/define/combobox.js"
+      },
+      "./section": {
+        "types": "./dist/define/section.d.ts",
+        "default": "./dist/define/section.js"
+      },
+      "./property-row": {
+        "types": "./dist/define/property-row.d.ts",
+        "default": "./dist/define/property-row.js"
+      },
+      "./tabs": {
+        "types": "./dist/define/tabs.d.ts",
+        "default": "./dist/define/tabs.js"
+      },
+      "./tab": {
+        "types": "./dist/define/tab.d.ts",
+        "default": "./dist/define/tab.js"
+      },
+      "./tab-panel": {
+        "types": "./dist/define/tab-panel.d.ts",
+        "default": "./dist/define/tab-panel.js"
+      },
+      "./menu": {
+        "types": "./dist/define/menu.d.ts",
+        "default": "./dist/define/menu.js"
+      },
+      "./menu-item": {
+        "types": "./dist/define/menu-item.d.ts",
+        "default": "./dist/define/menu-item.js"
+      },
+      "./popover": {
+        "types": "./dist/define/popover.d.ts",
+        "default": "./dist/define/popover.js"
+      },
+      "./dialog": {
+        "types": "./dist/define/dialog.d.ts",
+        "default": "./dist/define/dialog.js"
+      },
+      "./alert-dialog": {
+        "types": "./dist/define/alert-dialog.d.ts",
+        "default": "./dist/define/alert-dialog.js"
+      },
+      "./toast": {
+        "types": "./dist/define/toast.d.ts",
+        "default": "./dist/define/toast.js"
+      },
+      "./toaster": {
+        "types": "./dist/define/toaster.d.ts",
+        "default": "./dist/define/toaster.js"
+      },
+      "./progress": {
+        "types": "./dist/define/progress.d.ts",
+        "default": "./dist/define/progress.js"
+      },
+      "./spinner": {
+        "types": "./dist/define/spinner.d.ts",
+        "default": "./dist/define/spinner.js"
       }
     }
   },

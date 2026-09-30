@@ -1,0 +1,48 @@
+/*
+ * Badge: small count or status label. Pure CSS.
+ * <st-badge>12</st-badge>  <st-badge tone="danger">Error</st-badge>  <st-badge dot tone="success"></st-badge>
+ */
+:where(st-badge) {
+  --_bg: var(--st-gray-a4);
+  --_fg: var(--st-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-sizing: border-box;
+  min-width: 16px;
+  height: 16px;
+  padding-inline: 5px;
+  border-radius: var(--st-radius-full);
+  background: var(--_bg);
+  color: var(--_fg);
+  font-family: var(--st-font-sans);
+  font-size: calc(var(--st-text-1) - 1px);
+  font-weight: var(--st-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+:where(st-badge)[tone="accent"] { --_bg: var(--st-accent-bg); --_fg: var(--st-accent-text); }
+:where(st-badge)[tone="danger"] { --_bg: var(--st-danger-bg); --_fg: var(--st-danger-text); }
+:where(st-badge)[tone="warning"] { --_bg: var(--st-warning-bg); --_fg: var(--st-warning-text); }
+:where(st-badge)[tone="success"] { --_bg: var(--st-success-bg); --_fg: var(--st-success-text); }
+
+:where(st-badge)[kind="solid"] { --_bg: var(--st-gray-12); --_fg: var(--st-gray-1); }
+:where(st-badge)[kind="solid"][tone="accent"] { --_bg: var(--st-accent-solid); --_fg: var(--st-text-on-accent); }
+:where(st-badge)[kind="solid"][tone="danger"] { --_bg: var(--st-danger-solid); --_fg: var(--st-text-on-status); }
+:where(st-badge)[kind="solid"][tone="warning"] { --_bg: var(--st-warning-solid); --_fg: var(--st-text-on-status); }
+:where(st-badge)[kind="solid"][tone="success"] { --_bg: var(--st-success-solid); --_fg: var(--st-text-on-status); }
+
+:where(st-badge)[dot] {
+  min-width: 0;
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  font-size: 0;
+  --_bg: var(--st-gray-9);
+}
+:where(st-badge)[dot][tone="accent"] { --_bg: var(--st-accent-solid); }
+:where(st-badge)[dot][tone="danger"] { --_bg: var(--st-danger-solid); }
+:where(st-badge)[dot][tone="warning"] { --_bg: var(--st-warning-solid); }
+:where(st-badge)[dot][tone="success"] { --_bg: var(--st-success-solid); }

@@ -490,6 +490,9 @@ apps/
    - ✅ Done: button, icon-button, toggle-button, button-group, toolbar, segmented-control, tooltip, text/search/number fields, textarea, checkbox, switch, radio-group, slider, range-slider, select, combobox, option. Behaviors: roving focus, typeahead, scrub, safe math, positioning, hotkey matching.
    - Positioning is JS, not CSS anchor positioning: anchor names are scoped to one shadow tree, and Station's anchors and popovers often live in different trees.
 3. **Structure + overlays** — Tier 2. Playground becomes a real inspector.
+   - ✅ Done: panel/header/footer, badge, empty state, menu label (all pure CSS); section, property row, tabs, menu + menu item (submenus, checkable, context menus), popover, dialog, alert dialog + `confirm()`, toast + `toast()`, progress, spinner.
+   - Changed from the plan: no `st-menu-button` / `st-context-menu` wrappers. Menus and popovers attach with `for="id"` (plus `trigger="contextmenu"`), which works the same in every framework.
+   - All overlays fire one event, `openchange` (`detail.open`), because React 19 doesn't deliver `onToggle` to custom elements.
 4. **Editor-grade** — tree, split, table, color picker, command palette.
 5. **Polish** — density presets, docs site, interop tests green, 1.0.
 

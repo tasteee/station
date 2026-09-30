@@ -62,7 +62,8 @@ for (const el of elements) {
     );
   }
   for (const p of el.properties ?? []) common.push(`${doc(p.description)}  ${p.name}: ${p.type};`);
-  for (const m of el.methods ?? []) common.push(`${doc(m.description)}  ${m.name}(): void;`);
+  for (const m of el.methods ?? [])
+    common.push(`${doc(m.description)}  ${m.name}${m.signature ?? "(): void"};`);
   for (const e of el.events ?? []) {
     const t = e.type ?? "Event";
     common.push(

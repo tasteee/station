@@ -28,6 +28,8 @@ writeFileSync(
     "/** Element classes without registering them. Use to define under custom tags. */",
     ...components.map((c) => `export { ${c.class} } from "./${c.src}";`),
     'export { define } from "./shared/define.ts";',
+    'export { confirm, type ConfirmOptions } from "./dialog/alert-dialog.tsx";',
+    'export { toast, type ToastOptions } from "./feedback/toast.tsx";',
     "",
   ].join("\n"),
 );
