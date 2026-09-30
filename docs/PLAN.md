@@ -4,6 +4,18 @@ A web-component design system for **dense, interaction-heavy editor UIs** (Figma
 
 **Core idea:** flat UI. Hierarchy comes from **surface color, borders, and text contrast**. Shadows only on things that leave the page flow.
 
+## Decisions locked
+
+| Topic | Decision |
+|---|---|
+| Tag prefix | `st-` |
+| Size values | `small` · `medium` · `large` |
+| Consumers | Unknown. **Framework-agnostic is a hard requirement** (React, Vue, Angular, Svelte, plain HTML). See §8.1. |
+| Icons | **Tabler Icons** — the largest single-style, consistent set (5,000+, MIT). See §8.2. |
+| Browsers | Recent evergreen only (Chrome, Edge, Safari, Firefox — last 2 versions) |
+| Dark theme | Ships in **v1** |
+| Default accent | Open |
+
 ---
 
 ## 1. Framework: Atomico vs Lit
@@ -138,7 +150,9 @@ Elevation     --st-shadow-popover  --st-shadow-dialog  --st-shadow-floating
 - Default: light. `:root` holds light values.
 - Dark: `[theme="dark"]` on any element swaps the lightness table. Works on a subtree (e.g. a dark canvas inside a light app).
 - `theme="system"` follows `prefers-color-scheme`.
-- Dark mode is planned now, shipped later. Semantic tokens mean components never change.
+- **Both themes ship in v1.** Every visual test runs in light and dark.
+- Semantic tokens mean components never branch on theme.
+- In dark, surface order flips: raised surfaces get **lighter**, not darker. The semantic mapping handles this; components don't care.
 
 ### 2.6 Spacing
 
@@ -342,13 +356,13 @@ These kill whole classes of bugs. Worth a high browser floor.
 |---|---|
 | **Popover API** (top layer) | z-index wars, portals |
 | **`<dialog>`** | custom focus traps, inert handling |
-| **CSS anchor positioning** | JS positioning (keep Floating UI as fallback until support is universal) |
+| **CSS anchor positioning** | JS positioning (confirm current Firefox/Safari support at build time; if a gap remains, a tiny in-house positioner in `behaviors/`, no dependency) |
 | **`ElementInternals`** | manual ARIA roles, form wiring |
 | **Constructable stylesheets** | per-instance `<style>` tags (one sheet shared by all instances) |
 | OKLCH, relative color, `color-mix()`, `pow()` | build-time color/type generation |
 | `@layer`, `@property` | specificity fights; typed/animatable tokens |
 
-**Proposed floor:** last 2 versions of Chrome, Safari, Firefox (evergreen desktop). Editors rarely need legacy support.
+**Floor (locked):** last 2 versions of Chrome, Edge, Safari, Firefox. No polyfills, no legacy builds. Output is plain ES2022+ modules.
 
 ---
 
@@ -361,11 +375,52 @@ These kill whole classes of bugs. Worth a high browser floor.
 - **Performance.** Virtualize trees/lists/tables from day one. Keep per-row components cheap (row = light DOM where possible). Benchmark 10k rows.
 - **Selection semantics.** One shared model: click, Shift range, Mod toggle. Reused by tree, list, table.
 - **Undo-friendly events.** `input` (preview) vs `change` (commit) must be consistent so apps can batch undo steps during a drag.
-- **Icons.** Pick one 16px-grid set (Lucide at 1.5 stroke is a good fit). `st-icon` resolves names from a registry so apps can add their own.
-- **Framework users.** React 19 handles custom elements well. Still ship: JSX type declarations (React, Preact, Solid, Vue), optional React wrappers, VS Code HTML custom data.
 - **Dev-mode warnings.** Missing `label` on icon buttons, invalid `x-align` values, unknown `kind`. Stripped in prod.
 - **Pointer: coarse.** Auto-bump density on touch devices.
 - **RTL.** Use logical properties (`padding-inline`) from the start. Cheap now, painful later.
+
+### 8.1 Framework-agnostic rules
+
+Consumers are unknown, so the element API must work the same everywhere.
+
+**Rules**
+- **Attributes for simple values** (strings, numbers, booleans). Works in plain HTML and every framework.
+- **Properties for rich data** (`tree.items`, `table.rows`). React 19, Vue, Angular, Svelte, Solid all set properties on custom elements.
+- **Event names: lowercase, no colons, no camelCase.** Native names where they fit (`input`, `change`, `toggle`). Custom ones as `st-select`, `st-reorder`. Every framework can bind these.
+- **No framework-only features** in the core (no render props, no React context).
+- **Slots for content**, never content-as-attribute.
+- **Self-registering** (`import "@station/components/button"`) plus a `defineAll()` for convenience. Guard against double registration.
+
+**Per-framework support we ship**
+
+| Framework | How it works | What we ship |
+|---|---|---|
+| Plain HTML | Native | CDN build, VS Code custom data (autocomplete) |
+| React 19+ | Native custom element support | JSX `IntrinsicElements` types. Optional thin wrappers package. |
+| Vue 3 | `isCustomElement` compiler option | `GlobalComponents` types + setup snippet |
+| Angular | `CUSTOM_ELEMENTS_SCHEMA` | Types + setup snippet |
+| Svelte 5 | Native | `svelte/elements` type augmentation |
+| Solid / Preact | Native | JSX types |
+
+- **All types generate from one Custom Elements Manifest.** One source → every framework's typings.
+- **Integration tests:** a tiny app per framework in CI that renders a button, binds `change`, sets a rich property. Catches breaks before users do.
+
+### 8.2 Icons — Tabler
+
+- **Why Tabler:** largest one-style set (5,000+ outline icons), strict 24px grid, uniform stroke, MIT. Lucide (~1,600) is cleaner but smaller; Material Symbols is big but reads "Google".
+- Render at 16px with **stroke 1.5** for editor density. Stroke is a token: `--st-icon-stroke`.
+- **Tree-shakeable.** Apps import only icons they use:
+  ```ts
+  import { registerIcons } from "@station/icons";
+  import { IconPlus, IconTrash } from "@station/icons/tabler";
+  registerIcons({ plus: IconPlus, trash: IconTrash });
+  ```
+  ```html
+  <st-icon name="plus"></st-icon>
+  <st-icon-button icon="trash" label="Delete layer"></st-icon-button>
+  ```
+- Apps register custom icons the same way. Unknown name → dev-mode warning.
+- Icons use `currentColor`, so they follow the text contrast ladder automatically.
 
 ---
 
@@ -381,6 +436,7 @@ These kill whole classes of bugs. Worth a high browser floor.
 | Visual regression | **Playwright screenshots** per component × size × kind × theme |
 | A11y tests | **axe-core** in the same runs |
 | Component workshop | **Storybook** (web-components-vite) |
+| Framework smoke tests | Minimal React / Vue / Angular / Svelte apps in `apps/interop/` |
 | Docs site | Astro or Storybook docs (decide later) |
 | API metadata | **Custom Elements Manifest** → docs, IDE autocomplete, JSX types |
 | Releases | **Changesets** |
@@ -395,9 +451,11 @@ packages/
   components/    # Atomico elements
   icons/         # icon registry + default set
   react/         # optional generated wrappers
+  types/         # generated typings for each framework (from CEM)
 apps/
   storybook/
   playground/    # a fake mini-editor (layers, canvas, inspector) to dogfood everything
+  interop/       # react/ vue/ angular/ svelte/ smoke-test apps
 ```
 
 **The playground editor matters most.** Components that look fine in isolation often break in a real dense layout. Build a tiny Figma-like shell early and grow it with each tier.
@@ -406,20 +464,14 @@ apps/
 
 ## 10. Roadmap
 
-1. **Foundations** — tokens, themes, layout primitives, text, icon, token playground page (live knob sliders).
+1. **Foundations** — tokens, **light + dark themes**, layout primitives, text, icon, token playground page (live knob sliders + theme toggle).
 2. **Core controls** — Tier 1, with tests + visual regression.
 3. **Structure + overlays** — Tier 2. Playground becomes a real inspector.
 4. **Editor-grade** — tree, split, table, color picker, command palette.
-5. **Dark theme + polish** — dark tables, density presets, docs site, 1.0.
+5. **Polish** — density presets, docs site, interop tests green, 1.0.
 
 ---
 
 ## 11. Open decisions
 
-1. **Tag prefix:** `st-` (short) or `station-`?
-2. **Size values:** `small/medium/large` (reads like English) or `sm/md/lg` (shorter)?
-3. **Default accent:** cool blue matching the gray hue, or near-black monochrome?
-4. **Primary consumers:** plain HTML, React, or both first-class?
-5. **Icon set:** Lucide, Phosphor, or custom?
-6. **Browser floor:** evergreen-only (enables all of section 7)?
-7. **Dark theme timing:** v1 or post-1.0?
+1. **Default accent:** a cool blue matching the gray hue, or near-black monochrome?
