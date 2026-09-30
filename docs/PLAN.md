@@ -14,7 +14,7 @@ A web-component design system for **dense, interaction-heavy editor UIs** (Figma
 | Icons | **Tabler Icons** — the largest single-style, consistent set (5,000+, MIT). See §8.2. |
 | Browsers | Recent evergreen only (Chrome, Edge, Safari, Firefox — last 2 versions) |
 | Dark theme | Ships in **v1** |
-| Default accent | Open |
+| Default accent | **Near-black (monochrome).** Inverts to near-white in dark. See §2.3. |
 
 ---
 
@@ -128,8 +128,27 @@ Fix: states use **alpha grays** that stack on whatever is underneath.
 
 ### 2.3 Accent + status colors
 
-Same 12-step recipe, different knobs:
-- `--st-accent-hue`, `--st-accent-chroma` → selection, focus ring, primary solid button.
+**Default accent is near-black.** It is built with the same 12-step recipe as gray, with the chroma knob set to `0`:
+
+```css
+--st-accent-hue: var(--st-gray-hue);
+--st-accent-chroma: 0;   /* monochrome by default. Set e.g. 0.18 for a brand color. */
+```
+
+- Light: `--st-accent-solid` = step 12 (near-black), `--st-text-on-accent` = step 1.
+- Dark: the steps flip, so the accent becomes near-white with dark text on top.
+- Apps get a brand color by changing **2 knobs**. No component changes.
+
+Where the monochrome accent shows up:
+- Solid buttons (`kind="solid" tone="accent"`), checked checkbox/switch/radio, slider fill, active tab indicator.
+- **Selection** (tree/list rows): `--st-bg-selected` = gray-a5, text goes to `--st-text-strong`. `--st-bg-selected-strong` (selected + focused list) = accent solid with inverted text.
+- **Focus ring:** 1.5px solid `--st-border-focus` (step 12) + 1px offset. The offset gap keeps it distinct from step 7–8 borders.
+
+**Risks of monochrome**
+- Selection and focus must come from contrast and weight alone, since there's no hue to lean on. Visual tests must check a focused + selected + hovered row in both themes.
+- Canvas selection handles (in apps) usually want color. That's the app's call; we expose `--st-accent-*` for it.
+
+Status colors keep real hues:
 - `--st-danger-hue`, `--st-warning-hue`, `--st-success-hue`.
 - Risk: high-chroma yellows/limes need dark text on solid fills. Add `--st-accent-on-solid` token and pick per theme.
 
@@ -474,4 +493,4 @@ apps/
 
 ## 11. Open decisions
 
-1. **Default accent:** a cool blue matching the gray hue, or near-black monochrome?
+None right now. Next step: scaffold the monorepo and build Tier 0 (tokens, themes, layout primitives).
