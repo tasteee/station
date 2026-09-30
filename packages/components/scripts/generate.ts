@@ -28,6 +28,7 @@ const key = (name: string) => (/^[a-z_$][\w$]*$/i.test(name) ? name : JSON.strin
 
 function tsType(type: AttributeType, forAttribute: boolean): string {
   if (type === "string") return "string";
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: emits a TS template literal type.
   if (type === "number") return forAttribute ? "number | `${number}`" : "number";
   if (type === "boolean") return "boolean";
   return type.map((v) => JSON.stringify(v)).join(" | ");
@@ -43,13 +44,13 @@ for (const el of elements) {
   common.push(`/** <${el.tag}> — ${el.description} */`);
   common.push(`export interface ${attrsName(el)} {`);
   for (const a of el.attributes) {
-    common.push(doc(a.description + attrDefault(a)) + `  ${key(a.name)}?: ${tsType(a.type, true)};`);
+    common.push(`${doc(a.description + attrDefault(a))}  ${key(a.name)}?: ${tsType(a.type, true)};`);
   }
   common.push("}\n");
 
   common.push(`export interface ${eventsName(el)} {`);
   for (const e of el.events ?? []) {
-    common.push(doc(e.description) + `  ${key(e.name)}: ${e.type ?? "Event"};`);
+    common.push(`${doc(e.description)}  ${key(e.name)}: ${e.type ?? "Event"};`);
   }
   common.push("}\n");
 
@@ -57,11 +58,11 @@ for (const el of elements) {
   for (const a of el.attributes) {
     if (!a.property) continue;
     common.push(
-      doc(a.description + attrDefault(a)) + `  ${a.property}: ${tsType(a.type, false)} | undefined;`,
+      `${doc(a.description + attrDefault(a))}  ${a.property}: ${tsType(a.type, false)} | undefined;`,
     );
   }
-  for (const p of el.properties ?? []) common.push(doc(p.description) + `  ${p.name}: ${p.type};`);
-  for (const m of el.methods ?? []) common.push(doc(m.description) + `  ${m.name}(): void;`);
+  for (const p of el.properties ?? []) common.push(`${doc(p.description)}  ${p.name}: ${p.type};`);
+  for (const m of el.methods ?? []) common.push(`${doc(m.description)}  ${m.name}(): void;`);
   for (const e of el.events ?? []) {
     const t = e.type ?? "Event";
     common.push(
@@ -157,6 +158,7 @@ writeFileSync(
     'import type { DefineComponent } from "vue";',
     `import type { ${elements.map(attrsName).join(", ")} } from "./elements.js";`,
     "",
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: emits a TS mapped type.
     "type Handlers<E> = { [K in keyof E as `on${Capitalize<K & string>}`]?: (event: E[K]) => void };",
     "",
     'declare module "vue" {',

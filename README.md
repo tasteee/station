@@ -14,9 +14,9 @@ See [`docs/PLAN.md`](docs/PLAN.md) for the full design plan.
 | Package | What |
 |---|---|
 | `@station/tokens` | CSS only: knobs, 12-step scales, light + dark themes, semantic tokens, layout primitives, text, surfaces |
-| `@station/components` | Atomico elements (`st-icon`, `st-kbd`, more coming) |
+| `@station/components` | Atomico elements: icon, kbd, buttons, toolbar, fields, number field, choices, sliders, select, combobox, tooltip |
 | `@station/icons` | Icon registry + all 6,000+ Tabler icons as tree-shakeable exports |
-| `@station/behaviors` | Framework-free logic: shortcut formatting, dev warnings |
+| `@station/behaviors` | Framework-free logic: roving focus, typeahead, drag-to-scrub, safe math, popover positioning, shortcuts |
 | `apps/playground` | A mini editor shell to see and tune everything |
 | `apps/storybook` | Component workshop with theme + density toolbar |
 | `apps/interop` | Type fixtures for React, Preact, Solid, Vue, Svelte + React runtime test |
@@ -75,6 +75,27 @@ Set on `:root`, or on any `[theme]` / `[density]` element to scope them.
 | `--st-font-size` / `--st-type-ratio` | `12px` / `1.125` | text-1…text-6 |
 
 Themes: `theme="light" | "dark" | "system"` on any element. Works on subtrees.
+
+## Controls (Tier 1)
+
+| Element | Notes |
+|---|---|
+| `st-button` | `kind` solid/outline/ghost · `tone` accent/danger · `icon`, `icon-end`, `loading`, `type="submit"` |
+| `st-icon-button` | Icon only. `label` = accessible name **and** tooltip; `shortcut` shows in the tooltip |
+| `st-toggle-button` | `pressed`; `tone="accent"` for tool pickers |
+| `st-button-group` | Children inherit `kind` + `size`; `attached` joins them |
+| `st-toolbar` | One tab stop, arrow keys between buttons |
+| `st-segmented-control` + `st-segment` | Radio group look-alike; `block` fills width |
+| `st-tooltip` | Wraps any element. Icon buttons don't need it |
+| `st-text-field`, `st-search-field`, `st-textarea` | Filled by default; form-associated |
+| `st-number-field` | Drag `prefix`/`icon` to scrub · ↑/↓ (Shift ×10, Alt ×0.1) · type math · `unit` · `mixed` |
+| `st-checkbox`, `st-switch`, `st-radio-group` + `st-radio` | Form-associated; Space toggles; arrows in radio groups |
+| `st-slider`, `st-range-slider` | Keyboard + pointer; range thumbs can't cross |
+| `st-select`, `st-combobox` + `st-option` | Top-layer popover listbox; typeahead; `allow-custom` on combobox |
+
+Every control: host is the control (focus, ARIA via `ElementInternals`), `input` while changing, `change` on commit, works in `<form>`.
+
+**Adding a component:** add it to `packages/components/scripts/components.json`, run `pnpm --filter @station/components wire`, then add its metadata in `meta/`. A test fails if metadata and props drift.
 
 ## Framework typings
 

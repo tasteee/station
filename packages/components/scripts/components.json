@@ -1,0 +1,140 @@
+[
+  {
+    "file": "icon",
+    "class": "Icon",
+    "src": "icon/icon.tsx",
+    "tag": "st-icon"
+  },
+  {
+    "file": "kbd",
+    "class": "Kbd",
+    "src": "kbd/kbd.tsx",
+    "tag": "st-kbd"
+  },
+  {
+    "file": "button",
+    "class": "Button",
+    "src": "button/button.tsx",
+    "tag": "st-button"
+  },
+  {
+    "file": "icon-button",
+    "class": "IconButton",
+    "src": "button/icon-button.tsx",
+    "tag": "st-icon-button"
+  },
+  {
+    "file": "toggle-button",
+    "class": "ToggleButton",
+    "src": "button/toggle-button.tsx",
+    "tag": "st-toggle-button"
+  },
+  {
+    "file": "button-group",
+    "class": "ButtonGroup",
+    "src": "button/button-group.tsx",
+    "tag": "st-button-group"
+  },
+  {
+    "file": "toolbar",
+    "class": "Toolbar",
+    "src": "button/toolbar.tsx",
+    "tag": "st-toolbar"
+  },
+  {
+    "file": "segmented-control",
+    "class": "SegmentedControl",
+    "src": "segmented/segmented-control.tsx",
+    "tag": "st-segmented-control"
+  },
+  {
+    "file": "segment",
+    "class": "Segment",
+    "src": "segmented/segment.tsx",
+    "tag": "st-segment"
+  },
+  {
+    "file": "tooltip",
+    "class": "Tooltip",
+    "src": "tooltip/tooltip.tsx",
+    "tag": "st-tooltip"
+  },
+  {
+    "file": "text-field",
+    "class": "TextField",
+    "src": "field/text-field.tsx",
+    "tag": "st-text-field"
+  },
+  {
+    "file": "search-field",
+    "class": "SearchField",
+    "src": "field/text-field.tsx",
+    "tag": "st-search-field"
+  },
+  {
+    "file": "textarea",
+    "class": "Textarea",
+    "src": "field/textarea.tsx",
+    "tag": "st-textarea"
+  },
+  {
+    "file": "number-field",
+    "class": "NumberField",
+    "src": "field/number-field.tsx",
+    "tag": "st-number-field"
+  },
+  {
+    "file": "checkbox",
+    "class": "Checkbox",
+    "src": "choice/checkbox.tsx",
+    "tag": "st-checkbox"
+  },
+  {
+    "file": "switch",
+    "class": "Switch",
+    "src": "choice/switch.tsx",
+    "tag": "st-switch"
+  },
+  {
+    "file": "radio-group",
+    "class": "RadioGroup",
+    "src": "choice/radio.tsx",
+    "tag": "st-radio-group"
+  },
+  {
+    "file": "radio",
+    "class": "Radio",
+    "src": "choice/radio.tsx",
+    "tag": "st-radio"
+  },
+  {
+    "file": "slider",
+    "class": "Slider",
+    "src": "slider/slider.tsx",
+    "tag": "st-slider"
+  },
+  {
+    "file": "range-slider",
+    "class": "RangeSlider",
+    "src": "slider/slider.tsx",
+    "tag": "st-range-slider"
+  },
+  {
+    "file": "select",
+    "class": "Select",
+    "src": "select/select.tsx",
+    "tag": "st-select"
+  },
+  {
+    "file": "option",
+    "class": "Option",
+    "src": "select/option.tsx",
+    "tag": "st-option"
+  },
+  {
+    "file": "combobox",
+    "class": "Combobox",
+    "src": "select/combobox.tsx",
+    "tag": "st-combobox"
+  }
+]

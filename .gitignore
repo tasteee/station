@@ -7,3 +7,4 @@ __screenshots__
 packages/components/types
 packages/components/custom-elements.json
 packages/components/vscode.html-data.json
+.vitest

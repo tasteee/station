@@ -33,7 +33,28 @@
       "types": "./types/svelte.d.ts"
     },
     "./custom-elements.json": "./custom-elements.json",
-    "./vscode.html-data.json": "./vscode.html-data.json"
+    "./vscode.html-data.json": "./vscode.html-data.json",
+    "./button": "./src/define/button.ts",
+    "./icon-button": "./src/define/icon-button.ts",
+    "./toggle-button": "./src/define/toggle-button.ts",
+    "./button-group": "./src/define/button-group.ts",
+    "./toolbar": "./src/define/toolbar.ts",
+    "./segmented-control": "./src/define/segmented-control.ts",
+    "./segment": "./src/define/segment.ts",
+    "./tooltip": "./src/define/tooltip.ts",
+    "./text-field": "./src/define/text-field.ts",
+    "./search-field": "./src/define/search-field.ts",
+    "./textarea": "./src/define/textarea.ts",
+    "./number-field": "./src/define/number-field.ts",
+    "./checkbox": "./src/define/checkbox.ts",
+    "./switch": "./src/define/switch.ts",
+    "./radio-group": "./src/define/radio-group.ts",
+    "./radio": "./src/define/radio.ts",
+    "./slider": "./src/define/slider.ts",
+    "./range-slider": "./src/define/range-slider.ts",
+    "./select": "./src/define/select.ts",
+    "./option": "./src/define/option.ts",
+    "./combobox": "./src/define/combobox.ts"
   },
   "publishConfig": {
     "exports": {
@@ -68,7 +89,91 @@
         "types": "./types/svelte.d.ts"
       },
       "./custom-elements.json": "./custom-elements.json",
-      "./vscode.html-data.json": "./vscode.html-data.json"
+      "./vscode.html-data.json": "./vscode.html-data.json",
+      "./button": {
+        "types": "./dist/define/button.d.ts",
+        "default": "./dist/define/button.js"
+      },
+      "./icon-button": {
+        "types": "./dist/define/icon-button.d.ts",
+        "default": "./dist/define/icon-button.js"
+      },
+      "./toggle-button": {
+        "types": "./dist/define/toggle-button.d.ts",
+        "default": "./dist/define/toggle-button.js"
+      },
+      "./button-group": {
+        "types": "./dist/define/button-group.d.ts",
+        "default": "./dist/define/button-group.js"
+      },
+      "./toolbar": {
+        "types": "./dist/define/toolbar.d.ts",
+        "default": "./dist/define/toolbar.js"
+      },
+      "./segmented-control": {
+        "types": "./dist/define/segmented-control.d.ts",
+        "default": "./dist/define/segmented-control.js"
+      },
+      "./segment": {
+        "types": "./dist/define/segment.d.ts",
+        "default": "./dist/define/segment.js"
+      },
+      "./tooltip": {
+        "types": "./dist/define/tooltip.d.ts",
+        "default": "./dist/define/tooltip.js"
+      },
+      "./text-field": {
+        "types": "./dist/define/text-field.d.ts",
+        "default": "./dist/define/text-field.js"
+      },
+      "./search-field": {
+        "types": "./dist/define/search-field.d.ts",
+        "default": "./dist/define/search-field.js"
+      },
+      "./textarea": {
+        "types": "./dist/define/textarea.d.ts",
+        "default": "./dist/define/textarea.js"
+      },
+      "./number-field": {
+        "types": "./dist/define/number-field.d.ts",
+        "default": "./dist/define/number-field.js"
+      },
+      "./checkbox": {
+        "types": "./dist/define/checkbox.d.ts",
+        "default": "./dist/define/checkbox.js"
+      },
+      "./switch": {
+        "types": "./dist/define/switch.d.ts",
+        "default": "./dist/define/switch.js"
+      },
+      "./radio-group": {
+        "types": "./dist/define/radio-group.d.ts",
+        "default": "./dist/define/radio-group.js"
+      },
+      "./radio": {
+        "types": "./dist/define/radio.d.ts",
+        "default": "./dist/define/radio.js"
+      },
+      "./slider": {
+        "types": "./dist/define/slider.d.ts",
+        "default": "./dist/define/slider.js"
+      },
+      "./range-slider": {
+        "types": "./dist/define/range-slider.d.ts",
+        "default": "./dist/define/range-slider.js"
+      },
+      "./select": {
+        "types": "./dist/define/select.d.ts",
+        "default": "./dist/define/select.js"
+      },
+      "./option": {
+        "types": "./dist/define/option.d.ts",
+        "default": "./dist/define/option.js"
+      },
+      "./combobox": {
+        "types": "./dist/define/combobox.d.ts",
+        "default": "./dist/define/combobox.js"
+      }
     }
   },
   "files": [
@@ -80,7 +185,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "generate": "node scripts/generate.ts"
+    "generate": "node scripts/generate.ts",
+    "wire": "node scripts/wire.ts"
   },
   "dependencies": {
     "@station/behaviors": "workspace:*",

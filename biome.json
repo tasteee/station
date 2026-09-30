@@ -1,7 +1,15 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "includes": ["**", "!**/dist", "!**/generated", "!**/node_modules"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/generated",
+      "!**/node_modules",
+      "!packages/components/types",
+      "!**/custom-elements.json",
+      "!**/vscode.html-data.json"
+    ]
   },
   "formatter": {
     "indentStyle": "space",
@@ -25,5 +33,20 @@
     "linter": {
       "enabled": true
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["packages/components/src/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "noStaticElementInteractions": "off",
+            "noAriaHiddenOnFocusable": "off",
+            "noInteractiveElementToNoninteractiveRole": "off",
+            "useFocusableInteractive": "off"
+          }
+        }
+      }
+    }
+  ]
 }

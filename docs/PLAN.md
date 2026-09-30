@@ -487,6 +487,8 @@ apps/
    - ✅ Done: knobs, generated scales (gray, alpha, accent, status), semantic tokens, light/dark/system themes, density, size cascade, layout primitives, `st-text`, `st-heading`, `st-surface`, `st-scroll-area`, `st-divider`, `st-spacer`, `st-icon` + Tabler registry, `st-kbd`, playground, tests.
    - ✅ Also: one metadata source → Custom Elements Manifest, VS Code data, React/Preact/Solid/Vue/Svelte typings (type-tested), Storybook, visual baselines (light + dark).
 2. **Core controls** — Tier 1, with tests + visual regression.
+   - ✅ Done: button, icon-button, toggle-button, button-group, toolbar, segmented-control, tooltip, text/search/number fields, textarea, checkbox, switch, radio-group, slider, range-slider, select, combobox, option. Behaviors: roving focus, typeahead, scrub, safe math, positioning, hotkey matching.
+   - Positioning is JS, not CSS anchor positioning: anchor names are scoped to one shadow tree, and Station's anchors and popovers often live in different trees.
 3. **Structure + overlays** — Tier 2. Playground becomes a real inspector.
 4. **Editor-grade** — tree, split, table, color picker, command palette.
 5. **Polish** — density presets, docs site, interop tests green, 1.0.

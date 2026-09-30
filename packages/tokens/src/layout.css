@@ -26,13 +26,15 @@
   flex-wrap: wrap;
 }
 
-/* Sizing helpers for any primitive used as a flex child. */
-:where(st-box, st-row, st-column, st-surface, st-scroll-area, st-text)[grow] {
+/* Sizing helpers: on any primitive, and on any direct child of a layout primitive. */
+:where(st-box, st-row, st-column, st-surface, st-scroll-area, st-text)[grow],
+:where(st-box, st-row, st-column) > :where([grow]) {
   flex: 1 1 0;
   min-width: 0;
   min-height: 0;
 }
-:where(st-box, st-row, st-column, st-surface, st-scroll-area, st-text)[shrink="none"] {
+:where(st-box, st-row, st-column, st-surface, st-scroll-area, st-text)[shrink="none"],
+:where(st-box, st-row, st-column) > :where([shrink="none"]) {
   flex-shrink: 0;
 }
 
@@ -76,7 +78,7 @@
   block-size: 1px;
   background-color: var(--st-border-subtle);
 }
-:where(st-row, st-box) > :where(st-divider),
+:where(st-row, st-box, st-toolbar:not([orientation="vertical"]), st-button-group) > :where(st-divider),
 :where(st-divider)[orientation="vertical"] {
   block-size: auto;
   inline-size: 1px;

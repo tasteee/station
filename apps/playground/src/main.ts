@@ -3,52 +3,45 @@ import "@station/tokens/fonts.css";
 import "@station/components";
 import "./playground.css";
 import { registerIcons } from "@station/icons";
-import {
-  IconChevronRight,
-  IconComponents,
-  IconEye,
-  IconEyeOff,
-  IconFolder,
-  IconFrame,
-  IconLetterT,
-  IconLock,
-  IconMessage,
-  IconMoon,
-  IconPhoto,
-  IconPlus,
-  IconPointer,
-  IconSquare,
-  IconStack2,
-  IconSun,
-  IconTrash,
-  IconTypography,
-  IconVectorBezier2,
-} from "@station/icons/tabler";
+import * as I from "@station/icons/tabler";
 
 // Only these icons end up in the bundle.
 registerIcons({
-  "chevron-right": IconChevronRight,
-  components: IconComponents,
-  eye: IconEye,
-  "eye-off": IconEyeOff,
-  folder: IconFolder,
-  frame: IconFrame,
-  "letter-t": IconLetterT,
-  lock: IconLock,
-  message: IconMessage,
-  moon: IconMoon,
-  photo: IconPhoto,
-  plus: IconPlus,
-  pointer: IconPointer,
-  square: IconSquare,
-  stack: IconStack2,
-  sun: IconSun,
-  trash: IconTrash,
-  typography: IconTypography,
-  "vector-bezier-2": IconVectorBezier2,
+  "align-center": I.IconAlignCenter,
+  "align-left": I.IconAlignLeft,
+  "align-right": I.IconAlignRight,
+  angle: I.IconAngle,
+  bold: I.IconBold,
+  "border-radius": I.IconBorderRadius,
+  "chevron-right": I.IconChevronRight,
+  components: I.IconComponents,
+  download: I.IconDownload,
+  eye: I.IconEye,
+  "eye-off": I.IconEyeOff,
+  folder: I.IconFolder,
+  frame: I.IconFrame,
+  "hand-stop": I.IconHandStop,
+  italic: I.IconItalic,
+  "letter-t": I.IconLetterT,
+  link: I.IconLink,
+  lock: I.IconLock,
+  message: I.IconMessage,
+  moon: I.IconMoon,
+  photo: I.IconPhoto,
+  plus: I.IconPlus,
+  pointer: I.IconPointer,
+  rotate: I.IconRotate,
+  square: I.IconSquare,
+  stack: I.IconStack2,
+  sun: I.IconSun,
+  trash: I.IconTrash,
+  typography: I.IconTypography,
+  underline: I.IconUnderline,
+  "vector-bezier-2": I.IconVectorBezier2,
 });
 
-const $ = <T extends Element = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
+type Station = HTMLElement & { value: number & string; pressed: boolean };
+const $ = <T extends Element = Station>(sel: string) => document.querySelector(sel) as T;
 const html = document.documentElement;
 
 // ---------- Layers ----------
@@ -86,42 +79,46 @@ $("#layers").addEventListener("click", (e) => {
   row.setAttribute("aria-selected", "true");
 });
 
+$("st-search-field").addEventListener("input", (e) => {
+  const q = ((e.currentTarget as HTMLElement & { value: string }).value ?? "").toLowerCase();
+  for (const row of document.querySelectorAll<HTMLElement>(".layer")) {
+    row.hidden = !!q && !row.textContent!.toLowerCase().includes(q);
+  }
+});
+
 // ---------- Swatches ----------
 for (const el of document.querySelectorAll<HTMLElement>(".swatches")) {
   const scale = el.dataset.scale!;
   el.innerHTML = Array.from(
     { length: 12 },
     (_, i) =>
-      `<div class="swatch" style="background: var(--st-${scale}${scale.endsWith("-a") ? "" : "-"}${i + 1})"><span>${i + 1}</span></div>`,
+      `<div class="swatch" style="background: var(--st-${scale}-${i + 1})"><span>${i + 1}</span></div>`,
   ).join("");
 }
 
-// ---------- Type scale ----------
-$(".type-scale").innerHTML = [6, 5, 4, 3, 2, 1]
-  .map(
-    (n) => `<st-row gap="2" y-align="baseline">
-      <st-text size="small" tone="faint" style="width:40px">text-${n}</st-text>
-      <span style="font-size: var(--st-text-${n}); color: var(--st-text-strong); font-weight: 500">Layers</span>
-    </st-row>`,
-  )
-  .join("");
+// ---------- Theme + density ----------
+$("#theme").addEventListener("change", (e) => html.setAttribute("theme", (e.currentTarget as Station).value));
+$("#density").addEventListener("change", (e) =>
+  html.setAttribute("density", (e.currentTarget as Station).value),
+);
 
-// ---------- Segmented toggles ----------
-function segmented(attr: "theme" | "density", apply: (value: string) => void) {
-  for (const btn of document.querySelectorAll<HTMLButtonElement>(`[data-${attr}]`)) {
-    btn.addEventListener("click", () => {
-      for (const b of document.querySelectorAll(`[data-${attr}]`)) b.setAttribute("aria-pressed", "false");
-      btn.setAttribute("aria-pressed", "true");
-      apply(btn.dataset[attr]!);
-    });
-  }
-}
-segmented("theme", (v) => html.setAttribute("theme", v));
-segmented("density", (v) => html.setAttribute("density", v));
+// ---------- Tools: exactly one pressed ----------
+$("#tools").addEventListener("change", (e) => {
+  const picked = e.target as HTMLElement & { pressed: boolean };
+  for (const t of $("#tools").querySelectorAll<HTMLElement & { pressed: boolean }>("st-toggle-button"))
+    t.pressed = t === picked;
+});
+
+// ---------- Opacity: slider ↔ field ----------
+const opacity = $("#opacity");
+const opacityField = $("#opacity-field");
+opacity.addEventListener("input", () => (opacityField.value = opacity.value));
+opacityField.addEventListener("input", () => (opacity.value = opacityField.value));
 
 // ---------- Knobs ----------
 interface Knob {
   label: string;
+  prefix: string;
   variable: string;
   min: number;
   max: number;
@@ -129,58 +126,108 @@ interface Knob {
   value: number;
   unit?: string;
 }
-const GROUPS: [string, Knob[]][] = [
-  [
-    "Gray",
-    [
-      { label: "Hue", variable: "--st-gray-hue", min: 0, max: 360, step: 1, value: 255 },
-      { label: "Chroma", variable: "--st-gray-chroma", min: 0, max: 0.04, step: 0.001, value: 0.006 },
-    ],
-  ],
-  [
-    "Accent",
-    [
-      { label: "Hue", variable: "--st-accent-hue", min: 0, max: 360, step: 1, value: 255 },
-      { label: "Chroma", variable: "--st-accent-chroma", min: 0, max: 0.3, step: 0.005, value: 0 },
-    ],
-  ],
-  [
-    "Space",
-    [
-      { label: "Unit", variable: "--st-unit", min: 3, max: 6, step: 0.5, value: 4, unit: "px" },
-      { label: "Density", variable: "--st-density", min: 0.75, max: 1.25, step: 0.025, value: 1 },
-    ],
-  ],
-  ["Shape", [{ label: "Radius", variable: "--st-radius", min: 0, max: 10, step: 1, value: 4, unit: "px" }]],
-  [
-    "Type",
-    [
-      { label: "Size", variable: "--st-font-size", min: 10, max: 15, step: 0.5, value: 12, unit: "px" },
-      { label: "Ratio", variable: "--st-type-ratio", min: 1.05, max: 1.33, step: 0.005, value: 1.125 },
-    ],
-  ],
+const KNOBS: Knob[] = [
+  {
+    label: "Gray hue",
+    prefix: "H",
+    variable: "--st-gray-hue",
+    min: 0,
+    max: 360,
+    step: 1,
+    value: 255,
+    unit: "°",
+  },
+  {
+    label: "Gray chroma",
+    prefix: "C",
+    variable: "--st-gray-chroma",
+    min: 0,
+    max: 0.04,
+    step: 0.001,
+    value: 0.006,
+  },
+  {
+    label: "Accent hue",
+    prefix: "H",
+    variable: "--st-accent-hue",
+    min: 0,
+    max: 360,
+    step: 1,
+    value: 255,
+    unit: "°",
+  },
+  {
+    label: "Accent chroma",
+    prefix: "C",
+    variable: "--st-accent-chroma",
+    min: 0,
+    max: 0.3,
+    step: 0.005,
+    value: 0,
+  },
+  {
+    label: "Space unit",
+    prefix: "U",
+    variable: "--st-unit",
+    min: 3,
+    max: 6,
+    step: 0.5,
+    value: 4,
+    unit: "px",
+  },
+  { label: "Radius", prefix: "R", variable: "--st-radius", min: 0, max: 10, step: 1, value: 4, unit: "px" },
+  {
+    label: "Font size",
+    prefix: "F",
+    variable: "--st-font-size",
+    min: 10,
+    max: 15,
+    step: 0.5,
+    value: 12,
+    unit: "px",
+  },
+  {
+    label: "Type ratio",
+    prefix: "×",
+    variable: "--st-type-ratio",
+    min: 1.05,
+    max: 1.33,
+    step: 0.005,
+    value: 1.125,
+  },
 ];
 
-$("#knobs").innerHTML = GROUPS.map(
-  ([title, knobs], g) => `
-  ${g ? "<st-divider></st-divider>" : ""}
-  <st-column padding-x="3" padding-y="2.5" gap="1">
-    <st-row class="section-title"><st-heading>${title}</st-heading></st-row>
-    ${knobs
-      .map(
-        (k) => `
-      <st-row class="prop" gap="2">
-        <st-text tone="muted" class="prop-label">${k.label}</st-text>
-        <input type="range" min="${k.min}" max="${k.max}" step="${k.step}" value="${k.value}" data-var="${k.variable}" data-unit="${k.unit ?? ""}" />
-        <st-text numeric class="prop-value">${k.value}</st-text>
-      </st-row>`,
-      )
-      .join("")}
-  </st-column>`,
-).join("");
+const knobs = $("#knobs");
+knobs.insertAdjacentHTML(
+  "beforeend",
+  KNOBS.map(
+    (k, i) => `
+    <st-row class="prop" gap="2" data-knob="${i}">
+      <st-text tone="muted" class="prop-label" size="small">${k.label}</st-text>
+      <st-slider grow label="${k.label}" min="${k.min}" max="${k.max}" step="${k.step}" value="${k.value}"></st-slider>
+      <st-number-field class="narrow" label="${k.label}" min="${k.min}" max="${k.max}" step="${k.step}" precision="3" value="${k.value}" ${k.unit ? `unit="${k.unit}"` : ""}></st-number-field>
+    </st-row>`,
+  ).join(""),
+);
 
-$("#knobs").addEventListener("input", (e) => {
-  const input = e.target as HTMLInputElement;
-  html.style.setProperty(input.dataset.var!, input.value + input.dataset.unit);
-  (input.nextElementSibling as HTMLElement).textContent = input.value;
+knobs.addEventListener("input", (e) => {
+  const row = (e.target as Element).closest<HTMLElement>("[data-knob]");
+  if (!row) return;
+  const knob = KNOBS[Number(row.dataset.knob)]!;
+  const value = (e.target as HTMLElement & { value: number }).value;
+  html.style.setProperty(knob.variable, `${value}${knob.unit === "px" ? "px" : ""}`);
+  for (const el of row.querySelectorAll<HTMLElement & { value: number }>("st-slider, st-number-field")) {
+    if (el !== e.target) el.value = value;
+  }
+});
+
+$("#reset").addEventListener("click", () => {
+  for (const [i, k] of KNOBS.entries()) {
+    html.style.removeProperty(k.variable);
+    for (const el of document.querySelectorAll<HTMLElement & { value: number }>(
+      `[data-knob="${i}"] st-slider, [data-knob="${i}"] st-number-field`,
+    )) {
+      el.value = k.value;
+    }
+  }
 });

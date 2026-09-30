@@ -30,6 +30,7 @@
   --st-text-muted: var(--st-gray-10); /* labels, metadata */
   --st-text-faint: var(--st-gray-9); /* placeholder, disabled */
   --st-text-on-accent: var(--st-gray-1);
+  --st-text-on-status: oklch(100% 0 0); /* on danger / warning / success solids */
 
   /* ---- Accent ---- */
   --st-accent-solid: var(--st-accent-12);

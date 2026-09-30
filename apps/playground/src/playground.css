@@ -1,7 +1,4 @@
-/*
- * Playground-only styles. Tier 1 controls (buttons, fields) don't exist yet,
- * so a few native elements are styled here with Station tokens.
- */
+/* Playground-only layout. Everything interactive is a Station component. */
 html,
 body {
   margin: 0;
@@ -13,15 +10,21 @@ body {
 .bar {
   height: 40px;
 }
+.bar > st-divider {
+  margin-block: 10px;
+}
+.search {
+  width: 180px;
+}
 .side {
   width: 248px;
   flex: none;
 }
+.inspector {
+  width: 264px;
+}
 .panel-header {
   height: 36px;
-}
-.section-title {
-  height: 24px;
 }
 .status {
   height: 24px;
@@ -37,7 +40,6 @@ body {
 .layer {
   height: calc(var(--st-control-height) + 4px);
   padding-inline-start: calc(var(--st-space-2) + var(--depth) * var(--st-space-4));
-  color: var(--st-text);
   cursor: default;
   --st-icon-size: 14px;
 }
@@ -70,58 +72,6 @@ body {
   font-weight: var(--st-weight-medium);
 }
 
-/* ---- Temporary icon button (real one lands in Tier 1) ---- */
-.icon-btn {
-  all: unset;
-  display: inline-grid;
-  place-items: center;
-  width: var(--st-control-height);
-  height: var(--st-control-height);
-  border-radius: var(--st-radius-2);
-  color: var(--st-text-muted);
-  transition: background-color var(--st-duration-fast) var(--st-ease), color var(--st-duration-fast) var(--st-ease);
-}
-.icon-btn:hover {
-  background: var(--st-bg-hover);
-  color: var(--st-text-strong);
-}
-.icon-btn:active {
-  background: var(--st-bg-pressed);
-}
-.icon-btn[aria-pressed="true"] {
-  background: var(--st-bg-selected-strong);
-  color: var(--st-text-on-accent);
-}
-.icon-btn:focus-visible,
-.seg:focus-visible,
-input[type="range"]:focus-visible {
-  outline: var(--st-focus-ring-width) solid var(--st-border-focus);
-  outline-offset: var(--st-focus-ring-offset);
-}
-
-/* ---- Temporary segmented control ---- */
-.seg {
-  all: unset;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--st-space-1);
-  height: calc(var(--st-control-height) - 4px);
-  padding-inline: var(--st-space-2);
-  border-radius: var(--st-radius-1);
-  font-size: var(--st-text-1);
-  font-weight: var(--st-weight-medium);
-  color: var(--st-text-muted);
-  --st-icon-size: 14px;
-}
-.seg:hover {
-  color: var(--st-text-strong);
-}
-.seg[aria-pressed="true"] {
-  background: var(--st-bg-panel);
-  color: var(--st-text-strong);
-  box-shadow: 0 0 0 1px var(--st-border-subtle);
-}
-
 /* ---- Canvas ---- */
 .canvas {
   position: relative;
@@ -135,7 +85,7 @@ input[type="range"]:focus-visible {
   gap: 2px;
 }
 .swatch {
-  height: 32px;
+  height: 28px;
   border-radius: var(--st-radius-1);
   display: flex;
   align-items: flex-end;
@@ -155,29 +105,39 @@ input[type="range"]:focus-visible {
   bottom: var(--st-space-4);
   left: 50%;
   translate: -50% 0;
+  padding: var(--st-space-1);
   background: var(--st-bg-panel);
-  border-radius: var(--st-radius-3);
+  border-radius: var(--st-radius-4);
   box-shadow: var(--st-shadow-floating);
 }
 
-/* ---- Inspector rows ---- */
+/* ---- Inspector ---- */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--st-space-1-5);
+  padding: var(--st-space-2) var(--st-space-3) var(--st-space-3);
+}
+.section-title {
+  height: 24px;
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--st-space-1-5) var(--st-space-2);
+}
+.grid2 st-number-field {
+  width: auto;
+}
 .prop {
-  height: var(--st-control-height);
+  min-height: var(--st-control-height);
 }
 .prop-label {
-  width: 56px;
+  width: 80px;
   flex: none;
+  white-space: nowrap;
 }
-.prop-value {
-  width: 40px;
+.narrow {
+  width: 64px;
   flex: none;
-  text-align: end;
-  color: var(--st-text-strong);
-}
-.prop input[type="range"] {
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-  accent-color: var(--st-accent-solid);
-  height: 4px;
 }
