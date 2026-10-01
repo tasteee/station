@@ -112,6 +112,8 @@ export const editor: ElementMeta[] = [
     cssProperties: [
       { name: "--st-tree-row-height", description: "Row height. Default control height + 4px." },
       { name: "--st-tree-indent", description: "Indent per level. Default 16px." },
+      { name: "--st-tree-row-inset", description: "Gap between rows and the tree's edges. Default 0." },
+      { name: "--st-tree-row-radius", description: "Row corner radius (e.g. pill rows). Default 0." },
     ],
   },
   {

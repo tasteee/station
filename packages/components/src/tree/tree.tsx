@@ -561,8 +561,9 @@ export const Tree = c(
         .row {
           position: absolute;
           top: 0;
-          left: 0;
-          right: 0;
+          left: var(--st-tree-row-inset, 0);
+          right: var(--st-tree-row-inset, 0);
+          border-radius: var(--st-tree-row-radius, 0);
           display: flex;
           align-items: center;
           gap: var(--st-space-1);
@@ -578,7 +579,7 @@ export const Tree = c(
         }
         .row[data-selected] {
           background: var(--st-bg-selected);
-          color: var(--st-text-strong);
+          color: var(--st-text-selected);
         }
         .row[data-selected] .label {
           font-weight: var(--st-weight-medium);

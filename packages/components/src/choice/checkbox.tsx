@@ -54,6 +54,7 @@ export const Checkbox = c(
         :host([indeterminate]) .box {
           background: var(--st-signal-gradient);
           border-color: transparent;
+          box-shadow: var(--st-signal-edge);
         }
       `,
     ],

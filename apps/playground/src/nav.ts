@@ -4,6 +4,7 @@ const PAGES: Record<string, string> = {
   paint: "./paint.html",
   mixer: "./mixer.html",
   assets: "./assets.html",
+  studio: "./studio.html",
 };
 
 for (const nav of document.querySelectorAll<HTMLElement & { value: string }>(".page-nav")) {

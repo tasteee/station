@@ -27,8 +27,13 @@
     oklch(74% calc(var(--st-signal-chroma) * 0.86) var(--st-signal-hue-end)),
     oklch(80% calc(var(--st-signal-chroma) * 0.76) calc(var(--st-signal-hue-end) + 2))
   );
-  /* "On" fills: a short sweep from signal toward amber. Ink stays readable on both ends. */
-  --st-signal-gradient: linear-gradient(115deg, var(--st-signal) 10%, var(--st-signal-end));
+  /* Fills carry dark ink, so they can be brighter than rings. A light signal (lime) keeps a bold
+     fill even on light themes while --st-signal (rings, marks) darkens to keep 3:1. */
+  --st-signal-fill: var(--st-signal);
+  --st-signal-fill-end: var(--st-signal-end);
+  --st-signal-edge: none; /* optional hairline on fills when the fill is close to the surface (light lime) */
+  /* "On" fills: a short sweep toward --st-signal-hue-end. Ink stays readable on both ends. */
+  --st-signal-gradient: linear-gradient(115deg, var(--st-signal-fill) 10%, var(--st-signal-fill-end));
   --st-signal-soft: light-dark(
     color-mix(in oklch, var(--st-signal) 12%, transparent),
     color-mix(in oklch, var(--st-signal) 18%, transparent)
