@@ -142,6 +142,7 @@
             <st-segment value="design">UI design</st-segment>
             <st-segment value="paint">Image editor</st-segment>
             <st-segment value="mixer">Audio mixer</st-segment>
+            <st-segment value="assets">Assets</st-segment>
           </st-segmented-control>
           <st-icon-button id="open-palette" size="small" icon="command" label="Command palette" shortcut="Mod+K"></st-icon-button>
         </st-row>
@@ -233,24 +234,27 @@
                           <stop offset="1" stop-color="#f6a55a" />
                         </linearGradient>
                       </defs>
+                      <filter id="curve-filter" color-interpolation-filters="sRGB">
+                        <feComponentTransfer>
+                          <feFuncR id="func-r" type="table" tableValues="0 1" />
+                          <feFuncG id="func-g" type="table" tableValues="0 1" />
+                          <feFuncB id="func-b" type="table" tableValues="0 1" />
+                        </feComponentTransfer>
+                      </filter>
+                      <g filter="url(#curve-filter)" id="art">
                       <rect width="600" height="800" fill="url(#sky)" />
                       <circle cx="300" cy="430" r="150" fill="#ffd27a" opacity="0.95" />
                       <path d="M0 560 L120 470 L220 540 L330 440 L460 530 L600 460 L600 800 L0 800Z" fill="#2a1a3f" />
                       <path d="M0 640 L160 560 L300 630 L440 570 L600 640 L600 800 L0 800Z" fill="#150d24" />
                       <text x="300" y="130" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="64" fill="#fff" letter-spacing="8">STATION</text>
                       <text x="300" y="175" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="20" fill="#ffffffb0" letter-spacing="6">SUMMER SESSIONS</text>
+                      </g>
                     </svg>
                   </div>
                 </div>
               </div>
               <st-row class="doc-status" padding-x="2" gap="3">
-                <st-select size="small" kind="ghost" value="66.7" id="zoom" label="Zoom" style="width:84px">
-                  <st-option value="25">25%</st-option>
-                  <st-option value="50">50%</st-option>
-                  <st-option value="66.7">66.7%</st-option>
-                  <st-option value="100">100%</st-option>
-                  <st-option value="200">200%</st-option>
-                </st-select>
+                <st-zoom-control size="small" id="zoom" value="66.67"></st-zoom-control>
                 <st-text size="small" tone="muted" numeric>600 × 800 px (72 ppi)</st-text>
                 <st-spacer></st-spacer>
                 <st-text size="small" tone="muted" id="cursor-pos" numeric></st-text>
@@ -259,85 +263,81 @@
           </st-pane>
 
           <!-- Panels dock -->
-          <st-pane size="288" min="240" max="420" collapsible>
-            <st-split orientation="vertical" grow autosave="paint-dock">
-              <st-pane size="300" min="180">
-                <st-panel grow>
-                  <st-tabs value="color" divided grow>
-                    <st-tab value="color">Color</st-tab>
-                    <st-tab value="swatches">Swatches</st-tab>
-                    <st-icon-button slot="actions" size="small" icon="dots" label="Color panel menu" id="color-menu"></st-icon-button>
-                    <st-tab-panel value="color">
-                      <st-column padding="3"><st-color-picker id="picker" value="#ffd27a"></st-color-picker></st-column>
-                    </st-tab-panel>
-                    <st-tab-panel value="swatches">
-                      <st-column padding="3"><st-swatches id="swatches" label="Swatches"></st-swatches></st-column>
-                    </st-tab-panel>
-                  </st-tabs>
-                  <st-menu for="color-menu">
-                    <st-menu-item type="radio" group="model" checked>HSB Sliders</st-menu-item>
-                    <st-menu-item type="radio" group="model">RGB Sliders</st-menu-item>
-                    <st-divider></st-divider>
-                    <st-menu-item>Close Tab Group</st-menu-item>
-                  </st-menu>
-                </st-panel>
-              </st-pane>
-              <st-pane>
-                <st-panel grow>
-                  <st-tabs value="layers" divided grow>
-                    <st-tab value="layers">Layers</st-tab>
-                    <st-tab value="channels">Channels</st-tab>
-                    <st-tab value="paths">Paths</st-tab>
-                    <st-tab-panel value="layers">
-                      <st-column padding-x="2" padding-y="1.5" gap="1.5" class="layer-controls">
-                        <st-row gap="1.5">
-                          <st-select size="small" value="normal" label="Blend mode" grow>
-                            <st-option value="normal">Normal</st-option>
-                            <st-option value="dissolve">Dissolve</st-option>
-                            <st-divider></st-divider>
-                            <st-option value="multiply">Multiply</st-option>
-                            <st-option value="screen">Screen</st-option>
-                            <st-option value="overlay">Overlay</st-option>
-                            <st-option value="soft-light">Soft Light</st-option>
-                          </st-select>
-                          <st-number-field size="small" label="Opacity" abbr="Op" value="100" min="0" max="100" unit="%" style="width:84px"></st-number-field>
-                        </st-row>
-                        <st-row gap="1">
-                          <st-text size="small" tone="muted">Lock</st-text>
-                          <st-toolbar size="small" label="Lock">
-                            <st-toggle-button icon="lock" label="Lock transparent pixels"></st-toggle-button>
-                            <st-toggle-button icon="brush" label="Lock image pixels"></st-toggle-button>
-                            <st-toggle-button icon="arrows-move" label="Lock position"></st-toggle-button>
-                          </st-toolbar>
-                          <st-spacer></st-spacer>
-                          <st-number-field size="small" label="Fill" abbr="Fill" value="100" min="0" max="100" unit="%" style="width:84px"></st-number-field>
-                        </st-row>
-                      </st-column>
+          <st-pane size="300" min="240" max="440">
+            <st-dock id="dock" autosave="paint-dock-v2" label="Panels">
+              <st-dock-panel name="color" label="Color" icon="palette" group="color">
+                <st-column padding="3"><st-color-picker id="picker" value="#ffd27a"></st-color-picker></st-column>
+              </st-dock-panel>
+              <st-dock-panel name="swatches" label="Swatches" icon="grid-dots" group="color">
+                <st-column padding="3"><st-swatches id="swatches" label="Swatches"></st-swatches></st-column>
+              </st-dock-panel>
+              <st-dock-panel name="adjust" label="Curves" icon="adjustments" group="adjust">
+                <st-column padding="3" gap="2">
+                  <st-row gap="2">
+                    <st-select size="small" value="rgb" label="Channel" id="curve-channel" style="width:96px">
+                      <st-option value="rgb">RGB</st-option><st-option value="red">Red</st-option><st-option value="green">Green</st-option><st-option value="blue">Blue</st-option>
+                    </st-select>
+                    <st-spacer></st-spacer>
+                    <st-button size="small" kind="ghost" id="curve-reset">Reset</st-button>
+                  </st-row>
+                  <st-curve-editor id="curves" label="Curves"></st-curve-editor>
+                </st-column>
+              </st-dock-panel>
+              <st-dock-panel name="histogram" label="Histogram" icon="chart-histogram" group="adjust">
+                <st-column padding="3" gap="2">
+                  <st-histogram id="histogram" label="Image histogram"></st-histogram>
+                  <st-segmented-control size="small" block value="colors" id="hist-mode" label="Histogram channels">
+                    <st-segment value="colors">Colors</st-segment><st-segment value="luminosity">Luminosity</st-segment>
+                  </st-segmented-control>
+                </st-column>
+              </st-dock-panel>
+              <st-dock-panel name="layers" label="Layers" icon="stack" group="layers">
+                <st-column padding-x="2" padding-y="1.5" gap="1.5" class="layer-controls">
+                  <st-row gap="1.5">
+                    <st-select size="small" value="normal" label="Blend mode" grow>
+                      <st-option value="normal">Normal</st-option>
+                      <st-option value="dissolve">Dissolve</st-option>
                       <st-divider></st-divider>
-                      <st-tree id="layers" grow label="Layers" renamable reorderable style="--st-tree-row-height:36px"></st-tree>
-                      <st-panel-footer>
-                        <st-spacer></st-spacer>
-                        <st-button-group size="small" label="Layer actions">
-                          <st-icon-button icon="link" label="Link layers"></st-icon-button>
-                          <st-icon-button icon="wand" label="Add a layer style"></st-icon-button>
-                          <st-icon-button icon="mask" label="Add layer mask"></st-icon-button>
-                          <st-icon-button icon="brightness-half" label="New adjustment layer"></st-icon-button>
-                          <st-icon-button icon="folder" label="New group" shortcut="Mod+G" id="new-group"></st-icon-button>
-                          <st-icon-button icon="plus" label="New layer" shortcut="Mod+Shift+N" id="new-layer"></st-icon-button>
-                          <st-icon-button icon="trash" label="Delete layer" id="delete-layer"></st-icon-button>
-                        </st-button-group>
-                      </st-panel-footer>
-                    </st-tab-panel>
-                    <st-tab-panel value="channels">
-                      <st-empty-state grow><st-icon name="palette"></st-icon><st-heading>RGB channels</st-heading><st-text size="small">Channel thumbnails go here.</st-text></st-empty-state>
-                    </st-tab-panel>
-                    <st-tab-panel value="paths">
-                      <st-empty-state grow><st-icon name="vector-bezier-2"></st-icon><st-heading>No paths</st-heading><st-text size="small">Draw with the Pen tool to create one.</st-text></st-empty-state>
-                    </st-tab-panel>
-                  </st-tabs>
-                </st-panel>
-              </st-pane>
-            </st-split>
+                      <st-option value="multiply">Multiply</st-option>
+                      <st-option value="screen">Screen</st-option>
+                      <st-option value="overlay">Overlay</st-option>
+                      <st-option value="soft-light">Soft Light</st-option>
+                    </st-select>
+                    <st-number-field size="small" label="Opacity" abbr="Op" value="100" min="0" max="100" unit="%" style="width:84px"></st-number-field>
+                  </st-row>
+                  <st-row gap="1">
+                    <st-text size="small" tone="muted">Lock</st-text>
+                    <st-toolbar size="small" label="Lock">
+                      <st-toggle-button icon="lock" label="Lock transparent pixels"></st-toggle-button>
+                      <st-toggle-button icon="brush" label="Lock image pixels"></st-toggle-button>
+                      <st-toggle-button icon="arrows-move" label="Lock position"></st-toggle-button>
+                    </st-toolbar>
+                    <st-spacer></st-spacer>
+                    <st-number-field size="small" label="Fill" abbr="Fill" value="100" min="0" max="100" unit="%" style="width:84px"></st-number-field>
+                  </st-row>
+                </st-column>
+                <st-divider></st-divider>
+                <st-tree id="layers" grow label="Layers" renamable reorderable style="--st-tree-row-height:36px"></st-tree>
+                <st-panel-footer>
+                  <st-spacer></st-spacer>
+                  <st-button-group size="small" label="Layer actions">
+                    <st-icon-button icon="link" label="Link layers"></st-icon-button>
+                    <st-icon-button icon="wand" label="Add a layer style"></st-icon-button>
+                    <st-icon-button icon="mask" label="Add layer mask"></st-icon-button>
+                    <st-icon-button icon="brightness-half" label="New adjustment layer"></st-icon-button>
+                    <st-icon-button icon="folder" label="New group" shortcut="Mod+G" id="new-group"></st-icon-button>
+                    <st-icon-button icon="plus" label="New layer" shortcut="Mod+Shift+N" id="new-layer"></st-icon-button>
+                    <st-icon-button icon="trash" label="Delete layer" id="delete-layer"></st-icon-button>
+                  </st-button-group>
+                </st-panel-footer>
+              </st-dock-panel>
+              <st-dock-panel name="channels" label="Channels" icon="palette" group="layers">
+                <st-empty-state grow><st-icon name="palette"></st-icon><st-heading>RGB channels</st-heading><st-text size="small">Channel thumbnails go here.</st-text></st-empty-state>
+              </st-dock-panel>
+              <st-dock-panel name="paths" label="Paths" icon="vector-bezier-2" group="layers">
+                <st-empty-state grow><st-icon name="vector-bezier-2"></st-icon><st-heading>No paths</st-heading><st-text size="small">Draw with the Pen tool to create one.</st-text></st-empty-state>
+              </st-dock-panel>
+            </st-dock>
           </st-pane>
         </st-split>
       </st-row>
@@ -357,6 +357,13 @@
       <st-menu-item value="merge" shortcut="Mod+E">Merge Down</st-menu-item>
       <st-menu-item value="flatten">Flatten Image</st-menu-item>
     </st-menu>
+
+    <st-popover id="gradient-popover" placement="bottom-start" label="Gradient editor">
+      <st-column gap="2">
+        <st-heading size="small" tone="muted">GRADIENT</st-heading>
+        <st-gradient-editor id="gradient" label="Gradient"></st-gradient-editor>
+      </st-column>
+    </st-popover>
 
     <st-popover id="fg-popover" placement="right-start" label="Foreground color">
       <st-color-picker id="fg-picker" value="#ffd27a"></st-color-picker>

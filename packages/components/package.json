@@ -83,7 +83,19 @@
     "./ruler": "./src/define/ruler.ts",
     "./knob": "./src/define/knob.ts",
     "./meter": "./src/define/meter.ts",
-    "./command-palette": "./src/define/command-palette.ts"
+    "./command-palette": "./src/define/command-palette.ts",
+    "./vector-field": "./src/define/vector-field.ts",
+    "./inline-edit": "./src/define/inline-edit.ts",
+    "./breadcrumbs": "./src/define/breadcrumbs.ts",
+    "./crumb": "./src/define/crumb.ts",
+    "./zoom-control": "./src/define/zoom-control.ts",
+    "./curve-editor": "./src/define/curve-editor.ts",
+    "./gradient-editor": "./src/define/gradient-editor.ts",
+    "./histogram": "./src/define/histogram.ts",
+    "./data-table": "./src/define/data-table.ts",
+    "./timeline": "./src/define/timeline.ts",
+    "./dock": "./src/define/dock.ts",
+    "./dock-panel": "./src/define/dock-panel.ts"
   },
   "publishConfig": {
     "exports": {
@@ -318,6 +330,54 @@
       "./command-palette": {
         "types": "./dist/define/command-palette.d.ts",
         "default": "./dist/define/command-palette.js"
+      },
+      "./vector-field": {
+        "types": "./dist/define/vector-field.d.ts",
+        "default": "./dist/define/vector-field.js"
+      },
+      "./inline-edit": {
+        "types": "./dist/define/inline-edit.d.ts",
+        "default": "./dist/define/inline-edit.js"
+      },
+      "./breadcrumbs": {
+        "types": "./dist/define/breadcrumbs.d.ts",
+        "default": "./dist/define/breadcrumbs.js"
+      },
+      "./crumb": {
+        "types": "./dist/define/crumb.d.ts",
+        "default": "./dist/define/crumb.js"
+      },
+      "./zoom-control": {
+        "types": "./dist/define/zoom-control.d.ts",
+        "default": "./dist/define/zoom-control.js"
+      },
+      "./curve-editor": {
+        "types": "./dist/define/curve-editor.d.ts",
+        "default": "./dist/define/curve-editor.js"
+      },
+      "./gradient-editor": {
+        "types": "./dist/define/gradient-editor.d.ts",
+        "default": "./dist/define/gradient-editor.js"
+      },
+      "./histogram": {
+        "types": "./dist/define/histogram.d.ts",
+        "default": "./dist/define/histogram.js"
+      },
+      "./data-table": {
+        "types": "./dist/define/data-table.d.ts",
+        "default": "./dist/define/data-table.js"
+      },
+      "./timeline": {
+        "types": "./dist/define/timeline.d.ts",
+        "default": "./dist/define/timeline.js"
+      },
+      "./dock": {
+        "types": "./dist/define/dock.d.ts",
+        "default": "./dist/define/dock.js"
+      },
+      "./dock-panel": {
+        "types": "./dist/define/dock-panel.d.ts",
+        "default": "./dist/define/dock-panel.js"
       }
     }
   },

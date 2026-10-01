@@ -32,3 +32,19 @@ it("React 19 renders layout attributes and element props", async () => {
   expect(kbd.kind).toBe("boxed");
   expect(kbd.shadowRoot!.querySelectorAll("kbd").length).toBe(2);
 });
+
+it("React 19 binds onChange (synthetic) and lowercase onchange (native, with detail)", async () => {
+  const seen: string[] = [];
+  const host = await render(
+    <st-vector-field
+      value="1 2"
+      onChange={(e) => seen.push(`synthetic:${e.currentTarget.values.join(",")}`)}
+      onchange={(e) => seen.push(`native:${e.detail.values.join(",")}`)}
+    />,
+  );
+  const field = host.querySelector("st-vector-field")!;
+  await (field as unknown as { updated: Promise<void> }).updated;
+  field.dispatchEvent(new CustomEvent("change", { bubbles: true, detail: { values: [3, 4] } }));
+  expect(seen).toContain("native:3,4");
+  expect(seen.some((s) => s.startsWith("synthetic:"))).toBe(true);
+});

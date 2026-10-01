@@ -119,3 +119,13 @@
 .layer-controls {
   flex: none;
 }
+
+.grad-chip {
+  width: 32px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px var(--st-gray-a5);
+}
+#dock {
+  height: 100%;
+}

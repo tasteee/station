@@ -93,3 +93,52 @@ export const editors = (
 );
 // @ts-expect-error: format must be number | time
 export const badRuler = <st-ruler format="bars" />;
+
+export const kits = (
+  <st-column>
+    <st-vector-field
+      axes="w h"
+      value="640 480"
+      linkable
+      linked
+      onchange={(e) => e.detail.values}
+      onChange={(e) => e.currentTarget.values}
+    />
+    <st-inline-edit value="Layer 1" onchange={(e) => e.detail.value} oncancel={() => {}} />
+    <st-breadcrumbs>
+      <st-crumb icon="home" value="root" onselect={(e) => e.detail.value}>
+        Home
+      </st-crumb>
+    </st-breadcrumbs>
+    <st-zoom-control value={100} onfit={() => {}} onchange={(e) => e.detail.value} />
+    <st-curve-editor
+      points={[
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ]}
+      interpolation="linear"
+      histogram={[1, 2, 3]}
+    />
+    <st-gradient-editor stops={[{ offset: 0, color: "#000" }]} />
+    <st-histogram channels={{ red: [1, 2] }} />
+    <st-data-table
+      columns={[{ key: "name", label: "Name", sortable: true }]}
+      rows={[{ id: "a", name: "x" }]}
+      sort={{ key: "name", direction: "ascending" }}
+      oncellchange={(e) => e.detail.value}
+      onsortchange={(e) => e.detail.direction}
+    />
+    <st-timeline
+      zoom={24}
+      tracks={[{ id: "t", label: "Video", clips: [{ id: "c", start: 0, end: 2 }] }]}
+      trackToggles={[{ key: "muted", label: "Mute", text: "M" }]}
+      onclipchange={(e) => e.detail.start}
+      onseek={(e) => e.detail.time}
+    />
+    <st-dock autosave="dock" onlayoutchange={(e) => e.detail.layout.groups}>
+      <st-dock-panel name="layers" label="Layers" icon="stack" group="a" />
+    </st-dock>
+  </st-column>
+);
+// @ts-expect-error: interpolation must be smooth | linear
+export const badCurve = <st-curve-editor interpolation="bezier" />;

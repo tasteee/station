@@ -51,6 +51,18 @@ import "./define/ruler.ts";
 import "./define/knob.ts";
 import "./define/meter.ts";
 import "./define/command-palette.ts";
+import "./define/vector-field.ts";
+import "./define/inline-edit.ts";
+import "./define/breadcrumbs.ts";
+import "./define/crumb.ts";
+import "./define/zoom-control.ts";
+import "./define/curve-editor.ts";
+import "./define/gradient-editor.ts";
+import "./define/histogram.ts";
+import "./define/data-table.ts";
+import "./define/timeline.ts";
+import "./define/dock.ts";
+import "./define/dock-panel.ts";
 
 export type { IconDefinition } from "@station/icons";
 export { getIcon, hasIcon, registerIcons } from "@station/icons";

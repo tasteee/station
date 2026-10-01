@@ -20,6 +20,8 @@ export interface PropertyMeta {
   /** TypeScript type text. */
   type: string;
   description: string;
+  /** A getter/setter on the class, not an Atomico prop (no attribute, not in `props`). */
+  accessor?: boolean;
 }
 
 export interface EventMeta {

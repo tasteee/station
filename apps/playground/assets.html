@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Station · Asset Browser</title>
+    <link rel="icon" href="data:," />
+    <script type="module" src="/src/assets.ts"></script>
+  </head>
+  <body>
+    <st-column class="app">
+      <st-surface level="panel">
+        <st-row class="bar" padding-x="3" gap="2">
+          <st-icon name="folder-open"></st-icon>
+          <st-heading>Station</st-heading>
+          <st-segmented-control class="page-nav" size="small" value="assets" label="Playground page">
+            <st-segment value="design">UI design</st-segment>
+            <st-segment value="paint">Image editor</st-segment>
+            <st-segment value="mixer">Audio mixer</st-segment>
+            <st-segment value="assets">Assets</st-segment>
+          </st-segmented-control>
+          <st-spacer></st-spacer>
+          <st-search-field size="small" id="search" label="Search assets" placeholder="Search assets" style="width:220px"></st-search-field>
+        </st-row>
+      </st-surface>
+      <st-divider></st-divider>
+      <st-surface level="panel">
+        <st-row class="crumbs-row" padding-x="3" gap="2">
+          <st-icon-button size="small" icon="arrow-back-up" label="Back" id="back"></st-icon-button>
+          <st-breadcrumbs id="crumbs" grow></st-breadcrumbs>
+          <st-button size="small" kind="ghost" icon="folder">New folder</st-button>
+          <st-button size="small" kind="solid" tone="accent" icon="download">Import</st-button>
+        </st-row>
+      </st-surface>
+      <st-divider></st-divider>
+
+      <st-split grow autosave="assets-main">
+        <st-pane size="220" min="160" max="360" collapsible>
+          <st-panel grow>
+            <st-panel-header><st-heading size="small" tone="muted">FOLDERS</st-heading></st-panel-header>
+            <st-tree id="folders" grow label="Folders" selection-mode="single"></st-tree>
+          </st-panel>
+        </st-pane>
+        <st-pane>
+          <st-data-table id="files" grow label="Files">
+            <st-empty-state slot="empty"><st-icon name="search"></st-icon><st-heading>Nothing here</st-heading><st-text size="small">Try another folder or search.</st-text></st-empty-state>
+          </st-data-table>
+        </st-pane>
+        <st-pane size="280" min="220" collapsible>
+          <st-panel grow class="details" id="details">
+            <st-panel-header divided><st-heading>Details</st-heading></st-panel-header>
+            <st-scroll-area grow axis="y">
+              <st-column padding="3" gap="3">
+                <div class="preview" id="preview"></div>
+                <st-heading size="large"><st-inline-edit id="name" label="File name"></st-inline-edit></st-heading>
+                <st-column gap="1.5">
+                  <st-property-row label="Kind"><st-text id="kind"></st-text></st-property-row>
+                  <st-property-row label="Size"><st-text numeric id="size"></st-text></st-property-row>
+                  <st-property-row label="Dimensions"><st-vector-field id="dims" axes="w h" unit="px" size="small" disabled></st-vector-field></st-property-row>
+                  <st-property-row label="Modified"><st-text id="modified"></st-text></st-property-row>
+                  <st-property-row label="Label">
+                    <st-swatches id="label-color" label="Color label" value="#00000000">
+                      <st-color-swatch color="#e5484d" label="Red"></st-color-swatch>
+                      <st-color-swatch color="#f76b15" label="Orange"></st-color-swatch>
+                      <st-color-swatch color="#ffc53d" label="Yellow"></st-color-swatch>
+                      <st-color-swatch color="#46a758" label="Green"></st-color-swatch>
+                      <st-color-swatch color="#3e63dd" label="Blue"></st-color-swatch>
+                      <st-color-swatch color="#8e4ec6" label="Purple"></st-color-swatch>
+                    </st-swatches>
+                  </st-property-row>
+                  <st-property-row label="Tags"><st-text-field size="small" placeholder="Add tags" label="Tags"></st-text-field></st-property-row>
+                </st-column>
+              </st-column>
+            </st-scroll-area>
+          </st-panel>
+        </st-pane>
+      </st-split>
+
+      <st-divider></st-divider>
+      <st-surface level="panel">
+        <st-row class="status" padding-x="3" gap="3">
+          <st-text size="small" tone="muted" id="count"></st-text>
+          <st-spacer></st-spacer>
+          <st-text size="small" tone="faint">Type in a Name cell to rename · Space toggles selection</st-text>
+        </st-row>
+      </st-surface>
+    </st-column>
+  </body>
+</html>

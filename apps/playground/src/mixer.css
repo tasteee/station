@@ -23,9 +23,11 @@
   height: 100%;
   background: var(--st-bg-canvas);
 }
-.ruler-row {
+.arrange-bar {
+  height: 32px;
   flex: none;
-  border-bottom: 1px solid var(--st-border);
+  background: var(--st-bg-panel);
+  border-bottom: 1px solid var(--st-border-subtle);
 }
 .track-head-spacer {
   width: 180px;

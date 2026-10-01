@@ -1,0 +1,14 @@
+.crumbs-row {
+  height: 36px;
+}
+.preview {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--st-radius-3);
+  box-shadow: inset 0 0 0 1px var(--st-gray-a4);
+}
+.details[data-empty] st-scroll-area {
+  visibility: hidden;
+}
+#files {
+  height: 100%;
+}

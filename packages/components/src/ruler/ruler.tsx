@@ -54,9 +54,13 @@ export const Ruler = c(
   ({ orientation, zoom, offset, marker, rangeStart, rangeEnd, format, fps }) => {
     const host = useHost<RulerEl>();
     const canvas = useRef<HTMLCanvasElement>();
-    const vertical = orientation === "vertical";
+    // The ResizeObserver keeps the first draw(); read the latest props through a ref.
+    const latest = useRef({ orientation, zoom, offset, marker, rangeStart, rangeEnd, format, fps });
+    latest.current = { orientation, zoom, offset, marker, rangeStart, rangeEnd, format, fps };
 
     const draw = () => {
+      const { orientation, zoom, offset, marker, rangeStart, rangeEnd, format, fps } = latest.current;
+      const vertical = orientation === "vertical";
       const cv = canvas.current;
       if (!cv) return;
       const el = host.current;

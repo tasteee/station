@@ -16,6 +16,7 @@
             <st-segment value="design">UI design</st-segment>
             <st-segment value="paint">Image editor</st-segment>
             <st-segment value="mixer">Audio mixer</st-segment>
+            <st-segment value="assets">Assets</st-segment>
           </st-segmented-control>
           <st-spacer></st-spacer>
           <st-toolbar label="Transport">
@@ -51,11 +52,13 @@
       <st-split orientation="vertical" grow autosave="mixer-main">
         <st-pane>
           <st-column grow class="arrange">
-            <st-row class="ruler-row">
-              <span class="track-head-spacer"></span>
-              <st-ruler id="timeline-ruler" format="time" zoom="24" grow></st-ruler>
+            <st-row class="arrange-bar" padding-x="3" gap="2">
+              <st-text size="small" tone="muted">Arrangement</st-text>
+              <st-text size="small" tone="faint">Drag clips, trim edges, scrub the ruler. Alt disables snapping.</st-text>
+              <st-spacer></st-spacer>
+              <st-zoom-control size="small" id="tl-zoom" value="100" no-fit></st-zoom-control>
             </st-row>
-            <st-scroll-area grow axis="y" id="tracks"></st-scroll-area>
+            <st-timeline id="timeline" grow snap="0.5" duration="40" label="Arrangement"></st-timeline>
           </st-column>
         </st-pane>
         <st-pane size="330" min="240" max="520" collapsible>

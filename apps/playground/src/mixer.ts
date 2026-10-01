@@ -41,25 +41,87 @@ const TRACKS = [
   },
   { name: "FX Bus", color: "#d6409f", clips: [[28, 4]] },
 ];
-const SECONDS = 36;
+const SECONDS = 40;
 
-// ---------- Arrangement ----------
-const tracks = $("#tracks");
-tracks.innerHTML = TRACKS.map(
-  (t, i) => `
-  <st-row class="track" data-track="${i}">
-    <st-row class="track-head" gap="1.5" padding-x="2">
-      <span class="swatch" style="background:${t.color}"></span>
-      <st-text size="small" tone="strong" truncate grow>${t.name}</st-text>
-      <st-toggle-button size="small" label="Mute ${t.name}" class="ms">M</st-toggle-button>
-      <st-toggle-button size="small" label="Solo ${t.name}" class="ms">S</st-toggle-button>
-    </st-row>
-    <div class="lane">
-      ${t.clips.map(([start, len]) => `<div class="clip" style="--c:${t.color};left:calc(${start} * var(--pps));width:calc(${len} * var(--pps))"><span>${t.name}</span></div>`).join("")}
-      <div class="playhead"></div>
-    </div>
-  </st-row>`,
-).join("");
+// ---------- Arrangement (st-timeline) ----------
+const timeline = $("#timeline");
+let tracks = TRACKS.map((t, i) => ({
+  id: `t${i}`,
+  label: t.name,
+  color: t.color,
+  muted: false,
+  solo: false,
+  clips: t.clips.map(([start = 0, len = 0], j) => ({
+    id: `t${i}c${j}`,
+    start,
+    end: start + len,
+    label: t.name,
+  })),
+  keyframes:
+    t.name === "Vocal"
+      ? [
+          { id: "k1", time: 12 },
+          { id: "k2", time: 16 },
+          { id: "k3", time: 24 },
+        ]
+      : [],
+}));
+timeline.trackToggles = [
+  { key: "muted", label: "Mute", text: "M" },
+  { key: "solo", label: "Solo", text: "S" },
+];
+const renderTracks = () => {
+  timeline.tracks = tracks;
+};
+renderTracks();
+timeline.addEventListener("clipchange", (e: Event) => {
+  const { id, trackId, start, end } = (e as CustomEvent).detail;
+  let moved: { id: string; start: number; end: number; label: string } | undefined;
+  tracks = tracks.map((t) => {
+    const keep = t.clips.filter((c) => {
+      if (c.id === id) moved = { ...c, start, end };
+      return c.id !== id;
+    });
+    return { ...t, clips: keep };
+  });
+  tracks = tracks.map((t) =>
+    t.id === trackId && moved ? { ...t, clips: [...t.clips, { ...moved, label: t.label }] } : t,
+  );
+  renderTracks();
+});
+timeline.addEventListener("keyframechange", (e: Event) => {
+  const { id, time } = (e as CustomEvent).detail;
+  tracks = tracks.map((t) => ({
+    ...t,
+    keyframes: t.keyframes.map((k) => (k.id === id ? { ...k, time } : k)),
+  }));
+  renderTracks();
+});
+timeline.addEventListener("delete", (e: Event) => {
+  const ids: string[] = (e as CustomEvent).detail.ids;
+  tracks = tracks.map((t) => ({
+    ...t,
+    clips: t.clips.filter((c) => !ids.includes(c.id)),
+    keyframes: t.keyframes.filter((k) => !ids.includes(k.id)),
+  }));
+  renderTracks();
+});
+timeline.addEventListener("trackchange", (e: Event) => {
+  const { id, key, value } = (e as CustomEvent).detail;
+  tracks = tracks.map((t) => (t.id === id ? { ...t, [key]: value } : t));
+  renderTracks();
+  const index = Number(id.slice(1));
+  const strip = mixer.querySelectorAll<El>(".strip")[index];
+  const btn = strip?.querySelector<El>(key === "muted" ? ".ms:not(.solo)" : ".ms.solo");
+  if (btn) btn.pressed = value;
+});
+timeline.addEventListener("seek", (e: Event) => setPosition((e as CustomEvent).detail.time));
+const tlZoom = $("#tl-zoom");
+tlZoom.addEventListener("change", () => (timeline.zoom = (tlZoom.value / 100) * 24));
+timeline.addEventListener(
+  "zoomchange",
+  (e: Event) => (tlZoom.value = Math.round(((e as CustomEvent).detail.zoom / 24) * 100)),
+);
 
 // ---------- Mixer strips ----------
 const strip = (name: string, color: string, master = false) => `
@@ -107,7 +169,6 @@ for (const s of mixer.querySelectorAll<El>(".strip")) {
 }
 
 // ---------- Transport + meters ----------
-const ruler = $("#timeline-ruler");
 const play = $("#play");
 let playing = false;
 let position = 0;
@@ -116,8 +177,7 @@ const levels = new Map<El, { level: number; peak: number; hold: number }>();
 
 function setPosition(p: number) {
   position = p;
-  ruler.marker = p;
-  document.documentElement.style.setProperty("--playhead", String(p));
+  timeline.playhead = p;
   const m = Math.floor(p / 60);
   $("#clock").textContent = `${m}:${(p % 60).toFixed(1).padStart(4, "0")}`;
 }

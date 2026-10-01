@@ -32,6 +32,11 @@ writeFileSync(
     'export { toast, type ToastOptions } from "./feedback/toast.tsx";',
     'export { type MoveDetail, moveItems, type TreeItem, type TreeToggle, updateItem } from "./tree/model.ts";',
     'export type { Command } from "./palette/command-palette.tsx";',
+    'export { updateRow, type TableColumn, type TableRow, type TableSort } from "./table/data-table.tsx";',
+    'export { colorAt, type GradientStop } from "./imaging/gradient-editor.tsx";',
+    'export type { HistogramChannels } from "./imaging/histogram.tsx";',
+    'export type { TimelineClip, TimelineKeyframe, TimelineToggle, TimelineTrack } from "./timeline/timeline.tsx";',
+    'export type { DockGroup, DockLayout } from "./dock/dock.tsx";',
     "",
   ].join("\n"),
 );

@@ -24,6 +24,19 @@ describe("st-ruler", () => {
     const left = ruler.getBoundingClientRect().left;
     expect(ruler.valueAt(left + 100)).toBe(0);
   });
+
+  it("keeps current props when a resize redraws it", async () => {
+    const root = await mount(`<st-ruler zoom="2" offset="-50" style="width:400px"></st-ruler>`);
+    const ruler = $(root, "st-ruler");
+    ruler.marker = 13; // x = 126px, away from labels
+    await settle(root);
+    ruler.style.width = "420px";
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const canvas = ruler.shadowRoot!.querySelector("canvas")!;
+    const dpr = window.devicePixelRatio || 1;
+    const px = canvas.getContext("2d")!.getImageData(Math.round(126 * dpr), 1, 1, 1).data;
+    expect(px[3]).toBeGreaterThan(0);
+  });
 });
 
 describe("st-knob", () => {

@@ -43,6 +43,7 @@ function attrDefault(a: AttributeMeta) {
 // Data types are copied in so the typings stand alone (no source or JSX imports).
 const dataTypes = readFileSync(join(root, "src/data-types.ts"), "utf8");
 const common: string[] = [HEADER, dataTypes];
+const dataTypeNames = [...dataTypes.matchAll(/export interface (\w+)/g)].map((m) => m[1]!);
 for (const el of elements) {
   common.push(`/** <${el.tag}> — ${el.description} */`);
   common.push(`export interface ${attrsName(el)} {`);
@@ -110,7 +111,7 @@ function jsxBlock(open: string, close: string, entry: (el: ElementMeta) => strin
   const lines = [
     HEADER,
     importLine,
-    `import type { ${elements.flatMap((el) => [attrsName(el), propsName(el), elementName(el)]).join(", ")} } from "./elements.js";`,
+    `import type { ${[...dataTypeNames, ...elements.flatMap((el) => [attrsName(el), propsName(el), elementName(el)])].join(", ")} } from "./elements.js";`,
     "",
     open,
   ];
@@ -120,14 +121,15 @@ function jsxBlock(open: string, close: string, entry: (el: ElementMeta) => strin
 }
 
 // ---------- React 19 ----------
-// React routes onChange / onInput through its own events; other events bind as `on<name>` in lowercase.
+// React routes onChange / onInput through its own synthetic events (read e.currentTarget).
+// Every event, change/input included, also binds natively as lowercase `on<name>` with its detail typed.
 writeFileSync(
   join(typesDir, "react.d.ts"),
   jsxBlock(
     'declare module "react" {\n  namespace JSX {\n    interface IntrinsicElements {',
     "    }\n  }\n}",
     (el) =>
-      `React.DetailedHTMLProps<Omit<React.HTMLAttributes<${elementName(el)}>, keyof ${attrsName(el)}>, ${elementName(el)}> & ${attrsName(el)} & ${propsName(el)} & { class?: string; ${eventProps(el, (t) => `(event: ${t}) => void`, ["change", "input"])} }`,
+      `React.DetailedHTMLProps<Omit<React.HTMLAttributes<${elementName(el)}>, keyof ${attrsName(el)}>, ${elementName(el)}> & ${attrsName(el)} & ${propsName(el)} & { class?: string; ${eventProps(el, (t) => `(event: ${t}) => void`)} }`,
     'import type * as React from "react";',
   ),
 );
@@ -165,7 +167,7 @@ writeFileSync(
   const lines = [
     HEADER,
     'import type { DefineComponent } from "vue";',
-    `import type { ${elements.flatMap((el) => [attrsName(el), propsName(el)]).join(", ")} } from "./elements.js";`,
+    `import type { ${[...dataTypeNames, ...elements.flatMap((el) => [attrsName(el), propsName(el)])].join(", ")} } from "./elements.js";`,
     "",
     // biome-ignore lint/suspicious/noTemplateCurlyInString: emits a TS mapped type.
     "type Handlers<E> = { [K in keyof E as `on${Capitalize<K & string>}`]?: (event: E[K]) => void };",

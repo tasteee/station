@@ -69,6 +69,9 @@ importers:
 
   apps/playground:
     dependencies:
+      '@station/behaviors':
+        specifier: workspace:*
+        version: link:../../packages/behaviors
       '@station/components':
         specifier: workspace:*
         version: link:../../packages/components

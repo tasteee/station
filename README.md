@@ -14,10 +14,10 @@ See [`docs/PLAN.md`](docs/PLAN.md) for the full design plan.
 | Package | What |
 |---|---|
 | `@station/tokens` | CSS only: knobs, 12-step scales, light + dark themes, semantic tokens, layout primitives, text, surfaces |
-| `@station/components` | Atomico elements: controls (Tier 1) plus sections, property rows, tabs, menus, popover, dialogs, toasts, progress (Tier 2) |
+| `@station/components` | Atomico elements: controls (Tier 1), structure + overlays (Tier 2), editor-grade (Tier 3), domain kits (Tier 4) |
 | `@station/icons` | Icon registry + all 6,000+ Tabler icons as tree-shakeable exports |
-| `@station/behaviors` | Framework-free logic: roving focus, typeahead, drag-to-scrub, safe math, popover positioning, shortcuts |
-| `apps/playground` | Three demo apps: UI design (Figma-like), image editor (Photoshop-like, dark), audio mixer (DAW-like) |
+| `@station/behaviors` | Framework-free logic: roving focus, typeahead, drag-to-scrub, safe math, popover positioning, shortcuts, color math, fuzzy match, curves |
+| `apps/playground` | Four demo apps: UI design (Figma-like), image editor (Photoshop-like, dark), audio mixer (DAW-like), asset browser (file manager / data tool) |
 | `apps/storybook` | Component workshop with theme + density toolbar |
 | `apps/interop` | Type fixtures for React, Preact, Solid, Vue, Svelte + React runtime test |
 
@@ -139,6 +139,23 @@ Every control: host is the control (focus, ARIA via `ElementInternals`), `input`
 | `st-slider orientation="vertical"` | Faders |
 | `st-command-palette` | Fuzzy search over `commands`; `hotkey="Mod+K"` |
 
+## Domain kits (Tier 4)
+
+| Element | Notes |
+|---|---|
+| `st-dock` + `st-dock-panel` | Photoshop/After Effects panel dock: tab groups, drag tabs between groups, resize, minimize, collapse to icon strip with flyouts. `layout` property + `autosave` |
+| `st-data-table` | Virtualized grid: `columns` + `rows`, resizable columns, sort, multi-select, cell editing. Never mutates data; use `updateRow()` |
+| `st-timeline` | Multi-track clips + keyframes: move, trim, drag between tracks, snapping, playhead scrub, Mod+wheel zoom, track toggles (M/S/lock) |
+| `st-curve-editor` | Curves / easing / automation. Monotone spline (no overshoot) or linear, histogram backdrop, `evaluate(x)` |
+| `st-gradient-editor` | Stops bar + color/location fields. `toCSS(angle)`; `colorAt(stops, t)` helper |
+| `st-histogram` | Canvas histogram: one series (`bins`) or RGB overlay (`channels`), log scale |
+| `st-vector-field` | X Y / W H / X Y Z in one control, scrub labels, aspect lock (`linkable`) |
+| `st-inline-edit` | Double-click / F2 to rename text in place |
+| `st-breadcrumbs` + `st-crumb` | Path bar; middle crumbs fold into "…" when narrow |
+| `st-zoom-control` | −/+ through presets, typed %, menu with Fit |
+
+**Timing note.** Methods and accessors (`evaluate`, `layout`, `valueAt`…) exist after the first render. Await `el.updated` before calling them on a freshly created element.
+
 ## Framework typings
 
 Generated from one metadata source (`packages/components/meta`). Add one line to get typed tags and attributes:
@@ -151,7 +168,7 @@ import type {} from "@station/components/react";  // or /preact, /solid, /vue, /
 - `@station/components/custom-elements.json`: Custom Elements Manifest.
 - `@station/components/vscode.html-data.json`: add to `html.customData` in VS Code for autocomplete in plain HTML.
 
-**Events.** Station uses native names (`input`, `change`) so `onChange` / `onInput` work in React 19, `@change` in Vue, `onchange` in Svelte. Other events are single lowercase words (React: `oncommit={…}`).
+**Events.** Station uses native names (`input`, `change`) so `onChange` / `onInput` work in React 19, `@change` in Vue, `onchange` in Svelte. Other events are single lowercase words (React: `oncommit={…}`). In React, `onChange` is React's synthetic event (read `e.currentTarget`); lowercase `onchange` binds the native event, so `e.detail` is typed.
 
 ## Develop
 

@@ -15,17 +15,27 @@ export { ColorPicker } from "./color/color-picker.tsx";
 export { ColorSwatch, Swatches } from "./color/swatch.tsx";
 export { AlertDialog, type ConfirmOptions, confirm } from "./dialog/alert-dialog.tsx";
 export { Dialog } from "./dialog/dialog.tsx";
+export type { DockGroup, DockLayout } from "./dock/dock.tsx";
+export { Dock, DockPanel } from "./dock/dock.tsx";
 export { Progress, Spinner } from "./feedback/progress.tsx";
 export { Toast, Toaster, type ToastOptions, toast } from "./feedback/toast.tsx";
 export { NumberField } from "./field/number-field.tsx";
 export { SearchField, TextField } from "./field/text-field.tsx";
 export { Textarea } from "./field/textarea.tsx";
 export { Icon } from "./icon/icon.tsx";
+export { CurveEditor } from "./imaging/curve-editor.tsx";
+export { colorAt, GradientEditor, type GradientStop } from "./imaging/gradient-editor.tsx";
+export type { HistogramChannels } from "./imaging/histogram.tsx";
+export { Histogram } from "./imaging/histogram.tsx";
 export { Kbd } from "./kbd/kbd.tsx";
 export { Menu } from "./menu/menu.tsx";
 export { MenuItem } from "./menu/menu-item.tsx";
 export { Menubar } from "./menu/menubar.tsx";
 export { Popover } from "./menu/popover.tsx";
+export { Breadcrumbs, Crumb } from "./misc/breadcrumbs.tsx";
+export { InlineEdit } from "./misc/inline-edit.tsx";
+export { VectorField } from "./misc/vector-field.tsx";
+export { ZoomControl } from "./misc/zoom-control.tsx";
 export type { Command } from "./palette/command-palette.tsx";
 export { CommandPalette } from "./palette/command-palette.tsx";
 export { Ruler } from "./ruler/ruler.tsx";
@@ -39,7 +49,16 @@ export { Select } from "./select/select.tsx";
 export { define } from "./shared/define.ts";
 export { RangeSlider, Slider } from "./slider/slider.tsx";
 export { Pane, Split } from "./split/split.tsx";
+export {
+  DataTable,
+  type TableColumn,
+  type TableRow,
+  type TableSort,
+  updateRow,
+} from "./table/data-table.tsx";
 export { TabItem, TabPanel, Tabs } from "./tabs/tabs.tsx";
+export type { TimelineClip, TimelineKeyframe, TimelineToggle, TimelineTrack } from "./timeline/timeline.tsx";
+export { Timeline } from "./timeline/timeline.tsx";
 export { Tool, Toolbox, ToolGroup } from "./toolbox/toolbox.tsx";
 export { Tooltip } from "./tooltip/tooltip.tsx";
 export { type MoveDetail, moveItems, type TreeItem, type TreeToggle, updateItem } from "./tree/model.ts";

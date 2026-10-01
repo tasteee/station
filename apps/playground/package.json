@@ -9,6 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@station/behaviors": "workspace:*",
     "@station/components": "workspace:*",
     "@station/icons": "workspace:*",
     "@station/tokens": "workspace:*"

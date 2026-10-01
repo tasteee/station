@@ -513,7 +513,11 @@ apps/
 4. **Editor-grade** — Tier 3 above. Playground grows a raster-editor page (menubar, toolbox, rulers, layers tree) and a mixer page (knobs, meters) so nothing is designed only for Figma-style apps.
    - ✅ Done: split + pane, tree, menubar, toolbox + tool + tool-group, color picker/field/swatch/swatches, ruler, knob, meter, vertical slider, command palette. Behaviors: color math, fuzzy match.
    - Naming guard: a test fails if any property shadows a built-in DOM property (`prefix` → `abbr` on number fields, `draggable` → `reorderable` on trees).
-5. **Domain kits** — Tier 4 above.
+5. **Domain kits** — Tier 4 above. Playground adds an asset-browser page (code/data family); the image editor gets a dock, live Curves on the artwork, a histogram and a gradient popover; the mixer arrangement becomes a real timeline.
+   - ✅ Done: dock + dock panel, data table, timeline, curve editor, gradient editor, histogram, vector field, inline edit, breadcrumbs + crumb, zoom control. Behaviors: monotone spline / linear curves.
+   - Data-driven elements (tree, table, timeline, dock) never mutate data: they fire events, the app updates and sets the property back. Helpers: `moveItems`, `updateItem`, `updateRow`, `colorAt`.
+   - Dock, breadcrumbs, tabs and split use manual slot assignment, so user DOM is never moved (safe with React/Vue reconcilers).
+   - React typings: `onChange` stays React's synthetic event; lowercase `onchange` / `oninput` are also typed and give the native event with `detail`.
 6. **Polish** — docs site, interop tests green, 1.0.
 
 ---

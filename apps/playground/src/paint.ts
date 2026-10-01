@@ -5,6 +5,7 @@ import "./playground.css";
 import "./paint.css";
 import "./icons.ts";
 import "./nav.ts";
+import { monotoneSpline } from "@station/behaviors";
 import { type Command, confirm, moveItems, type TreeItem, toast, updateItem } from "@station/components";
 
 // biome-ignore lint/suspicious/noExplicitAny: demo page reads many element props.
@@ -189,14 +190,21 @@ const TOOL_OPTIONS: Record<string, string> = {
       <st-icon-button icon="align-center" label="Align horizontal centers"></st-icon-button>
       <st-icon-button icon="align-right" label="Align right edges"></st-icon-button>
     </st-toolbar>`,
+  gradient: `
+    <st-button size="small" kind="outline" id="grad-btn" class="grad-btn"><span class="grad-chip" slot="start"></span>Edit gradient</st-button>
+    <st-segmented-control size="small" value="linear" label="Gradient type">
+      <st-segment value="linear">Linear</st-segment><st-segment value="radial">Radial</st-segment><st-segment value="angle">Angle</st-segment>
+    </st-segmented-control>
+    <st-number-field size="small" label="Opacity" abbr="Opacity" value="100" min="0" max="100" unit="%" style="width:112px"></st-number-field>
+    <st-checkbox size="small" checked>Dither</st-checkbox>
+    <st-checkbox size="small">Reverse</st-checkbox>`,
   shape: `
     <st-select size="small" value="shape" label="Tool mode" style="width:88px"><st-option value="shape">Shape</st-option><st-option value="path">Path</st-option><st-option value="pixels">Pixels</st-option></st-select>
     <st-row gap="1.5"><st-text size="small" tone="muted">Fill</st-text><st-color-field size="small" label="Fill" value="#ffd27a" style="width:112px"></st-color-field></st-row>
     <st-row gap="1.5"><st-text size="small" tone="muted">Stroke</st-text><st-color-field size="small" label="Stroke" value="#150d24" style="width:112px"></st-color-field></st-row>
     <st-number-field size="small" label="Stroke width" value="1" min="0" unit="px" style="width:72px"></st-number-field>
     <st-divider></st-divider>
-    <st-number-field size="small" label="Width" abbr="W" value="200" unit="px" style="width:88px"></st-number-field>
-    <st-number-field size="small" label="Height" abbr="H" value="120" unit="px" style="width:88px"></st-number-field>`,
+    <st-vector-field size="small" label="Size" axes="w h" value="200 120" unit="px" min="0" linkable style="width:200px"></st-vector-field>`,
   type: `
     <st-combobox size="small" label="Font family" value="dm-sans" allow-custom style="width:140px">
       <st-option value="dm-sans">DM Sans</st-option><st-option value="dm-mono">DM Mono</st-option><st-option value="inter">Inter</st-option><st-option value="garamond">EB Garamond</st-option>
@@ -249,6 +257,24 @@ function renderOptions() {
 toolbox.addEventListener("change", renderOptions);
 renderOptions();
 
+// ---------- Gradient tool ----------
+const gradient = $("#gradient");
+gradient.stops = [
+  { offset: 0, color: "#1b1446" },
+  { offset: 0.55, color: "#b3386b" },
+  { offset: 1, color: "#f6a55a" },
+];
+const paintGradientChip = () => {
+  for (const chip of document.querySelectorAll<HTMLElement>(".grad-chip"))
+    chip.style.background = gradient.toCSS(90);
+};
+gradient.addEventListener("input", paintGradientChip);
+options.addEventListener("click", (e: Event) => {
+  const btn = (e.target as Element).closest("#grad-btn");
+  if (btn) $("#gradient-popover").show(btn);
+});
+toolbox.addEventListener("change", () => requestAnimationFrame(paintGradientChip));
+
 // ---------- Rulers + cursor ----------
 const canvas = $("#canvas");
 const doc = $("#document");
@@ -267,8 +293,15 @@ function layoutRulers() {
 }
 new ResizeObserver(layoutRulers).observe(canvas);
 canvas.addEventListener("scroll", layoutRulers);
-$("#zoom").addEventListener("change", (e: Event) => {
-  zoom = Number((e.target as El).value) / 100;
+const zoomControl = $("#zoom");
+zoomControl.addEventListener("change", () => {
+  zoom = zoomControl.value / 100;
+  layoutRulers();
+});
+zoomControl.addEventListener("fit", () => {
+  const c = canvas.getBoundingClientRect();
+  zoom = Math.min((c.width - 96) / 600, (c.height - 96) / 800);
+  zoomControl.value = Math.round(zoom * 10000) / 100;
   layoutRulers();
 });
 canvas.addEventListener("pointermove", (e: PointerEvent) => {
@@ -370,3 +403,127 @@ palette.addEventListener("select", (e: Event) => {
   else toast(commands.find((c) => c.id === id)?.label ?? id);
 });
 $("#open-palette").addEventListener("click", () => (palette.open = true));
+
+// ---------- Curves: live on the artwork, histogram follows ----------
+type Pt = { x: number; y: number };
+const curves = $("#curves");
+const identity = (): Pt[] => [
+  { x: 0, y: 0 },
+  { x: 1, y: 1 },
+];
+const curveSets: Record<string, Pt[]> = {
+  rgb: identity(),
+  red: identity(),
+  green: identity(),
+  blue: identity(),
+};
+let channel = "rgb";
+const evalWith = (pts: Pt[], x: number) =>
+  Math.min(1, Math.max(0, monotoneSpline([...pts].sort((a, b) => a.x - b.x))(x)));
+function applyCurves() {
+  const table = (ch: string) =>
+    Array.from({ length: 33 }, (_, i) =>
+      evalWith(curveSets[ch]!, evalWith(curveSets.rgb!, i / 32)).toFixed(4),
+    ).join(" ");
+  $("#func-r").setAttribute("tableValues", table("red"));
+  $("#func-g").setAttribute("tableValues", table("green"));
+  $("#func-b").setAttribute("tableValues", table("blue"));
+  updateHistogram();
+}
+curves.color = "";
+curves.addEventListener("input", () => {
+  curveSets[channel] = curves.points;
+  applyCurves();
+});
+$("#curve-channel").addEventListener("change", (e: Event) => {
+  channel = (e.target as El).value;
+  curves.points = curveSets[channel];
+  curves.color = { red: "#ef4444", green: "#22c55e", blue: "#3b82f6" }[channel] ?? "";
+});
+$("#curve-reset").addEventListener("click", () => {
+  for (const k of Object.keys(curveSets)) curveSets[k] = identity();
+  curves.points = curveSets[channel];
+  applyCurves();
+});
+
+// Histogram from the artwork's real pixels, remapped through the curves.
+let base: { red: number[]; green: number[]; blue: number[]; lum: number[] } | null = null;
+async function measure() {
+  const svg = doc.querySelector("svg")!.cloneNode(true) as SVGSVGElement;
+  svg.querySelector("#art")?.removeAttribute("filter");
+  svg.setAttribute("width", "150");
+  svg.setAttribute("height", "200");
+  const url = URL.createObjectURL(
+    new Blob([new XMLSerializer().serializeToString(svg)], { type: "image/svg+xml" }),
+  );
+  const img = new Image();
+  img.src = url;
+  await img.decode();
+  const cv = Object.assign(document.createElement("canvas"), { width: 150, height: 200 });
+  const ctx = cv.getContext("2d")!;
+  ctx.drawImage(img, 0, 0);
+  URL.revokeObjectURL(url);
+  const data = ctx.getImageData(0, 0, 150, 200).data;
+  base = {
+    red: new Array(256).fill(0),
+    green: new Array(256).fill(0),
+    blue: new Array(256).fill(0),
+    lum: new Array(256).fill(0),
+  };
+  const inc = (bins: number[], v: number) => {
+    bins[v] = (bins[v] ?? 0) + 1;
+  };
+  for (let i = 0; i < data.length; i += 4) {
+    const [r, g, b] = [data[i]!, data[i + 1]!, data[i + 2]!];
+    inc(base.red, r);
+    inc(base.green, g);
+    inc(base.blue, b);
+    inc(base.lum, Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b));
+  }
+  updateHistogram();
+}
+const histogram = $("#histogram");
+let histMode = "colors";
+function updateHistogram() {
+  if (!base) return;
+  const current = curves.points;
+  const remap = (bins: number[], ch: string) => {
+    const out = new Array(256).fill(0);
+    bins.forEach((n, i) => {
+      out[Math.round(evalWith(curveSets[ch]!, evalWith(curveSets.rgb!, i / 255)) * 255)] += n;
+    });
+    return out;
+  };
+  if (histMode === "colors") {
+    histogram.bins = null;
+    histogram.channels = {
+      red: remap(base.red, "red"),
+      green: remap(base.green, "green"),
+      blue: remap(base.blue, "blue"),
+    };
+  } else {
+    histogram.channels = null;
+    histogram.bins = remap(base.lum, "rgb");
+  }
+  curves.points = current;
+  curves.histogram = histMode === "colors" ? remap(base.lum, "rgb") : histogram.bins;
+}
+$("#hist-mode").addEventListener("change", (e: Event) => {
+  histMode = (e.target as El).value;
+  updateHistogram();
+});
+measure();
+
+// ---------- Dock: roomier default layout until the user saves their own ----------
+customElements.whenDefined("st-dock").then(async () => {
+  if (localStorage.getItem("st-dock:paint-dock-v2")) return;
+  const dock = $("#dock");
+  await dock.updated;
+  dock.layout = {
+    ...dock.layout,
+    groups: dock.layout.groups.map((g: { panels: string[] }) => ({
+      ...g,
+      size: g.panels.includes("adjust") ? 1.25 : 1,
+    })),
+  };
+});

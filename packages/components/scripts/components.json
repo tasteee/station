@@ -310,5 +310,77 @@
     "class": "CommandPalette",
     "src": "palette/command-palette.tsx",
     "tag": "st-command-palette"
+  },
+  {
+    "file": "vector-field",
+    "class": "VectorField",
+    "src": "misc/vector-field.tsx",
+    "tag": "st-vector-field"
+  },
+  {
+    "file": "inline-edit",
+    "class": "InlineEdit",
+    "src": "misc/inline-edit.tsx",
+    "tag": "st-inline-edit"
+  },
+  {
+    "file": "breadcrumbs",
+    "class": "Breadcrumbs",
+    "src": "misc/breadcrumbs.tsx",
+    "tag": "st-breadcrumbs"
+  },
+  {
+    "file": "crumb",
+    "class": "Crumb",
+    "src": "misc/breadcrumbs.tsx",
+    "tag": "st-crumb"
+  },
+  {
+    "file": "zoom-control",
+    "class": "ZoomControl",
+    "src": "misc/zoom-control.tsx",
+    "tag": "st-zoom-control"
+  },
+  {
+    "file": "curve-editor",
+    "class": "CurveEditor",
+    "src": "imaging/curve-editor.tsx",
+    "tag": "st-curve-editor"
+  },
+  {
+    "file": "gradient-editor",
+    "class": "GradientEditor",
+    "src": "imaging/gradient-editor.tsx",
+    "tag": "st-gradient-editor"
+  },
+  {
+    "file": "histogram",
+    "class": "Histogram",
+    "src": "imaging/histogram.tsx",
+    "tag": "st-histogram"
+  },
+  {
+    "file": "data-table",
+    "class": "DataTable",
+    "src": "table/data-table.tsx",
+    "tag": "st-data-table"
+  },
+  {
+    "file": "timeline",
+    "class": "Timeline",
+    "src": "timeline/timeline.tsx",
+    "tag": "st-timeline"
+  },
+  {
+    "file": "dock",
+    "class": "Dock",
+    "src": "dock/dock.tsx",
+    "tag": "st-dock"
+  },
+  {
+    "file": "dock-panel",
+    "class": "DockPanel",
+    "src": "dock/dock.tsx",
+    "tag": "st-dock-panel"
   }
 ]

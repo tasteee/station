@@ -32,3 +32,33 @@ describe("fuzzyMatch", () => {
     expect(a).toBeGreaterThan(b);
   });
 });
+
+import { linearCurve, monotoneSpline } from "../src/curve.ts";
+
+describe("curves", () => {
+  it("passes through its points and stays monotone", () => {
+    const pts = [
+      { x: 0, y: 0 },
+      { x: 0.25, y: 0.1 },
+      { x: 0.5, y: 0.9 },
+      { x: 1, y: 1 },
+    ];
+    const f = monotoneSpline(pts);
+    for (const p of pts) expect(f(p.x)).toBeCloseTo(p.y);
+    let prev = -1;
+    for (let x = 0; x <= 1; x += 0.01) {
+      const y = f(x);
+      expect(y).toBeGreaterThanOrEqual(prev - 1e-9);
+      expect(y).toBeLessThanOrEqual(1 + 1e-9);
+      prev = y;
+    }
+  });
+  it("interpolates linearly", () => {
+    expect(
+      linearCurve([
+        { x: 0, y: 0 },
+        { x: 1, y: 0.5 },
+      ])(0.5),
+    ).toBeCloseTo(0.25);
+  });
+});

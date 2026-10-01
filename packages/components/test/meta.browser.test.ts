@@ -12,7 +12,7 @@ describe("metadata matches the real elements", () => {
       const props = Object.keys(Cls.props).sort();
       const metaProps = [
         ...el.attributes.filter((a) => a.property).map((a) => a.property!),
-        ...(el.properties ?? []).map((p) => p.name),
+        ...(el.properties ?? []).filter((p) => !p.accessor).map((p) => p.name),
       ].sort();
       expect(props).toEqual(metaProps);
       for (const a of el.attributes.filter((x) => x.property)) expect(a.name).toBe(kebab(a.property!));
