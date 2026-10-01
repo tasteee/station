@@ -1,8 +1,9 @@
 /*
- * Studio: a lime prototype of the Figma-style view, in the reference's language.
- * Neutral grays, big soft cards on a gray canvas, lime pills with dark ink,
- * lime gradient highlight cards. Everything below is token overrides + layout;
- * the controls are stock Station components.
+ * Studio: the Figma-style view in the soft-card language.
+ * Neutral grays, big soft cards on a gray canvas, ink pills, grayscale chrome.
+ * Color lives only in the user's design on the artboard (and one opt-in
+ * button). Everything below is layout + a few overrides; the controls are
+ * stock Station components.
  */
 html,
 body {
@@ -11,30 +12,15 @@ body {
 }
 
 .studio {
-  /* ---- Knobs ---- */
-  --st-gray-chroma: 0; /* neutral grays, like the references */
-  --st-signal-hue: 132; /* the guitar: OKLCH hue ~137, pushed a touch toward lime */
-  --st-signal-hue-end: 108;
-  --st-signal-chroma: 0.21;
+  /* Chrome is grayscale (Station default). Only the artboard, the user's
+     own design, carries color, plus one opt-in lime button (Share). */
   --st-radius: 8px;
   --st-font-size: 12.5px;
 
-  /* ---- Signal, lime edition ----
-     Fills stay bold lime in both themes and carry dark ink (≈13:1).
-     Rings and text darken on light so they keep 3:1 / 4.5:1. */
-  --st-signal: light-dark(oklch(56% 0.16 140), oklch(86% 0.21 132));
-  --st-signal-hover: light-dark(oklch(50% 0.15 140), oklch(90% 0.2 130));
-  --st-signal-text: light-dark(oklch(48% 0.13 142), oklch(88% 0.19 130));
-  --st-signal-fill: light-dark(oklch(87% 0.21 132), oklch(88% 0.22 132));
-  --st-signal-fill-end: oklch(93% 0.16 110);
-  --st-text-on-signal: oklch(20% 0.04 135);
-  --st-signal-soft: light-dark(oklch(87% 0.21 132 / 0.28), oklch(88% 0.22 132 / 0.16));
-  --st-signal-soft-strong: light-dark(oklch(87% 0.21 132 / 0.45), oklch(88% 0.22 132 / 0.26));
-
-  /* Selection is a solid lime pill with ink, as in the references. */
-  --st-bg-selected: var(--st-signal-fill);
-  --st-bg-selected-strong: var(--st-signal-fill);
-  --st-text-selected: var(--st-text-on-signal);
+  /* Content colors for the design on the artboard (not UI chrome). */
+  --content-lime: oklch(87% 0.21 132);
+  --content-lime-end: oklch(93% 0.16 110);
+  --content-ink: oklch(20% 0.04 135);
 
   /* ---- Page surfaces ---- */
   --canvas: light-dark(oklch(84.5% 0 0), oklch(14% 0 0));
@@ -42,6 +28,11 @@ body {
   --card-raised: light-dark(oklch(98.5% 0 0), oklch(24% 0 0));
   --card-edge: light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.05));
   --divider: light-dark(oklch(0% 0 0 / 0.07), oklch(100% 0 0 / 0.07));
+  --gray-sheen: linear-gradient(
+    155deg,
+    light-dark(oklch(99% 0 0), oklch(26% 0 0)) 0%,
+    light-dark(oklch(95.5% 0 0), oklch(20% 0 0)) 70%
+  );
   --lime-wash: linear-gradient(
     155deg,
     light-dark(oklch(91% 0.17 125), oklch(42% 0.12 132)) 0%,
@@ -74,7 +65,6 @@ body {
   height: 18px;
   border-radius: 6px;
   background: var(--st-signal-gradient);
-  box-shadow: inset 0 0 0 1px oklch(0% 0 0 / 0.08);
 }
 .crumb-title {
   font-weight: var(--st-weight-medium);
@@ -104,11 +94,8 @@ body {
   box-shadow: 0 0 0 2px var(--canvas);
 }
 
-/* Lime pill buttons: Share and the selected page. */
+/* Share: the one opt-in color in the chrome (signal="lime" tone="signal"). */
 .share {
-  --st-accent-solid: var(--st-signal-fill);
-  --st-accent-solid-hover: var(--st-signal-fill-end);
-  --st-text-on-accent: var(--st-text-on-signal);
   border-radius: var(--radius-pill);
   padding-inline: 14px;
 }
@@ -317,7 +304,7 @@ body {
   padding: 2px 8px;
   border-radius: var(--radius-pill);
   background: oklch(20% 0.04 135 / 0.1);
-  color: var(--st-text-on-signal);
+  color: var(--content-ink);
   font-size: var(--st-text-1);
 }
 .tile-bar {
@@ -333,11 +320,11 @@ body {
   background: oklch(62% 0.11 185); /* teal: a content color, not the signal */
 }
 .tile-lime {
-  background: var(--st-signal-gradient);
+  background: linear-gradient(115deg, var(--content-lime) 10%, var(--content-lime-end));
 }
 .tile-lime .tile-label,
 .tile-lime .tile-value {
-  color: var(--st-text-on-signal);
+  color: var(--content-ink);
 }
 
 /* Selection chrome on the canvas: signal ring + handles + size tag. */
@@ -377,12 +364,12 @@ body {
   padding: 2px 8px;
   border-radius: var(--radius-pill);
   background: var(--st-signal);
-  color: light-dark(oklch(99% 0 0), var(--st-text-on-signal));
+  color: var(--st-text-on-signal);
   font: 10.5px/1.5 var(--st-font-mono);
   white-space: nowrap;
 }
 
-/* Floating tool dock: a pill with round tools; the active tool is a lime disc. */
+/* Floating tool dock: a pill with round tools; the active tool is an ink disc. */
 .dock {
   position: absolute;
   left: 50%;
@@ -423,10 +410,7 @@ body {
   scrollbar-width: none;
 }
 .card-lime {
-  background: var(--lime-wash);
-}
-.card-lime .micro {
-  color: light-dark(oklch(35% 0.05 135), oklch(80% 0.08 130));
+  background: var(--gray-sheen);
 }
 .readout {
   display: flex;
@@ -473,15 +457,10 @@ body {
   width: 100%;
 }
 
-/* Controls in this world: pill-shaped fields, a hairline edge on bright lime fills. */
+/* Pill-shaped search and zoom; inspector fields keep the denser control radius. */
 .studio st-search-field,
-.studio st-select,
 .studio st-zoom-control {
   --st-radius: 999px;
-}
-.studio st-switch,
-.studio st-checkbox {
-  --st-signal-edge: inset 0 0 0 1px oklch(50% 0.12 140 / 0.35);
 }
 
 @media (max-width: 1100px) {

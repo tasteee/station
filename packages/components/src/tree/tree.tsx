@@ -561,9 +561,9 @@ export const Tree = c(
         .row {
           position: absolute;
           top: 0;
-          left: var(--st-tree-row-inset, 0);
-          right: var(--st-tree-row-inset, 0);
-          border-radius: var(--st-tree-row-radius, 0);
+          left: var(--st-tree-row-inset, var(--st-space-1));
+          right: var(--st-tree-row-inset, var(--st-space-1));
+          border-radius: var(--st-tree-row-radius, var(--st-radius-2));
           display: flex;
           align-items: center;
           gap: var(--st-space-1);

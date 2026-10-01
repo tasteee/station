@@ -116,9 +116,12 @@
                     <div class="swatches" data-scale="gray"></div>
                   </st-column>
                   <st-column gap="2">
-                    <st-heading size="small" tone="muted">SIGNAL · LIVE STATES</st-heading>
-                    <div class="swatches" data-scale="signal"></div>
-                    <div class="signal-gradient" aria-hidden="true"></div>
+                    <st-heading size="small" tone="muted">SIGNAL · GRAYSCALE BY DEFAULT, COLOR OPT-IN</st-heading>
+                    <div class="signal-row">
+                      <div class="signal-chip"><div class="signal-gradient" aria-hidden="true"></div><st-text size="small" tone="muted">default</st-text></div>
+                      <div class="signal-chip" signal="lime"><div class="signal-gradient" aria-hidden="true"></div><st-text size="small" tone="muted">signal="lime"</st-text></div>
+                      <div class="signal-chip" signal="orange"><div class="signal-gradient" aria-hidden="true"></div><st-text size="small" tone="muted">signal="orange"</st-text></div>
+                    </div>
                   </st-column>
                   <st-column gap="2">
                     <st-heading size="small" tone="muted">ACCENT · PRIMARY ACTIONS</st-heading>

@@ -126,8 +126,19 @@ body {
 .inspector {
   --st-property-label-width: 72px;
 }
+.signal-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--st-space-2);
+}
+.signal-chip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--st-space-1);
+}
 .signal-gradient {
   height: 28px;
   border-radius: var(--st-radius-2);
   background: var(--st-signal-gradient);
+  box-shadow: var(--st-signal-edge);
 }

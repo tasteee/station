@@ -7,7 +7,7 @@ A web-component design system for **dense, interaction-heavy editor UIs**: UI de
 - **Themeable from a few knobs.** Change a hue, a unit or a radius and everything derives from it.
 - **Works everywhere.** Custom elements. Plain HTML, React, Vue, Angular, Svelte.
 
-See [`docs/PLAN.md`](docs/PLAN.md) for the full plan and [`docs/DESIGN.md`](docs/DESIGN.md) for the design language (Instrument + Signal Orange).
+See [`docs/PLAN.md`](docs/PLAN.md) for the full plan and [`docs/DESIGN.md`](docs/DESIGN.md) for the design language (Instrument: grayscale chrome, color opt-in).
 
 ## Packages
 

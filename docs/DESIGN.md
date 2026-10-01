@@ -1,55 +1,53 @@
 # Station design language: Instrument
 
-Station treats the interface as a **precision instrument**: quiet, exact chrome around the user's work, with one bright signal that says what is live.
+Station treats the interface as a **precision instrument**: calm, exact, grayscale chrome around the user's work. Color belongs to what the user makes, not to the tool.
 
 ## Principles
 
-1. **Content is the color; chrome is ink.**
-   Panels, borders and text stay in a cool gray ladder. Hue comes from the user's work (artwork, clips, swatches) and from one signal color. Everything else earns its place by tone, not color.
+1. **The work is the only color.**
+   Panels, controls, selection and focus are grayscale by default. A designer looking at their artboard, a photo, a waveform or a timeline should never see pops of color they didn't choose. Status colors (danger, warning, success) appear only when something needs attention.
 
-2. **One signal for "live".**
-   Signal Orange marks what is happening *now*. Use it for exactly these:
-   - **On states:** switch, checkbox, radio, pressed toggle, selected tool, record/loop, mute/solo.
-   - **Selected objects:** a soft signal tint behind the selected layer, row or menu item.
-   - **Focus:** every focus ring and field focus halo.
-   - **Time and position:** playhead, ruler marker.
-   - **Values while adjusting:** a slider or knob turns signal only while it is dragged or focused.
+2. **Ink for "live".**
+   What is happening now reads as ink: near-black on light themes, near-white on dark.
+   - **On states:** switch, checkbox, radio, pressed toggle, selected tool, record/loop: ink fills with light glyphs.
+   - **Selection:** a soft gray pill behind the selected layer, row or menu item, with strong text.
+   - **Focus:** a strong-gray ring, plus a soft halo on fields.
+   - **Time and position:** playhead and ruler marker in ink.
 
-   Not for: navigation (tabs, nav lists, segmented modes), values at rest (slider fills, knob arcs, meters), primary actions (those are near-black), status (danger, warning, success keep their own hues).
+   Navigation (tabs, nav lists, segmented modes) and values at rest (slider fills, knob arcs) stay neutral. A slider or knob shows the live ink while it is being adjusted.
 
-3. **Gradients mean "on".**
-   Solid "on" fills (switch track, checkbox, selected tool with `tone="accent"`, pressed toggle with `tone="accent"`, progress) use `--st-signal-gradient`: a short sweep from signal orange toward amber. Tints and rings stay flat. Never use the gradient as decoration.
+3. **Color is opt-in.**
+   `signal="lime"` or `signal="orange"` on any element colors what is live inside it: one button, a panel, or the whole app. `signal="none"` returns a subtree to grayscale. `tone="signal"` on a button gives a single call to action the signal fill. Each preset meets contrast targets in both themes (`packages/tokens/test/contrast.test.ts`). Light signals like lime keep bold fills with dark ink; rings and text darken on light themes.
 
-4. **Precision geometry.**
-   A 4px grid, hairline edges, radii from one knob, aligned baselines. Shadows only for things that float above the page (menus, popovers, dialogs).
+4. **Soft geometry, dense controls.**
+   Large radii (`--st-radius-5`, `--st-radius-6`) for cards, regions and floating panels; medium radii (`--st-radius`, 6px by default) for controls, because editors pack controls tightly. Pills for search, zoom and selection rows where they help. Separate regions with tone and spacing before reaching for borders. Shadows only for things that float (menus, popovers, dialogs, the tool dock).
 
 5. **Depth from tone, not lines.**
-   Fields are recessed wells: a faint fill plus a hairline inner edge. Panels step in tone (canvas → panel → section). Borders appear where they separate, not everywhere.
+   Neutral grays (`--st-gray-chroma: 0`). Canvas → card → raised card step in tone. Fields are recessed wells: a faint fill plus a hairline edge.
 
 6. **Labels are legends; values are readouts.**
-   Section titles and small headings are micro-labels: uppercase DM Mono, tracked, muted. Numbers use DM Mono with tabular figures. Values are stronger than their labels.
+   Section titles and small headings are micro-labels: uppercase DM Mono, tracked, muted. Numbers use DM Mono with tabular figures. Large headings and readouts can go light (300) and tight. Values are stronger than their labels.
 
 7. **Fast, physical motion.**
    80–160ms with one ease curve. State changes, not choreography. `prefers-reduced-motion` turns it off.
 
 ## Tokens
 
-| Token | Use |
-|---|---|
-| `--st-signal` | Rings, marks, small fills. ≥3:1 on every surface. |
-| `--st-signal-text` | Signal-colored text and icons. ≥4.5:1 on every surface. |
-| `--st-signal-gradient` | "On" fills. |
-| `--st-text-on-signal` | Text and glyphs on signal fills. ≥4.5:1. |
-| `--st-signal-soft`, `--st-signal-soft-strong` | Selection tints (`--st-bg-selected`, `--st-bg-selected-strong`). |
-| `--st-accent-solid` | Primary actions and neutral value fills (near-black / near-white). |
-
-Knobs: `--st-signal-hue` (40), `--st-signal-hue-end` (62, the gradient's end), `--st-signal-chroma` (0.21). Change them on any element to re-signal a subtree. Contrast targets are covered by `packages/tokens/test/contrast.test.ts`.
+| Token | Default (grayscale) | Use |
+|---|---|---|
+| `--st-signal` | gray 11 | Rings and marks. ≥3:1 on every surface. |
+| `--st-signal-text` | gray 12 | Signal-colored text and icons. ≥4.5:1. |
+| `--st-signal-fill`, `--st-signal-fill-end` | gray 12 → 11 | "On" fills; `--st-signal-gradient` sweeps between them. |
+| `--st-text-on-signal` | gray 1 | Text and glyphs on fills. |
+| `--st-signal-soft`, `--st-signal-soft-strong` | gray alpha 3 / 5 | Selection (`--st-bg-selected`, `--st-bg-selected-strong`). |
+| `--st-signal-edge` | none | Hairline on fills close to the surface (lime on light). |
+| `--st-accent-solid` | gray 12 | Primary actions. |
+| `--st-radius-5`, `--st-radius-6` | 18px, 24px | Cards, regions, floating panels. |
 
 ## Checklist for a new component
 
-- Does anything use signal that is not live, selected, focused or on? Make it neutral.
-- Is a value fill neutral at rest?
-- Is navigation neutral?
-- Do fields read as wells, with the signal halo on focus?
+- Does anything show color the user didn't choose? Make it grayscale or put it behind `signal` / `tone="signal"`.
+- Is a value fill neutral at rest? Is navigation neutral?
+- Do fields read as wells, with a focus halo?
 - Are section labels micro-labels and numbers mono?
 - Does it pass the example suite (axe in both themes + Chrome AX tree)?

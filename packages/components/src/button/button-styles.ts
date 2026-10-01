@@ -51,6 +51,17 @@ export const buttonStyles = css`
     background-image: linear-gradient(oklch(100% 0 0 / 0.1), transparent 60%);
     box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.14);
   }
+  :host([data-kind="solid"][tone="signal"]) {
+    --_bg: var(--st-signal-gradient);
+    --_fg: var(--st-text-on-signal);
+    --_hover-bg: var(--st-signal-gradient);
+    --_active-bg: var(--st-signal-fill);
+    box-shadow: var(--st-signal-edge);
+  }
+  :host([data-kind="outline"][tone="signal"]),
+  :host([data-kind="ghost"][tone="signal"]) {
+    --_fg: var(--st-signal-text);
+  }
   :host([data-kind="solid"][tone="danger"]) {
     --_bg: var(--st-danger-solid);
     --_fg: var(--st-text-on-status);

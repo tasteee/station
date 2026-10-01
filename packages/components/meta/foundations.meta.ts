@@ -138,8 +138,8 @@ export const foundations: ElementMeta[] = [
       { name: "bordered", type: "boolean", description: "1px subtle border." },
       {
         name: "rounded",
-        type: ["", "small"],
-        description: "Round the corners. Empty = radius-3, small = radius-2.",
+        type: ["", "small", "large"],
+        description: "Round the corners. Empty = radius-3, small = radius-2, large = radius-5 (cards).",
       },
       ...padding,
       ...flexChild,
