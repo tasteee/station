@@ -36,7 +36,7 @@ export const Progress = c(
       hostReset,
       css`
         :host {
-          --_fill: var(--st-accent-solid);
+          --_fill: var(--st-signal-gradient);
           display: block;
           position: relative;
           width: 100%;

@@ -68,11 +68,31 @@ export function hsvToRgb({ h, s, v, a }: Hsva): Rgba {
   return { r: byte(f(5) * 255), g: byte(f(3) * 255), b: byte(f(1) * 255), a };
 }
 
-/** Relative luminance, for picking readable marks on top of a color. */
-export function isLight({ r, g, b }: Rgba): boolean {
+/** WCAG relative luminance (0–1). */
+export function luminance({ r, g, b }: Rgba): number {
   const lin = (c: number) => {
     const x = c / 255;
     return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
   };
-  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b) > 0.4;
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+}
+
+/** Relative luminance, for picking readable marks on top of a color. */
+export function isLight(color: Rgba): boolean {
+  return luminance(color) > 0.4;
+}
+
+/** WCAG contrast ratio between two opaque colors (1–21). */
+export function contrastRatio(a: Rgba, b: Rgba): number {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [number, number];
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+/** White or near-black, whichever reads better on `background` (any CSS hex/rgb string). */
+export function readableInk(background: string): "#ffffff" | "#111214" {
+  const bg = parseColor(background);
+  if (!bg) return "#ffffff";
+  const white = { r: 255, g: 255, b: 255, a: 1 };
+  const dark = { r: 17, g: 18, b: 20, a: 1 };
+  return contrastRatio(bg, white) >= contrastRatio(bg, dark) ? "#ffffff" : "#111214";
 }

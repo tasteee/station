@@ -126,3 +126,8 @@ body {
 .inspector {
   --st-property-label-width: 72px;
 }
+.signal-gradient {
+  height: 28px;
+  border-radius: var(--st-radius-2);
+  background: var(--st-signal-gradient);
+}

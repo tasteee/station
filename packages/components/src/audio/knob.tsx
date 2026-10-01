@@ -173,7 +173,12 @@ export const Knob = c(
           stroke: var(--st-gray-a5);
         }
         .fill {
-          stroke: var(--st-accent-solid);
+          stroke: var(--st-accent-solid); /* a value: neutral */
+          transition: stroke var(--st-duration) var(--st-ease);
+        }
+        :host(:active) .fill,
+        :host(:focus-visible) .fill {
+          stroke: var(--st-signal); /* live while adjusting */
         }
         .body {
           fill: var(--st-bg-section);

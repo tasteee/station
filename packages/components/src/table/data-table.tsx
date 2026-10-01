@@ -498,7 +498,7 @@ export const DataTable = c(
         }
         .viewport:focus-within .tr[data-selected] {
           background: var(--st-bg-selected-strong);
-          color: var(--st-text-on-accent);
+          color: var(--st-text-selected);
         }
         .td {
           display: flex;

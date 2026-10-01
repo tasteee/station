@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatHex, hsvToRgb, parseColor, rgbToHsv } from "../src/color.ts";
+import { contrastRatio, formatHex, hsvToRgb, parseColor, readableInk, rgbToHsv } from "../src/color.ts";
 
 describe("color", () => {
   it("parses hex and rgb()", () => {
@@ -60,5 +60,23 @@ describe("curves", () => {
         { x: 1, y: 0.5 },
       ])(0.5),
     ).toBeCloseTo(0.25);
+  });
+});
+
+describe("contrast", () => {
+  it("matches WCAG reference values", () => {
+    const black = parseColor("#000")!;
+    const white = parseColor("#fff")!;
+    expect(contrastRatio(black, white)).toBeCloseTo(21);
+    expect(contrastRatio(parseColor("#767676")!, white)).toBeCloseTo(4.54, 1);
+  });
+  it("picks the more readable ink", () => {
+    expect(readableInk("#1e1b4b")).toBe("#ffffff");
+    expect(readableInk("#fbbf24")).toBe("#111214");
+    expect(readableInk("#22c55e")).toBe("#111214");
+    for (const bg of ["#3b82f6", "#ef4444", "#a855f7", "#14b8a6", "#ec4899", "#808080"]) {
+      const ink = parseColor(readableInk(bg))!;
+      expect(contrastRatio(ink, parseColor(bg)!), bg).toBeGreaterThanOrEqual(4.5);
+    }
   });
 });

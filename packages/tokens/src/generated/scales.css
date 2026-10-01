@@ -43,6 +43,20 @@
   --st-accent-11: light-dark(oklch(40% calc(var(--st-accent-chroma) * 0.8) var(--st-accent-hue)), oklch(81% calc(var(--st-accent-chroma) * 0.8) var(--st-accent-hue)));
   --st-accent-12: light-dark(oklch(21% calc(var(--st-accent-chroma) * 0.45) var(--st-accent-hue)), oklch(95.5% calc(var(--st-accent-chroma) * 0.45) var(--st-accent-hue)));
 
+  /* Signal: the one live color (focus, selection, on, playhead). Knobs: --st-signal-hue, --st-signal-chroma. */
+  --st-signal-1: light-dark(oklch(99% calc(var(--st-signal-chroma) * 0.08) var(--st-signal-hue)), oklch(17% calc(var(--st-signal-chroma) * 0.08) var(--st-signal-hue)));
+  --st-signal-2: light-dark(oklch(97.5% calc(var(--st-signal-chroma) * 0.12) var(--st-signal-hue)), oklch(20% calc(var(--st-signal-chroma) * 0.12) var(--st-signal-hue)));
+  --st-signal-3: light-dark(oklch(95% calc(var(--st-signal-chroma) * 0.2) var(--st-signal-hue)), oklch(24.5% calc(var(--st-signal-chroma) * 0.2) var(--st-signal-hue)));
+  --st-signal-4: light-dark(oklch(92% calc(var(--st-signal-chroma) * 0.28) var(--st-signal-hue)), oklch(28% calc(var(--st-signal-chroma) * 0.28) var(--st-signal-hue)));
+  --st-signal-5: light-dark(oklch(88.5% calc(var(--st-signal-chroma) * 0.36) var(--st-signal-hue)), oklch(32% calc(var(--st-signal-chroma) * 0.36) var(--st-signal-hue)));
+  --st-signal-6: light-dark(oklch(84% calc(var(--st-signal-chroma) * 0.46) var(--st-signal-hue)), oklch(37% calc(var(--st-signal-chroma) * 0.46) var(--st-signal-hue)));
+  --st-signal-7: light-dark(oklch(78% calc(var(--st-signal-chroma) * 0.58) var(--st-signal-hue)), oklch(43% calc(var(--st-signal-chroma) * 0.58) var(--st-signal-hue)));
+  --st-signal-8: light-dark(oklch(70% calc(var(--st-signal-chroma) * 0.74) var(--st-signal-hue)), oklch(51% calc(var(--st-signal-chroma) * 0.74) var(--st-signal-hue)));
+  --st-signal-9: light-dark(oklch(60% calc(var(--st-signal-chroma) * 1) var(--st-signal-hue)), oklch(60% calc(var(--st-signal-chroma) * 1) var(--st-signal-hue)));
+  --st-signal-10: light-dark(oklch(55% calc(var(--st-signal-chroma) * 0.94) var(--st-signal-hue)), oklch(65% calc(var(--st-signal-chroma) * 0.94) var(--st-signal-hue)));
+  --st-signal-11: light-dark(oklch(48% calc(var(--st-signal-chroma) * 0.8) var(--st-signal-hue)), oklch(78% calc(var(--st-signal-chroma) * 0.8) var(--st-signal-hue)));
+  --st-signal-12: light-dark(oklch(30% calc(var(--st-signal-chroma) * 0.45) var(--st-signal-hue)), oklch(92% calc(var(--st-signal-chroma) * 0.45) var(--st-signal-hue)));
+
   /* Danger. Knob: --st-danger-hue. */
   --st-danger-1: light-dark(oklch(99% calc(var(--st-status-chroma) * 0.08) var(--st-danger-hue)), oklch(17% calc(var(--st-status-chroma) * 0.08) var(--st-danger-hue)));
   --st-danger-2: light-dark(oklch(97.5% calc(var(--st-status-chroma) * 0.12) var(--st-danger-hue)), oklch(20% calc(var(--st-status-chroma) * 0.12) var(--st-danger-hue)));

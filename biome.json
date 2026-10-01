@@ -4,6 +4,7 @@
     "includes": [
       "**",
       "!**/dist",
+      "!_site",
       "!**/generated",
       "!**/node_modules",
       "!packages/components/types",

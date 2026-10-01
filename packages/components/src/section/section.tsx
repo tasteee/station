@@ -102,7 +102,13 @@ export const Section = c(
           flex: 1;
           min-width: 0;
           height: 100%;
-          font: var(--st-weight-strong) var(--st-text-2) / var(--st-leading-tight) var(--st-font-sans);
+          /* Micro-label legend: values carry the weight, labels stay quiet. */
+          font: var(--st-weight-medium) calc(var(--st-text-1) * 0.94) / var(--st-leading-tight) var(--st-font-mono);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--st-text-muted);
+        }
+        .toggle:hover {
           color: var(--st-text-strong);
         }
         .toggle {

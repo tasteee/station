@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Station</title>
+    <meta name="description" content="Station: web components for dense editor UIs." />
+  </head>
+  <body>
+    <st-surface level="canvas" class="app" id="app">
+      <header class="top">
+        <st-row gap="3" padding-x="4" class="top-row">
+          <a class="brand" href="#/"><st-icon name="layout-grid"></st-icon><st-heading>Station</st-heading></a>
+          <st-badge>v0</st-badge>
+          <st-spacer></st-spacer>
+          <st-button kind="ghost" size="small" icon="app-window" id="link-playground">Playground</st-button>
+          <st-button kind="ghost" size="small" icon="book" id="link-storybook">Storybook</st-button>
+          <st-icon-button kind="ghost" size="small" icon="brand-github" label="GitHub" id="link-github"></st-icon-button>
+          <st-segmented-control size="small" value="light" label="Theme" id="theme">
+            <st-segment value="light" icon="sun" label="Light"></st-segment>
+            <st-segment value="dark" icon="moon" label="Dark"></st-segment>
+          </st-segmented-control>
+        </st-row>
+      </header>
+      <div class="body">
+        <nav class="side" aria-label="Elements">
+          <st-scroll-area axis="y" class="side-scroll">
+            <st-column padding="3" gap="3" id="nav"></st-column>
+          </st-scroll-area>
+        </nav>
+        <main class="main" id="main" tabindex="-1"></main>
+      </div>
+    </st-surface>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

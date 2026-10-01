@@ -28,7 +28,13 @@ export const Combobox = c(
     const internals = useInternals();
     const [value, setValue] = useProp<string>("value");
     const [open, setOpen] = useState(false);
-    const [query, setQuery] = useState<string | null>(null);
+    const [query, setQueryState] = useState<string | null>(null);
+    // Mirror of `query` for handlers that can run before the next render (fast typing, then Enter).
+    const queryRef = useRef<string | null>(null);
+    const setQuery = (q: string | null) => {
+      queryRef.current = q;
+      setQueryState(q);
+    };
     const [, rerender] = useState(0);
     const input = useRef<HTMLInputElement>();
     const listbox = useRef<HTMLElement>();
@@ -73,10 +79,11 @@ export const Combobox = c(
     };
 
     const commitText = () => {
-      if (query == null) return;
-      const match = optionsOf(el).find((o) => labelOf(o).toLowerCase() === query.trim().toLowerCase());
+      const q = queryRef.current;
+      if (q == null) return;
+      const match = optionsOf(el).find((o) => labelOf(o).toLowerCase() === q.trim().toLowerCase());
       if (match) commit(optionValue(match));
-      else if (allowCustom && query.trim()) commit(query.trim());
+      else if (allowCustom && q.trim()) commit(q.trim());
       else commit(null);
     };
 
@@ -118,7 +125,9 @@ export const Combobox = c(
           list[e.key === "ArrowDown" ? Math.min(list.length - 1, index + 1) : Math.max(0, index - 1)] ?? null,
         );
       } else if (e.key === "Enter") {
-        if (open && active.current) {
+        // Read the popover live (state lags a render) and never commit an option the filter hid.
+        const isOpen = !!listbox.current?.matches(":popover-open");
+        if (isOpen && active.current && list.includes(active.current)) {
           e.preventDefault();
           commit(optionValue(active.current));
           hide();
@@ -130,7 +139,7 @@ export const Combobox = c(
         if (open) {
           e.preventDefault();
           hide();
-        } else if (query != null) {
+        } else if (queryRef.current != null) {
           e.preventDefault();
           setQuery(null);
           filter(null);
@@ -187,7 +196,8 @@ export const Combobox = c(
             setQuery(q);
             filter(q);
             show();
-            requestAnimationFrame(() => activate(usable(optionsOf(el))[0] ?? null));
+            // Synchronously: an Enter that follows before the next frame must see the filtered list.
+            activate(usable(optionsOf(el))[0] ?? null);
           }}
           onchange={(e: Event) => e.stopPropagation()}
           onblur={() => {

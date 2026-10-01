@@ -8,7 +8,11 @@
   --st-gray-hue: 255;
   --st-gray-chroma: 0.006;
   --st-accent-hue: var(--st-gray-hue);
-  --st-accent-chroma: 0; /* 0 = monochrome near-black. Try 0.2 for a brand color. */
+  --st-accent-chroma: 0; /* 0 = monochrome near-black: primary actions. */
+  /* Signal: the one live color. Focus, selection, "on", playhead. Signal Orange by default. */
+  --st-signal-hue: 40;
+  --st-signal-hue-end: 62; /* gradients sweep toward this hue (orange → amber) */
+  --st-signal-chroma: 0.21;
   --st-status-chroma: 0.2;
   --st-danger-hue: 25;
   --st-warning-hue: 70;

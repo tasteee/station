@@ -45,15 +45,15 @@ export const Checkbox = c(
           border: 1px solid var(--st-border-strong);
           border-radius: calc(var(--st-radius-1) + 1px);
           background: var(--st-bg-panel);
-          color: var(--st-text-on-accent);
+          color: var(--st-text-on-signal);
         }
         :host(:hover) .box {
           border-color: var(--st-gray-9);
         }
         :host([checked]) .box,
         :host([indeterminate]) .box {
-          background: var(--st-accent-solid);
-          border-color: var(--st-accent-solid);
+          background: var(--st-signal-gradient);
+          border-color: transparent;
         }
       `,
     ],

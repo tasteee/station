@@ -54,10 +54,10 @@ export const Switch = c(
           transition: translate var(--st-duration) var(--st-ease);
         }
         :host([checked]) .track {
-          background: var(--st-accent-solid);
+          background: var(--st-signal-gradient);
         }
         :host([checked]) .thumb {
-          background: var(--st-text-on-accent);
+          background: oklch(100% 0 0);
           translate: calc(var(--_h) * 0.8) 0;
         }
       `,

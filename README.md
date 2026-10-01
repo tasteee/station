@@ -7,7 +7,7 @@ A web-component design system for **dense, interaction-heavy editor UIs**: UI de
 - **Themeable from a few knobs.** Change a hue, a unit or a radius and everything derives from it.
 - **Works everywhere.** Custom elements. Plain HTML, React, Vue, Angular, Svelte.
 
-See [`docs/PLAN.md`](docs/PLAN.md) for the full design plan.
+See [`docs/PLAN.md`](docs/PLAN.md) for the full plan and [`docs/DESIGN.md`](docs/DESIGN.md) for the design language (Instrument + Signal Orange).
 
 ## Packages
 
@@ -18,6 +18,7 @@ See [`docs/PLAN.md`](docs/PLAN.md) for the full design plan.
 | `@station/icons` | Icon registry + all 6,000+ Tabler icons as tree-shakeable exports |
 | `@station/behaviors` | Framework-free logic: roving focus, typeahead, drag-to-scrub, safe math, popover positioning, shortcuts, color math, fuzzy match, curves |
 | `apps/playground` | Four demo apps: UI design (Figma-like), image editor (Photoshop-like, dark), audio mixer (DAW-like), asset browser (file manager / data tool) |
+| `apps/docs` | Docs site built with Station: every live example + API tables, generated from metadata |
 | `apps/storybook` | Component workshop with theme + density toolbar |
 | `apps/interop` | Type fixtures for React, Preact, Solid, Vue, Svelte + React runtime test |
 
@@ -169,6 +170,16 @@ import type {} from "@station/components/react";  // or /preact, /solid, /vue, /
 - `@station/components/vscode.html-data.json`: add to `html.customData` in VS Code for autocomplete in plain HTML.
 
 **Events.** Station uses native names (`input`, `change`) so `onChange` / `onInput` work in React 19, `@change` in Vue, `onchange` in Svelte. Other events are single lowercase words (React: `oncommit={…}`). In React, `onChange` is React's synthetic event (read `e.currentTarget`); lowercase `onchange` binds the native event, so `e.detail` is typed.
+
+## Live site (GitHub Pages)
+
+`.github/workflows/pages.yml` publishes on every push to `main`:
+
+- `/` docs (examples + API)
+- `/playground/` the four demo editors
+- `/storybook/`
+
+Build it locally with `./scripts/build-pages.sh` (output in `_site/`).
 
 ## Develop
 

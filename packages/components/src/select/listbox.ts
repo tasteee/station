@@ -54,6 +54,6 @@ export const listboxStyles = css`
   }
   .empty {
     padding: var(--st-space-1-5) var(--st-space-2);
-    color: var(--st-text-faint);
+    color: var(--st-text-muted);
   }
 `;

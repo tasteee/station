@@ -164,7 +164,7 @@ export const Breadcrumbs = c(
         .menu button:hover,
         .menu button:focus {
           background: var(--st-bg-selected-strong);
-          color: var(--st-text-on-accent);
+          color: var(--st-text-selected);
         }
       `,
     ],

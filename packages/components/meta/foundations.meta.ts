@@ -21,7 +21,7 @@ const flexContainer: AttributeMeta[] = [
   ...flexChild,
 ];
 
-const TONE = ["strong", "muted", "faint", "accent", "danger", "warning", "success"] as const;
+const TONE = ["strong", "muted", "faint", "accent", "signal", "danger", "warning", "success"] as const;
 
 export const foundations: ElementMeta[] = [
   {
@@ -149,7 +149,8 @@ export const foundations: ElementMeta[] = [
   {
     tag: "st-scroll-area",
     cssOnly: true,
-    description: "Scroll container with thin, quiet scrollbars.",
+    description:
+      'Scroll container with thin, quiet scrollbars. If nothing inside is focusable, add tabindex="0", role="region" and aria-label so keyboard users can scroll it.',
     attributes: [
       { name: "axis", type: ["x", "y"], description: "Limit scrolling to one axis. Omit for both." },
       ...padding,

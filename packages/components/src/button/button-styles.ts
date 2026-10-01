@@ -47,6 +47,9 @@ export const buttonStyles = css`
     --_fg: var(--st-text-on-accent);
     --_hover-bg: var(--st-accent-solid-hover);
     --_active-bg: var(--st-accent-solid-hover);
+    /* Key-cap sheen: a lit top edge, no drop shadow. */
+    background-image: linear-gradient(oklch(100% 0 0 / 0.1), transparent 60%);
+    box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.14);
   }
   :host([data-kind="solid"][tone="danger"]) {
     --_bg: var(--st-danger-solid);
@@ -86,31 +89,38 @@ export const buttonStyles = css`
     padding: 0;
     width: var(--_height);
   }
+  /* The empty label would still take the flex gap and push the icon off-center. */
+  :host([data-icon-only]) .label {
+    display: none;
+  }
   :host([data-icon-only][data-kind="ghost"]:not([tone])) {
     --_fg: var(--st-text-muted);
   }
 
   /* ---- pressed (toggle, segment) ---- */
+  /* "On" is live, so it takes the signal color. */
   :host([pressed]) {
-    --_bg: var(--st-bg-pressed);
-    --_fg: var(--st-text-strong);
-    --_hover-bg: var(--st-bg-pressed);
-    --_hover-fg: var(--st-text-strong);
+    --_bg: var(--st-signal-soft);
+    --_fg: var(--st-signal-text);
+    --_hover-bg: var(--st-signal-soft-strong);
+    --_hover-fg: var(--st-signal-text);
+    --_active-bg: var(--st-signal-soft-strong);
   }
   :host([pressed][tone="accent"]) {
-    --_bg: var(--st-accent-solid);
-    --_fg: var(--st-text-on-accent);
-    --_hover-bg: var(--st-accent-solid-hover);
-    --_hover-fg: var(--st-text-on-accent);
-    --_active-bg: var(--st-accent-solid-hover);
+    --_bg: var(--st-signal-gradient);
+    --_fg: var(--st-text-on-signal);
+    --_hover-bg: var(--st-signal-gradient);
+    --_hover-fg: var(--st-text-on-signal);
+    --_active-bg: var(--st-signal-gradient);
   }
 
   :host([block]) {
     display: flex;
     width: 100%;
   }
+  /* Hide the label visually but keep it as the accessible name (visibility would drop it). */
   :host([loading]) .content {
-    visibility: hidden;
+    color: transparent;
   }
 
   .content {
@@ -138,5 +148,11 @@ export const buttonStyles = css`
   ::slotted(st-icon),
   st-icon {
     margin-inline: -1px;
+  }
+  /* Next to text, line the icon up with the text's cap height instead of the line box:
+     DM Sans sits slightly high, and most glyphs carry their weight low. Whole pixel = crisp. */
+  :host(:not([data-icon-only])) st-icon,
+  :host(:not([data-icon-only])) ::slotted(st-icon) {
+    translate: 0 -1px;
   }
 `;

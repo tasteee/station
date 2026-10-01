@@ -262,8 +262,7 @@ export const CommandPalette = c(
         }
         .item[aria-selected="true"] {
           background: var(--st-bg-selected-strong);
-          color: var(--st-text-on-accent);
-          --st-text-muted: var(--st-text-on-accent);
+          color: var(--st-text-selected);
         }
         .icon {
           display: inline-grid;

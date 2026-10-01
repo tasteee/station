@@ -588,11 +588,12 @@ export const Tree = c(
         }
         .viewport:focus-within .row[data-selected] {
           background: var(--st-bg-selected-strong);
-          color: var(--st-text-on-accent);
-          --st-text-muted: var(--st-text-on-accent);
-          --st-text-faint: var(--st-text-on-accent);
+          color: var(--st-text-selected);
         }
-        .row[data-muted] .label,
+        /* Dimmed (e.g. hidden layer): muted ink keeps text readable; artwork fades. */
+        .row[data-muted] .label {
+          color: var(--st-text-muted);
+        }
         .row[data-muted] .icon,
         .row[data-muted] .thumb {
           opacity: 0.5;

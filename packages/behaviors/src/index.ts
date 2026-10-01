@@ -1,4 +1,15 @@
-export { formatHex, type Hsva, hsvToRgb, isLight, parseColor, type Rgba, rgbToHsv } from "./color.ts";
+export {
+  contrastRatio,
+  formatHex,
+  type Hsva,
+  hsvToRgb,
+  isLight,
+  luminance,
+  parseColor,
+  type Rgba,
+  readableInk,
+  rgbToHsv,
+} from "./color.ts";
 export { type CurvePoint, linearCurve, monotoneSpline } from "./curve.ts";
 export { devWarn, isDev } from "./dev.ts";
 export { type FuzzyMatch, fuzzyMatch } from "./fuzzy.ts";
