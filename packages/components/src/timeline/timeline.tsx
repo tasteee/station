@@ -1,4 +1,4 @@
-import { clamp } from "@station/behaviors";
+import { clamp, readableInk } from "@station/behaviors";
 import { c, css, type, useEffect, useHost, useProp, useRef, useState } from "atomico";
 import type { TimelineClip, TimelineKeyframe, TimelineToggle, TimelineTrack } from "../data-types.ts";
 import { fire } from "../shared/events.ts";
@@ -28,6 +28,18 @@ interface Drag {
 
 const EDGE_PX = 6;
 const SNAP_PX = 6;
+
+const inkCache = new Map<string, string>();
+/** Solid label strip + readable ink for a known clip color (CSS vars stay theme-driven otherwise). */
+function inkFor(color: string | undefined): string {
+  if (!color) return "";
+  let ink = inkCache.get(color);
+  if (!ink) {
+    ink = readableInk(color);
+    inkCache.set(color, ink);
+  }
+  return `--_strip:${color};--_ink:${ink}`;
+}
 
 /**
  * Multi-track timeline for video, audio and animation.
@@ -359,7 +371,7 @@ export const Timeline = c(
                     data-id={clip.id}
                     data-selected={selected.has(clip.id) ? "" : null}
                     data-dragging={dragging ? "" : null}
-                    style={`left:${clip.start * z}px;width:${Math.max(2, (clip.end - clip.start) * z)}px;${clip.color ? `--_c:${clip.color}` : ""}`}
+                    style={`left:${clip.start * z}px;width:${Math.max(2, (clip.end - clip.start) * z)}px;${clip.color ? `--_c:${clip.color};` : ""}${inkFor(clip.color ?? t.color)}`}
                     title={clip.label}
                   >
                     <span class="clip-label">{clip.label}</span>
@@ -558,8 +570,9 @@ export const Timeline = c(
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          color: var(--st-text-strong);
-          background: color-mix(in oklch, var(--_c) 55%, transparent);
+          /* A known clip color gets a solid strip with ink picked for contrast. */
+          color: var(--_ink, var(--st-text-strong));
+          background: var(--_strip, color-mix(in oklch, var(--_c) 55%, transparent));
           pointer-events: none;
         }
         .key {

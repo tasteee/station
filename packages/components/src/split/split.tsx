@@ -143,6 +143,7 @@ export const Split = c(
           part="handle"
           role="separator"
           tabindex="0"
+          aria-label="Resize panes"
           aria-orientation={vertical ? "horizontal" : "vertical"}
           aria-valuenow={String(size)}
           aria-valuemin={t?.pane.min != null ? String(t.pane.min) : null}

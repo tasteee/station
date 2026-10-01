@@ -109,8 +109,9 @@ export const buttonStyles = css`
     display: flex;
     width: 100%;
   }
+  /* Hide the label visually but keep it as the accessible name (visibility would drop it). */
   :host([loading]) .content {
-    visibility: hidden;
+    color: transparent;
   }
 
   .content {

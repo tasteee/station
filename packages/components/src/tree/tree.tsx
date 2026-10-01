@@ -592,7 +592,10 @@ export const Tree = c(
           --st-text-muted: var(--st-text-on-accent);
           --st-text-faint: var(--st-text-on-accent);
         }
-        .row[data-muted] .label,
+        /* Dimmed (e.g. hidden layer): muted ink keeps text readable; artwork fades. */
+        .row[data-muted] .label {
+          color: var(--st-text-muted);
+        }
         .row[data-muted] .icon,
         .row[data-muted] .thumb {
           opacity: 0.5;

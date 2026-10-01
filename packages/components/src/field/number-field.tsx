@@ -217,7 +217,7 @@ export const NumberField = c(
           flex: none;
           padding-inline-end: var(--st-space-1-5);
           margin-inline-start: calc(var(--st-space-1) * -1);
-          color: var(--st-text-faint);
+          color: var(--st-text-muted);
           font-size: var(--st-text-1);
         }
         :host([readonly]) .prefix,

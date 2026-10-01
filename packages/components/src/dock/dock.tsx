@@ -402,8 +402,6 @@ export const Dock = c(
               >
                 <div
                   class="tabs"
-                  role="tablist"
-                  aria-label={`Panel group ${gi + 1}`}
                   ondblclick={(e: MouseEvent) => {
                     if ((e.target as Element).closest(".tab")) return;
                     commit({
@@ -412,32 +410,34 @@ export const Dock = c(
                     });
                   }}
                 >
-                  {g.panels.map((name, ti) => {
-                    const p = panelByName.get(name);
-                    const isActive = g.active === name;
-                    return [
-                      drop?.group === gi && drop.position === "tab" && drop.index === ti && (
-                        <span class="insert" />
-                      ),
-                      <button
-                        type="button"
-                        class="tab"
-                        role="tab"
-                        data-panel={name}
-                        aria-selected={isActive ? "true" : "false"}
-                        tabindex={isActive ? "0" : "-1"}
-                        onpointerdown={(e: PointerEvent) => onTabPointerDown(e, gi, name)}
-                        onpointermove={onTabPointerMove}
-                        onpointerup={(e: PointerEvent) => onTabPointerUp(e, gi, name)}
-                        onkeydown={(e: KeyboardEvent) => onTabKey(e, gi, name)}
-                      >
-                        {p?.label ?? name}
-                      </button>,
-                    ];
-                  })}
-                  {drop?.group === gi && drop.position === "tab" && drop.index === g.panels.length && (
-                    <span class="insert" />
-                  )}
+                  <div class="tablist" role="tablist" aria-label={`Panel group ${gi + 1}`}>
+                    {g.panels.map((name, ti) => {
+                      const p = panelByName.get(name);
+                      const isActive = g.active === name;
+                      return [
+                        drop?.group === gi && drop.position === "tab" && drop.index === ti && (
+                          <span class="insert" />
+                        ),
+                        <button
+                          type="button"
+                          class="tab"
+                          role="tab"
+                          data-panel={name}
+                          aria-selected={isActive ? "true" : "false"}
+                          tabindex={isActive ? "0" : "-1"}
+                          onpointerdown={(e: PointerEvent) => onTabPointerDown(e, gi, name)}
+                          onpointermove={onTabPointerMove}
+                          onpointerup={(e: PointerEvent) => onTabPointerUp(e, gi, name)}
+                          onkeydown={(e: KeyboardEvent) => onTabKey(e, gi, name)}
+                        >
+                          {p?.label ?? name}
+                        </button>,
+                      ];
+                    })}
+                    {drop?.group === gi && drop.position === "tab" && drop.index === g.panels.length && (
+                      <span class="insert" />
+                    )}
+                  </div>
                   <span class="spacer" />
                   {gi === 0 && (
                     <button
@@ -532,6 +532,13 @@ export const Dock = c(
           border-bottom: 1px solid var(--st-border-subtle);
           background: var(--st-bg-panel);
           overflow: hidden;
+        }
+        .tablist {
+          display: flex;
+          align-items: center;
+          gap: 1px;
+          min-width: 0;
+          height: 100%;
         }
         .group[data-minimized] .tabs {
           border-bottom: 0;
