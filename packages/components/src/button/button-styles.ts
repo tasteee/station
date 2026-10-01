@@ -89,6 +89,10 @@ export const buttonStyles = css`
     padding: 0;
     width: var(--_height);
   }
+  /* The empty label would still take the flex gap and push the icon off-center. */
+  :host([data-icon-only]) .label {
+    display: none;
+  }
   :host([data-icon-only][data-kind="ghost"]:not([tone])) {
     --_fg: var(--st-text-muted);
   }
@@ -144,5 +148,11 @@ export const buttonStyles = css`
   ::slotted(st-icon),
   st-icon {
     margin-inline: -1px;
+  }
+  /* Next to text, line the icon up with the text's cap height instead of the line box:
+     DM Sans sits slightly high, and most glyphs carry their weight low. Whole pixel = crisp. */
+  :host(:not([data-icon-only])) st-icon,
+  :host(:not([data-icon-only])) ::slotted(st-icon) {
+    translate: 0 -1px;
   }
 `;

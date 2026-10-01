@@ -127,3 +127,23 @@ describe("st-segmented-control", () => {
     expect(onChange).toHaveBeenCalledTimes(2);
   });
 });
+
+describe("icon placement", () => {
+  it("centers the icon in every icon-only button, toggle and segment", async () => {
+    const root = await mount(`
+      <st-icon-button icon="x" label="Close"></st-icon-button>
+      <st-toggle-button icon="x" label="Bold"></st-toggle-button>
+      <st-toggle-button icon="x" label="Big" size="large"></st-toggle-button>
+      <st-segmented-control label="Align" value="a"><st-segment value="a" icon="x" label="Left"></st-segment></st-segmented-control>`);
+    for (const host of root.querySelectorAll<HTMLElement>("st-icon-button, st-toggle-button, st-segment")) {
+      const icon = host.shadowRoot!.querySelector("st-icon")!.getBoundingClientRect();
+      const box = host.getBoundingClientRect();
+      expect(Math.abs(icon.left + icon.width / 2 - (box.left + box.width / 2)), host.localName).toBeLessThan(
+        0.5,
+      );
+      expect(Math.abs(icon.top + icon.height / 2 - (box.top + box.height / 2)), host.localName).toBeLessThan(
+        0.5,
+      );
+    }
+  });
+});
