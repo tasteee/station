@@ -143,6 +143,7 @@ export const ZoomControl = c(
           height: var(--st-control-height);
           border-radius: var(--st-radius-2);
           background: var(--st-bg-field);
+          box-shadow: var(--st-field-edge);
           font-family: var(--st-font-sans);
           font-size: var(--st-control-font-size);
         }

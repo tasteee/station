@@ -44,6 +44,17 @@ for (const s of steps) {
   );
 }
 
+scales.push(
+  "\n  /* Signal: the one live color (focus, selection, on, playhead). Knobs: --st-signal-hue, --st-signal-chroma. */",
+);
+for (const s of steps) {
+  const k = STATUS_CHROMA_CURVE[s - 1];
+  const color = (l) => `oklch(${pct(l)} calc(var(--st-signal-chroma) * ${k}) var(--st-signal-hue))`;
+  scales.push(
+    `  --st-signal-${s}: ${ld(color(STATUS_LIGHTNESS.light[s - 1]), color(STATUS_LIGHTNESS.dark[s - 1]))};`,
+  );
+}
+
 for (const name of ["danger", "warning", "success"]) {
   scales.push(`\n  /* ${name[0].toUpperCase()}${name.slice(1)}. Knob: --st-${name}-hue. */`);
   for (const s of steps) {

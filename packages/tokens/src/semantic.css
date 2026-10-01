@@ -10,19 +10,52 @@
   --st-bg-section: light-dark(var(--st-gray-2), var(--st-gray-3));
   --st-bg-well: light-dark(var(--st-gray-3), var(--st-gray-1));
 
+  /* ---- Signal: the one live color. Focus, selection, "on", playhead. ---- */
+  --st-signal: light-dark(
+    oklch(62% var(--st-signal-chroma) var(--st-signal-hue)),
+    oklch(69% calc(var(--st-signal-chroma) * 0.95) calc(var(--st-signal-hue) + 2))
+  ); /* ≥3:1 on every surface: rings, fills, marks */
+  --st-signal-hover: light-dark(
+    oklch(57% var(--st-signal-chroma) var(--st-signal-hue)),
+    oklch(74% calc(var(--st-signal-chroma) * 0.9) calc(var(--st-signal-hue) + 4))
+  );
+  --st-signal-text: light-dark(
+    oklch(52% calc(var(--st-signal-chroma) * 0.8) var(--st-signal-hue)),
+    oklch(76% calc(var(--st-signal-chroma) * 0.72) calc(var(--st-signal-hue) + 10))
+  ); /* ≥4.5:1 on every surface */
+  --st-signal-end: light-dark(
+    oklch(74% calc(var(--st-signal-chroma) * 0.86) var(--st-signal-hue-end)),
+    oklch(80% calc(var(--st-signal-chroma) * 0.76) calc(var(--st-signal-hue-end) + 2))
+  );
+  /* "On" fills: a short sweep from signal toward amber. Ink stays readable on both ends. */
+  --st-signal-gradient: linear-gradient(115deg, var(--st-signal) 10%, var(--st-signal-end));
+  --st-signal-soft: light-dark(
+    color-mix(in oklch, var(--st-signal) 12%, transparent),
+    color-mix(in oklch, var(--st-signal) 18%, transparent)
+  );
+  --st-signal-soft-strong: light-dark(
+    color-mix(in oklch, var(--st-signal) 20%, transparent),
+    color-mix(in oklch, var(--st-signal) 30%, transparent)
+  );
+  --st-text-on-signal: oklch(17% 0.03 var(--st-signal-hue)); /* text and glyphs on signal fills */
+
   /* ---- Interaction layers (alpha, stack on any surface) ---- */
-  --st-bg-field: var(--st-gray-a3);
-  --st-bg-field-hover: var(--st-gray-a4);
+  /* Fields are recessed wells: a faint fill plus a hairline edge. */
+  --st-bg-field: var(--st-gray-a2);
+  --st-bg-field-hover: var(--st-gray-a3);
+  --st-field-edge: inset 0 0 0 1px var(--st-gray-a4);
+  --st-field-edge-hover: inset 0 0 0 1px var(--st-gray-a6);
   --st-bg-hover: var(--st-gray-a3);
   --st-bg-pressed: var(--st-gray-a5);
-  --st-bg-selected: var(--st-gray-a4);
-  --st-bg-selected-strong: var(--st-accent-solid);
+  --st-bg-selected: var(--st-signal-soft);
+  --st-bg-selected-strong: var(--st-signal-soft-strong); /* selection in a focused list */
+  --st-text-selected: var(--st-text-strong);
 
   /* ---- Borders ---- */
   --st-border-subtle: var(--st-gray-6);
   --st-border: var(--st-gray-7);
   --st-border-strong: var(--st-gray-8);
-  --st-border-focus: var(--st-accent-solid);
+  --st-border-focus: var(--st-signal);
 
   /* ---- Text: the contrast ladder ---- */
   --st-text-strong: var(--st-gray-12); /* titles, selected names, active icons */
@@ -65,7 +98,7 @@
     0 16px 48px -8px light-dark(oklch(0% 0 0 / 0.2), oklch(0% 0 0 / 0.65));
 
   /* ---- Focus ---- */
-  --st-focus-ring-width: 1.5px;
+  --st-focus-ring-width: 2px;
   --st-focus-ring-offset: 1px;
 
   /* ---- Controls ---- */

@@ -53,7 +53,7 @@ body {
   background: var(--st-bg-hover);
 }
 .nav-link[aria-current="page"] {
-  background: var(--st-bg-selected);
+  background: var(--st-bg-pressed);
   color: var(--st-text-strong);
   font-weight: var(--st-weight-medium);
 }

@@ -32,7 +32,13 @@ const styles = css`
     top: 0;
     bottom: 0;
     border-radius: inherit;
+    /* A value, not a state: neutral at rest, live while being adjusted. */
     background: var(--st-accent-solid);
+    transition: background-color var(--st-duration) var(--st-ease);
+  }
+  :host([data-dragging]) .fill,
+  :host(:focus-visible) .fill {
+    background: var(--st-signal-gradient);
   }
   .thumb {
     position: absolute;

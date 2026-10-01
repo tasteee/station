@@ -204,9 +204,11 @@ export const Select = c(
         :host(:focus-within) {
           background: var(--st-bg-field);
           border-color: transparent;
+          box-shadow: var(--st-field-edge);
         }
         :host(:focus-visible) {
           border-color: var(--st-border-focus);
+          box-shadow: 0 0 0 3px var(--st-signal-soft);
         }
         .value {
           flex: 1;

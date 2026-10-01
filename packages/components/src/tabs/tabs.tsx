@@ -201,7 +201,7 @@ export const TabItem = c(
         }
         :host([selected]) {
           color: var(--st-text-strong);
-          background: var(--st-bg-selected);
+          background: var(--st-bg-pressed); /* navigation stays neutral */
         }
         :host(:focus-visible) {
           outline-offset: -1px;

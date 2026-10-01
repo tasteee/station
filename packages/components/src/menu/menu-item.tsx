@@ -98,14 +98,7 @@ export const MenuItem = c(
         :host(:focus),
         :host([data-expanded]) {
           background: var(--st-bg-selected-strong);
-          color: var(--st-text-on-accent);
-        }
-        /* Scoped to our own shadow parts: a submenu is a DOM child and must not inherit these. */
-        :host(:focus) :is(.shortcut, .chevron),
-        :host([data-expanded]) :is(.shortcut, .chevron) {
-          --st-text-muted: var(--st-text-on-accent);
-          --st-text-faint: var(--st-text-on-accent);
-          color: var(--st-text-on-accent);
+          color: var(--st-text-selected);
         }
         :host([tone="danger"]) {
           color: var(--st-danger-text);

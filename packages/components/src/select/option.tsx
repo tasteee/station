@@ -48,8 +48,7 @@ export const Option = c(
         }
         :host([data-active]) {
           background: var(--st-bg-selected-strong);
-          color: var(--st-text-on-accent);
-          --st-text-muted: var(--st-text-on-accent);
+          color: var(--st-text-selected);
         }
         :host([disabled]) {
           opacity: 0.45;

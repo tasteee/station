@@ -187,15 +187,16 @@ const toolStyles = css`
     padding: 0;
   }
   :host([selected]) {
-    --_bg: var(--st-bg-pressed);
-    --_fg: var(--st-text-strong);
-    --_hover-bg: var(--st-bg-pressed);
+    --_bg: var(--st-signal-soft);
+    --_fg: var(--st-signal-text);
+    --_hover-bg: var(--st-signal-soft-strong);
+    --_hover-fg: var(--st-signal-text);
   }
   :host([selected][data-tone="accent"]) {
-    --_bg: var(--st-accent-solid);
-    --_fg: var(--st-text-on-accent);
-    --_hover-bg: var(--st-accent-solid-hover);
-    --_hover-fg: var(--st-text-on-accent);
+    --_bg: var(--st-signal-gradient);
+    --_fg: var(--st-text-on-signal);
+    --_hover-bg: var(--st-signal-gradient);
+    --_hover-fg: var(--st-text-on-signal);
   }
 `;
 
@@ -471,8 +472,7 @@ export const ToolGroup = c(
         .flyout button:hover,
         .flyout button:focus {
           background: var(--st-bg-selected-strong);
-          color: var(--st-text-on-accent);
-          --st-text-muted: var(--st-text-on-accent);
+          color: var(--st-text-selected);
         }
         .flyout button[disabled] {
           opacity: 0.45;

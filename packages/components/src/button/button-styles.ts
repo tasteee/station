@@ -47,6 +47,9 @@ export const buttonStyles = css`
     --_fg: var(--st-text-on-accent);
     --_hover-bg: var(--st-accent-solid-hover);
     --_active-bg: var(--st-accent-solid-hover);
+    /* Key-cap sheen: a lit top edge, no drop shadow. */
+    background-image: linear-gradient(oklch(100% 0 0 / 0.1), transparent 60%);
+    box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.14);
   }
   :host([data-kind="solid"][tone="danger"]) {
     --_bg: var(--st-danger-solid);
@@ -91,18 +94,20 @@ export const buttonStyles = css`
   }
 
   /* ---- pressed (toggle, segment) ---- */
+  /* "On" is live, so it takes the signal color. */
   :host([pressed]) {
-    --_bg: var(--st-bg-pressed);
-    --_fg: var(--st-text-strong);
-    --_hover-bg: var(--st-bg-pressed);
-    --_hover-fg: var(--st-text-strong);
+    --_bg: var(--st-signal-soft);
+    --_fg: var(--st-signal-text);
+    --_hover-bg: var(--st-signal-soft-strong);
+    --_hover-fg: var(--st-signal-text);
+    --_active-bg: var(--st-signal-soft-strong);
   }
   :host([pressed][tone="accent"]) {
-    --_bg: var(--st-accent-solid);
-    --_fg: var(--st-text-on-accent);
-    --_hover-bg: var(--st-accent-solid-hover);
-    --_hover-fg: var(--st-text-on-accent);
-    --_active-bg: var(--st-accent-solid-hover);
+    --_bg: var(--st-signal-gradient);
+    --_fg: var(--st-text-on-signal);
+    --_hover-bg: var(--st-signal-gradient);
+    --_hover-fg: var(--st-text-on-signal);
+    --_active-bg: var(--st-signal-gradient);
   }
 
   :host([block]) {

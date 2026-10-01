@@ -14,6 +14,7 @@
 :where(st-text, st-heading)[tone="muted"] { color: var(--st-text-muted); }
 :where(st-text, st-heading)[tone="faint"] { color: var(--st-text-faint); }
 :where(st-text, st-heading)[tone="accent"] { color: var(--st-accent-text); }
+:where(st-text, st-heading)[tone="signal"] { color: var(--st-signal-text); }
 :where(st-text, st-heading)[tone="danger"] { color: var(--st-danger-text); }
 :where(st-text, st-heading)[tone="warning"] { color: var(--st-warning-text); }
 :where(st-text, st-heading)[tone="success"] { color: var(--st-success-text); }
@@ -52,11 +53,15 @@
   color: var(--st-text-strong);
   letter-spacing: -0.005em;
 }
+/* Micro-label: the instrument-panel legend. Uppercase mono, tracked. */
 :where(st-heading)[size="small"] {
-  font-size: var(--st-text-1);
-  letter-spacing: 0.02em;
+  font-family: var(--st-font-mono);
+  font-size: calc(var(--st-text-1) * 0.94);
+  font-weight: var(--st-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 :where(st-heading)[size="large"] {
   font-size: var(--st-text-4);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }

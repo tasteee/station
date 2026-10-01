@@ -70,15 +70,19 @@ export const fieldBase = css`
     height: var(--_height);
     border-radius: var(--st-radius-2);
     background: var(--st-bg-field);
+    box-shadow: var(--st-field-edge); /* recessed well */
     color: var(--st-text-strong);
     border: 1px solid transparent;
     cursor: text;
+    transition: box-shadow var(--st-duration) var(--st-ease), background-color var(--st-duration) var(--st-ease);
   }
   :host(:hover) {
     background: var(--st-bg-field-hover);
+    box-shadow: var(--st-field-edge-hover);
   }
   :host([kind="outline"]) {
     background: transparent;
+    box-shadow: none;
     border-color: var(--st-border);
   }
   :host([kind="outline"]:hover) {
@@ -86,13 +90,16 @@ export const fieldBase = css`
   }
   :host([kind="ghost"]) {
     background: transparent;
+    box-shadow: none;
   }
   :host([kind="ghost"]:hover) {
     background: var(--st-bg-hover);
   }
+  /* Focus: a crisp signal edge plus a soft halo. */
   :host(:focus-within) {
     background: transparent;
     border-color: var(--st-border-focus);
+    box-shadow: 0 0 0 3px var(--st-signal-soft);
   }
   :host(:focus-visible) {
     outline: none;
@@ -102,6 +109,7 @@ export const fieldBase = css`
   }
   :host([readonly]) {
     background: transparent;
+    box-shadow: none;
     border-color: var(--st-border-subtle);
   }
   input,

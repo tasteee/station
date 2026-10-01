@@ -21,7 +21,7 @@ const flexContainer: AttributeMeta[] = [
   ...flexChild,
 ];
 
-const TONE = ["strong", "muted", "faint", "accent", "danger", "warning", "success"] as const;
+const TONE = ["strong", "muted", "faint", "accent", "signal", "danger", "warning", "success"] as const;
 
 export const foundations: ElementMeta[] = [
   {

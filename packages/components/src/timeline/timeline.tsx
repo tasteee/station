@@ -499,8 +499,8 @@ export const Timeline = c(
           color: var(--st-text-strong);
         }
         .tg[aria-pressed="true"] {
-          background: var(--st-accent-solid);
-          color: var(--st-text-on-accent);
+          background: var(--st-signal-gradient);
+          color: var(--st-text-on-signal);
         }
         .tg:focus-visible {
           outline: var(--st-focus-ring-width) solid var(--st-border-focus);
