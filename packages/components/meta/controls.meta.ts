@@ -18,7 +18,11 @@ const KIND = a(
   ["solid", "outline", "ghost"],
   "Visual weight. Inherited from st-button-group / st-toolbar when unset.",
 );
-const TONE = a("tone", ["accent", "danger"], "Color meaning. Omit for neutral.");
+const TONE = a(
+  "tone",
+  ["accent", "signal", "danger"],
+  'Color meaning. Omit for neutral. signal = the opt-in signal color (grayscale ink unless an ancestor sets signal="lime" etc.).',
+);
 const DISABLED = a("disabled", "boolean", "Not interactive; removed from the tab order.");
 const LABEL_REQUIRED = a(
   "label",

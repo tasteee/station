@@ -1,0 +1,71 @@
+/*
+ * Opt-in signal colors. Station is grayscale by default; add signal="lime" or
+ * signal="orange" to any element (html, a panel, one button) to color what is
+ * live inside it. Each preset keeps rings ≥3:1, signal text ≥4.5:1 and ink on
+ * fills ≥4.5:1 in both themes (packages/tokens/test/contrast.test.ts).
+ *
+ * Derived tokens (gradient, selection, focus) resolve where they are declared,
+ * so each preset redeclares them. The selectors also match [theme]/[density]
+ * descendants, because those
+ * redeclare the semantic tokens; later in the cascade, same specificity, so
+ * the preset wins there too. signal="none" returns a subtree to grayscale.
+ */
+
+/* ---- Lime: bold fills with dark ink in both themes; rings and text darken on light. ---- */
+:where([signal="lime"], [signal="lime"] :is([theme], [density])) {
+  --st-signal-hue: 132;
+  --st-signal: light-dark(oklch(56% 0.16 140), oklch(86% 0.21 132));
+  --st-signal-hover: light-dark(oklch(50% 0.15 140), oklch(90% 0.2 130));
+  --st-signal-text: light-dark(oklch(48% 0.13 142), oklch(88% 0.19 130));
+  --st-signal-end: oklch(93% 0.16 110);
+  --st-signal-fill: light-dark(oklch(87% 0.21 132), oklch(88% 0.22 132));
+  --st-signal-fill-end: oklch(93% 0.16 110);
+  --st-signal-edge: light-dark(inset 0 0 0 1px oklch(50% 0.12 140 / 0.35), none);
+  --st-signal-soft: light-dark(oklch(87% 0.21 132 / 0.28), oklch(88% 0.22 132 / 0.16));
+  --st-signal-soft-strong: light-dark(oklch(87% 0.21 132 / 0.45), oklch(88% 0.22 132 / 0.26));
+  --st-text-on-signal: oklch(20% 0.04 135);
+  /* Derived tokens resolve where they are declared, so a preset redeclares them too. */
+  --st-signal-gradient: linear-gradient(115deg, var(--st-signal-fill) 10%, var(--st-signal-fill-end));
+  --st-bg-selected: var(--st-signal-soft);
+  --st-bg-selected-strong: var(--st-signal-soft-strong);
+  --st-border-focus: var(--st-signal);
+}
+
+/* ---- Orange: the earlier Signal Orange. ---- */
+:where([signal="orange"], [signal="orange"] :is([theme], [density])) {
+  --st-signal-hue: 40;
+  --st-signal: light-dark(oklch(62% 0.21 40), oklch(69% 0.2 42));
+  --st-signal-hover: light-dark(oklch(57% 0.21 40), oklch(74% 0.19 44));
+  --st-signal-text: light-dark(oklch(52% 0.168 40), oklch(76% 0.151 50));
+  --st-signal-end: light-dark(oklch(74% 0.18 62), oklch(80% 0.16 64));
+  --st-signal-fill: var(--st-signal);
+  --st-signal-fill-end: var(--st-signal-end);
+  --st-signal-edge: none;
+  --st-signal-soft: light-dark(oklch(62% 0.21 40 / 0.12), oklch(69% 0.2 42 / 0.18));
+  --st-signal-soft-strong: light-dark(oklch(62% 0.21 40 / 0.2), oklch(69% 0.2 42 / 0.3));
+  --st-text-on-signal: oklch(17% 0.03 40);
+  /* Derived tokens resolve where they are declared, so a preset redeclares them too. */
+  --st-signal-gradient: linear-gradient(115deg, var(--st-signal-fill) 10%, var(--st-signal-fill-end));
+  --st-bg-selected: var(--st-signal-soft);
+  --st-bg-selected-strong: var(--st-signal-soft-strong);
+  --st-border-focus: var(--st-signal);
+}
+
+/* ---- Back to grayscale inside a colored region. ---- */
+:where([signal="none"], [signal="none"] :is([theme], [density])) {
+  --st-signal: var(--st-gray-11);
+  --st-signal-hover: var(--st-gray-12);
+  --st-signal-text: var(--st-gray-12);
+  --st-signal-end: var(--st-gray-10);
+  --st-signal-fill: var(--st-gray-12);
+  --st-signal-fill-end: var(--st-gray-11);
+  --st-signal-edge: none;
+  --st-signal-soft: var(--st-gray-a3);
+  --st-signal-soft-strong: var(--st-gray-a5);
+  --st-text-on-signal: var(--st-gray-1);
+  /* Derived tokens resolve where they are declared, so a preset redeclares them too. */
+  --st-signal-gradient: linear-gradient(115deg, var(--st-signal-fill) 10%, var(--st-signal-fill-end));
+  --st-bg-selected: var(--st-signal-soft);
+  --st-bg-selected-strong: var(--st-signal-soft-strong);
+  --st-border-focus: var(--st-signal);
+}

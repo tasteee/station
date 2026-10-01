@@ -31,28 +31,39 @@ describe("gray scale contrast", () => {
   }
 });
 
-// Signal values mirror semantic.css (hue 40, chroma 0.21 by default).
-describe("signal contrast", () => {
+// Opt-in signal presets mirror signal.css. The default signal is the gray ladder (covered above).
+describe("signal presets contrast", () => {
   const gray = (l: number) => luminance(l);
   const sig = (l: number, c: number, h: number) => luminance(l, c, h);
   const ratio = (a: number, b: number) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
-  const themes = {
-    light: { surfaces: [1, 2, 3], solid: sig(62, 0.21, 40), text: sig(52, 0.168, 40) },
-    dark: { surfaces: [2, 3, 1], solid: sig(69, 0.2, 42), text: sig(76, 0.151, 50) },
+  const presets = {
+    orange: {
+      light: { ring: sig(62, 0.21, 40), text: sig(52, 0.168, 40), fill: sig(62, 0.21, 40) },
+      dark: { ring: sig(69, 0.2, 42), text: sig(76, 0.151, 50), fill: sig(69, 0.2, 42) },
+      ink: sig(17, 0.03, 40),
+    },
+    lime: {
+      light: { ring: sig(56, 0.16, 140), text: sig(48, 0.13, 142), fill: sig(87, 0.21, 132) },
+      dark: { ring: sig(86, 0.21, 132), text: sig(88, 0.19, 130), fill: sig(88, 0.22, 132) },
+      ink: sig(20, 0.04, 135),
+    },
   } as const;
-  const ink = sig(17, 0.03, 40);
-  for (const [theme, t] of Object.entries(themes)) {
-    const L: number[] = GRAY_LIGHTNESS[theme as "light" | "dark"];
-    for (const s of t.surfaces) {
-      it(`${theme}: signal ring/fill on step ${s} ≥ 3:1`, () => {
-        expect(ratio(t.solid, gray(L[s - 1]!))).toBeGreaterThanOrEqual(3);
-      });
-      it(`${theme}: signal text on step ${s} ≥ 4.5:1`, () => {
-        expect(ratio(t.text, gray(L[s - 1]!))).toBeGreaterThanOrEqual(4.5);
+  const surfaces = { light: [1, 2, 3], dark: [2, 3, 1] } as const;
+  for (const [name, preset] of Object.entries(presets)) {
+    for (const theme of ["light", "dark"] as const) {
+      const t = preset[theme];
+      const L: number[] = GRAY_LIGHTNESS[theme];
+      for (const s of surfaces[theme]) {
+        it(`${name} ${theme}: ring on step ${s} ≥ 3:1`, () => {
+          expect(ratio(t.ring, gray(L[s - 1]!))).toBeGreaterThanOrEqual(3);
+        });
+        it(`${name} ${theme}: signal text on step ${s} ≥ 4.5:1`, () => {
+          expect(ratio(t.text, gray(L[s - 1]!))).toBeGreaterThanOrEqual(4.5);
+        });
+      }
+      it(`${name} ${theme}: ink on fill ≥ 4.5:1`, () => {
+        expect(ratio(preset.ink, t.fill)).toBeGreaterThanOrEqual(4.5);
       });
     }
-    it(`${theme}: ink on signal fill ≥ 4.5:1`, () => {
-      expect(ratio(ink, t.solid)).toBeGreaterThanOrEqual(4.5);
-    });
   }
 });

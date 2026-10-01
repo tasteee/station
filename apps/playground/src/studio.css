@@ -1,0 +1,480 @@
+/*
+ * Studio: the Figma-style view in the soft-card language.
+ * Neutral grays, big soft cards on a gray canvas, ink pills, grayscale chrome.
+ * Color lives only in the user's design on the artboard (and one opt-in
+ * button). Everything below is layout + a few overrides; the controls are
+ * stock Station components.
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.studio {
+  /* Chrome is grayscale (Station default). Only the artboard, the user's
+     own design, carries color, plus one opt-in lime button (Share). */
+  --st-radius: 8px;
+  --st-font-size: 12.5px;
+
+  /* Content colors for the design on the artboard (not UI chrome). */
+  --content-lime: oklch(87% 0.21 132);
+  --content-lime-end: oklch(93% 0.16 110);
+  --content-ink: oklch(20% 0.04 135);
+
+  /* ---- Page surfaces ---- */
+  --canvas: light-dark(oklch(84.5% 0 0), oklch(14% 0 0));
+  --card: light-dark(oklch(95.5% 0 0), oklch(20% 0 0));
+  --card-raised: light-dark(oklch(98.5% 0 0), oklch(24% 0 0));
+  --card-edge: light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.05));
+  --divider: light-dark(oklch(0% 0 0 / 0.07), oklch(100% 0 0 / 0.07));
+  --gray-sheen: linear-gradient(
+    155deg,
+    light-dark(oklch(99% 0 0), oklch(26% 0 0)) 0%,
+    light-dark(oklch(95.5% 0 0), oklch(20% 0 0)) 70%
+  );
+  --lime-wash: linear-gradient(
+    155deg,
+    light-dark(oklch(91% 0.17 125), oklch(42% 0.12 132)) 0%,
+    light-dark(oklch(95% 0.09 105), oklch(29% 0.06 125)) 55%,
+    light-dark(oklch(94% 0.035 40), oklch(23% 0.02 100)) 100%
+  );
+  --radius-card: 22px;
+  --radius-pill: 999px;
+
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+  background: var(--canvas);
+  color: var(--st-text);
+  font-family: var(--st-font-sans);
+  font-size: var(--st-text-2);
+  color-scheme: light;
+}
+.studio[theme="dark"] {
+  color-scheme: dark;
+}
+
+/* ---------- top bar ---------- */
+.top-row {
+  height: 52px;
+  padding-inline: 20px 12px;
+}
+.logo {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: var(--st-signal-gradient);
+}
+.crumb-title {
+  font-weight: var(--st-weight-medium);
+  color: var(--st-text-strong);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.crumb-sep {
+  color: var(--st-text-faint);
+  font-size: 18px;
+  font-weight: 300;
+}
+.crumb-page {
+  color: var(--st-text);
+  font-size: 15px;
+  font-weight: 300;
+}
+.avatars {
+  display: inline-flex;
+}
+.avatars i {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  margin-inline-start: -6px;
+  background: oklch(78% 0.08 var(--a));
+  box-shadow: 0 0 0 2px var(--canvas);
+}
+
+/* Share: the one opt-in color in the chrome (signal="lime" tone="signal"). */
+.share {
+  border-radius: var(--radius-pill);
+  padding-inline: 14px;
+}
+
+/* ---------- layout ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 300px;
+  gap: 12px;
+  padding: 0 12px 12px;
+  min-height: 0;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: inset 0 1px 0 var(--card-edge);
+  min-height: 0;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+}
+.title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--st-text-strong);
+  letter-spacing: -0.01em;
+}
+.title.big {
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+}
+.micro {
+  font: var(--st-weight-medium) 10px/1 var(--st-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--st-text-muted);
+}
+
+/* ---------- left: layers ---------- */
+.side .card-head {
+  justify-content: space-between;
+}
+.side-search {
+  width: 100%;
+  border-radius: var(--radius-pill);
+}
+.tree {
+  flex: 1;
+  min-height: 0;
+  margin-inline: -6px;
+  --st-tree-row-inset: 6px;
+  --st-tree-row-radius: 999px;
+  --st-tree-row-height: 30px;
+}
+.card-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--divider);
+}
+.pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.page-pill {
+  all: unset;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--card-raised);
+  color: var(--st-text);
+  font-size: var(--st-text-2);
+  cursor: default;
+}
+.page-pill:hover {
+  color: var(--st-text-strong);
+}
+.page-pill[aria-current="page"] {
+  background: var(--st-signal-fill);
+  color: var(--st-text-on-signal);
+  font-weight: var(--st-weight-medium);
+}
+.page-pill:focus-visible {
+  outline: 2px solid var(--st-signal);
+  outline-offset: 2px;
+}
+
+/* ---------- center: canvas ---------- */
+.canvas {
+  position: relative;
+  padding: 18px 20px;
+  overflow: hidden;
+}
+.canvas-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.stage {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  border-radius: 16px;
+  background-color: light-dark(oklch(92% 0 0), oklch(17% 0 0));
+  background-image: radial-gradient(light-dark(oklch(0% 0 0 / 0.08), oklch(100% 0 0 / 0.06)) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.artboard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(620px, 88%);
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--card-raised);
+}
+.artboard-name {
+  position: absolute;
+  top: -20px;
+  left: 2px;
+  font-size: var(--st-text-1);
+  color: var(--st-text-muted);
+}
+.hero {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--lime-wash);
+}
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.hero-kicker {
+  font: var(--st-weight-medium) 10px/1 var(--st-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--st-text-muted);
+}
+.hero-title {
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--st-text-strong);
+  text-wrap: balance;
+}
+.hero-cta {
+  margin-top: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--st-text-strong);
+  color: var(--card-raised);
+  font-weight: var(--st-weight-medium);
+}
+.hero-art {
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 62%, oklch(88% 0.16 85) 0 28%, transparent 29%),
+    linear-gradient(180deg, oklch(70% 0.1 300), oklch(78% 0.12 20));
+  min-height: 120px;
+}
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--card);
+}
+.tile-label {
+  color: var(--st-text-muted);
+  font-size: var(--st-text-1);
+}
+.tile-value {
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--st-text-strong);
+  font-variant-numeric: tabular-nums;
+}
+.tile-delta {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: oklch(20% 0.04 135 / 0.1);
+  color: var(--content-ink);
+  font-size: var(--st-text-1);
+}
+.tile-bar {
+  height: 5px;
+  border-radius: 3px;
+  background: var(--divider);
+  overflow: hidden;
+}
+.tile-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: oklch(62% 0.11 185); /* teal: a content color, not the signal */
+}
+.tile-lime {
+  background: linear-gradient(115deg, var(--content-lime) 10%, var(--content-lime-end));
+}
+.tile-lime .tile-label,
+.tile-lime .tile-value {
+  color: var(--content-ink);
+}
+
+/* Selection chrome on the canvas: signal ring + handles + size tag. */
+.selected {
+  outline: 1.5px solid var(--st-signal);
+  outline-offset: 3px;
+}
+.handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--card-raised);
+  box-shadow: 0 0 0 1.5px var(--st-signal);
+}
+.handle.tl {
+  top: -7px;
+  left: -7px;
+}
+.handle.tr {
+  top: -7px;
+  right: -7px;
+}
+.handle.bl {
+  bottom: -7px;
+  left: -7px;
+}
+.handle.br {
+  bottom: -7px;
+  right: -7px;
+}
+.size-tag {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  translate: -50% 0;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--st-signal);
+  color: var(--st-text-on-signal);
+  font: 10.5px/1.5 var(--st-font-mono);
+  white-space: nowrap;
+}
+
+/* Floating tool dock: a pill with round tools; the active tool is an ink disc. */
+.dock {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--card-raised);
+  box-shadow: var(--st-shadow-floating);
+}
+.dock st-toggle-button {
+  --st-control-height: 34px;
+  border-radius: var(--radius-pill);
+}
+.dock-sep {
+  width: 1px;
+  height: 20px;
+  margin-inline: 4px;
+  background: var(--divider);
+}
+.zoom {
+  position: absolute;
+  right: 28px;
+  bottom: 30px;
+  border-radius: var(--radius-pill);
+}
+
+/* ---------- right: inspector ---------- */
+.inspector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: none;
+}
+.card-lime {
+  background: var(--gray-sheen);
+}
+.readout {
+  display: flex;
+  gap: 18px;
+}
+.readout span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.readout b {
+  font: 300 22px/1 var(--st-font-sans);
+  letter-spacing: -0.02em;
+  color: var(--st-text-strong);
+  font-variant-numeric: tabular-nums;
+}
+.readout small {
+  font-size: var(--st-text-1);
+  color: var(--st-text-muted);
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.grid2 st-number-field {
+  width: auto;
+}
+.row-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.row-label {
+  width: 64px;
+  color: var(--st-text-muted);
+}
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+.inspector st-color-field,
+.inspector st-select {
+  width: 100%;
+}
+
+/* Pill-shaped search and zoom; inspector fields keep the denser control radius. */
+.studio st-search-field,
+.studio st-zoom-control {
+  --st-radius: 999px;
+}
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: 1fr;
+    overflow: auto;
+  }
+  .studio {
+    height: auto;
+  }
+  .canvas {
+    min-height: 560px;
+  }
+  .page-nav {
+    display: none;
+  }
+}
