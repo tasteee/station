@@ -180,4 +180,32 @@ describe("st-combobox", () => {
     await settle(root);
     expect(combo.value).toBe("Futura");
   });
+
+  it("never commits an option the filter hid, even before the next frame", async () => {
+    const root = await mount(markup.replace("<st-combobox", "<st-combobox allow-custom"));
+    const combo = $(root, "st-combobox");
+    const input = combo.shadowRoot!.querySelector("input")!;
+    await userEvent.click(input);
+    await settle(root);
+    // Type and press Enter in one task (a slow machine): no frame runs in between.
+    input.value = "Futura";
+    input.dispatchEvent(new InputEvent("input", { bubbles: true, composed: true }));
+    input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true, composed: true }));
+    await settle(root);
+    expect(combo.value).toBe("Futura");
+  });
+
+  it("reads open state live, so Escape then Enter in one task commits the text", async () => {
+    const root = await mount(markup.replace("<st-combobox", "<st-combobox allow-custom"));
+    const combo = $(root, "st-combobox");
+    const input = combo.shadowRoot!.querySelector("input")!;
+    await userEvent.click(input);
+    await userEvent.keyboard("{Control>}a{/Control}Fut");
+    await settle(root);
+    // No render between the two keys (a slow machine).
+    input.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true, composed: true }));
+    input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true, composed: true }));
+    await settle(root);
+    expect(combo.value).toBe("Fut");
+  });
 });
