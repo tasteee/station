@@ -48,9 +48,8 @@
           </st-row>
         </st-row>
       </st-surface>
-      <st-divider></st-divider>
 
-      <st-split orientation="vertical" grow autosave="mixer-main">
+      <st-split orientation="vertical" grow kind="cards" autosave="mixer-main">
         <st-pane>
           <st-column grow class="arrange">
             <st-row class="arrange-bar" padding-x="3" gap="2">
@@ -62,7 +61,7 @@
             <st-timeline id="timeline" grow snap="0.5" duration="40" label="Arrangement"></st-timeline>
           </st-column>
         </st-pane>
-        <st-pane size="330" min="240" max="520" collapsible>
+        <st-pane size="330" min="240" max="520" collapsible label="Mixer" icon="adjustments">
           <st-scroll-area axis="x" class="mixer" id="mixer"></st-scroll-area>
         </st-pane>
       </st-split>

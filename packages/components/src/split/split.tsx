@@ -1,9 +1,11 @@
 import { clamp } from "@station/behaviors";
 import { c, css, useEffect, useHost, useRef, useState } from "atomico";
-import { fire } from "../shared/events.ts";
+import { fire, fireOpenChange } from "../shared/events.ts";
 import { hostReset } from "../shared/styles.ts";
 
 export type PaneEl = HTMLElement & {
+  label?: string;
+  collapse?: string;
   size?: number;
   min?: number;
   max?: number;
@@ -11,7 +13,7 @@ export type PaneEl = HTMLElement & {
   collapsed?: boolean;
   collapsedSize?: number;
 };
-type SplitEl = HTMLElement & { orientation?: string; autosave?: string };
+type SplitEl = HTMLElement & { orientation?: string; autosave?: string; kind?: string };
 
 const panesOf = (split: HTMLElement) =>
   [...split.children].filter((c) => c.localName === "st-pane") as PaneEl[];
@@ -26,7 +28,8 @@ function target(panes: PaneEl[], handle: number): { pane: PaneEl; sign: 1 | -1 }
 }
 
 function applySize(pane: PaneEl) {
-  const size = pane.collapsed ? (pane.collapsedSize ?? 0) : pane.size;
+  const railed = pane.collapsed && pane.label && pane.collapse !== "hide";
+  const size = pane.collapsed ? (pane.collapsedSize ?? (railed ? RAIL : 0)) : pane.size;
   if (size == null) {
     pane.style.removeProperty("--_pane-size");
     pane.toggleAttribute("data-fill", true);
@@ -78,9 +81,10 @@ function restore(split: SplitEl) {
  * </st-split>
  */
 export const Split = c(
-  ({ orientation }) => {
+  ({ orientation, kind }) => {
     const host = useHost<SplitEl>();
     const [count, setCount] = useState(0);
+    const [, rerender] = useState(0);
     const drag = useRef<{ index: number; start: number; startSize: number } | null>(null);
     const vertical = orientation === "vertical";
 
@@ -89,8 +93,10 @@ export const Split = c(
       const panes = panesOf(el);
       if (panes.length !== count) setCount(panes.length);
       const slots = [...(el.shadowRoot?.querySelectorAll("slot") ?? [])];
+      const cards = el.getAttribute("kind") === "cards";
       panes.forEach((p, i) => {
         applySize(p);
+        p.toggleAttribute("data-card", cards);
         slots[i]?.assign(p);
       });
     };
@@ -103,10 +109,24 @@ export const Split = c(
         childList: true,
         subtree: false,
         attributes: true,
-        attributeFilter: ["size", "collapsed", "collapsed-size"],
+        attributeFilter: ["size", "collapsed", "collapsed-size", "label", "collapse"],
       });
-      return () => observer.disconnect();
+      // Panes announce their own toggles (rail click, st-pane-toggle, pane.toggle()).
+      const onToggle = (e: Event) => {
+        if ((e.target as Element).parentElement !== host.current) return;
+        e.stopPropagation();
+        layout();
+        rerender((n) => n + 1);
+        save(host.current);
+        fire(host.current, "change");
+      };
+      host.current.addEventListener("openchange", onToggle);
+      return () => {
+        observer.disconnect();
+        host.current.removeEventListener("openchange", onToggle);
+      };
     }, []);
+    useEffect(() => layout(), [kind]);
     useEffect(layout);
 
     const resize = (index: number, next: number, commit: boolean) => {
@@ -125,21 +145,22 @@ export const Split = c(
 
     const toggle = (index: number) => {
       const panes = panesOf(host.current);
-      const pane = [panes[index], panes[index + 1]].find((p) => p?.collapsible);
-      if (!pane) return;
-      pane.collapsed = !pane.collapsed;
-      applySize(pane);
-      save(host.current);
-      fire(host.current, "change");
+      const pane = [panes[index], panes[index + 1]].find((p) => p?.collapsible) as
+        | (PaneEl & { toggle?(): void })
+        | undefined;
+      pane?.toggle?.(); // fires openchange → layout, save, change
     };
 
     const handle = (index: number) => {
       const panes = panesOf(host.current);
       const t = target(panes, index);
       const size = t ? (t.pane.collapsed ? (t.pane.collapsedSize ?? 0) : (t.pane.size ?? 0)) : 0;
+      // No divider next to a pane that is hidden entirely.
+      const hidden = [panes[index], panes[index + 1]].some((p) => p?.collapsed && p.collapse === "hide");
       return (
         <div
           class="handle"
+          hidden={hidden}
           part="handle"
           role="separator"
           tabindex="0"
@@ -203,6 +224,8 @@ export const Split = c(
     props: {
       orientation: { type: String, reflect: true, value: (): "horizontal" | "vertical" => "horizontal" },
       autosave: { type: String, reflect: true },
+      /** cards = panes are rounded cards with gaps on the backdrop. */
+      kind: { type: String, reflect: true },
     },
     styles: [
       hostReset,
@@ -271,18 +294,92 @@ export const Split = c(
           cursor: default;
           pointer-events: none;
         }
+        .handle[hidden] {
+          display: none;
+        }
+
+        /* ---- kind="cards": rounded panes with gaps on the backdrop ---- */
+        :host([kind="cards"]) {
+          --_gap: var(--st-split-gap, var(--st-space-3));
+          padding: var(--_gap);
+          background: var(--st-bg-backdrop);
+        }
+        :host([kind="cards"]) .handle {
+          width: var(--_gap);
+          background: transparent;
+        }
+        :host([kind="cards"][orientation="vertical"]) .handle {
+          width: auto;
+          height: var(--_gap);
+        }
+        :host([kind="cards"]) .handle::before {
+          inset: 0;
+        }
+        /* A small grip instead of a line. */
+        :host([kind="cards"]) .handle::after {
+          inset: 50% auto auto 50%;
+          width: 3px;
+          height: 32px;
+          translate: -50% -50%;
+          border-radius: var(--st-radius-full);
+        }
+        :host([kind="cards"][orientation="vertical"]) .handle::after {
+          width: 32px;
+          height: 3px;
+        }
+        :host([kind="cards"]) .handle:hover::after,
+        :host([kind="cards"]) .handle:focus-visible::after,
+        :host([kind="cards"][data-resizing]) .handle:active::after {
+          background: var(--st-border-strong);
+        }
       `,
     ],
   },
 );
 
-/** One pane in <st-split>. With `size` it is fixed (px); without it fills. */
+const RAIL = 40;
+
+/**
+ * One pane in <st-split>. With `size` it is fixed (px); without it fills.
+ * Collapsible panes with a `label` collapse to a slim rail (icon + label) that
+ * expands on click; `collapse="hide"` removes them entirely instead.
+ */
 export const Pane = c(
-  () => (
-    <host shadowDom>
-      <slot />
-    </host>
-  ),
+  ({ collapsed, label, icon, collapse }) => {
+    const host = useHost<PaneEl>();
+    const rail = !!collapsed && !!label && collapse !== "hide";
+
+    useEffect(() => {
+      // pane.toggle(force?): collapse or expand, and tell the split (it saves and fires change).
+      (host.current as PaneEl & { toggle(force?: boolean): void }).toggle = (force?: boolean) => {
+        const el = host.current;
+        const next = force === undefined ? !el.collapsed : !force;
+        if (next === !!el.collapsed) return;
+        el.collapsed = next;
+        fireOpenChange(el, !next);
+      };
+    }, []);
+
+    return (
+      <host shadowDom data-rail={rail ? "" : null}>
+        {rail ? (
+          <button
+            type="button"
+            class="rail"
+            part="rail"
+            aria-expanded="false"
+            aria-label={`Expand ${label}`}
+            onclick={() => (host.current as PaneEl & { toggle(): void }).toggle()}
+          >
+            {icon && <st-icon name={icon} />}
+            <span class="rail-label">{label}</span>
+          </button>
+        ) : (
+          <slot />
+        )}
+      </host>
+    );
+  },
   {
     props: {
       size: { type: Number, reflect: true },
@@ -291,6 +388,12 @@ export const Pane = c(
       collapsible: { type: Boolean, reflect: true },
       collapsed: { type: Boolean, reflect: true },
       collapsedSize: { type: Number, reflect: true },
+      /** Name shown on the collapsed rail (and its accessible name). */
+      label: { type: String, reflect: true },
+      /** Icon on the collapsed rail. */
+      icon: { type: String, reflect: true },
+      /** rail (default when labeled) or hide. */
+      collapse: { type: String, reflect: true },
     },
     styles: [
       hostReset,
@@ -306,8 +409,141 @@ export const Pane = c(
         :host([data-fill]) {
           flex: 1 1 0;
         }
-        :host([collapsed]:not([collapsed-size])) {
+        :host([collapsed]:not([collapsed-size]):not([data-rail])) {
           visibility: hidden;
+        }
+        :host([collapsed][collapse="hide"]) {
+          display: none;
+        }
+        /* Card mode (set by <st-split kind="cards">). */
+        :host([data-card]) {
+          border-radius: var(--st-split-card-radius, var(--st-radius-5));
+          background: var(--st-bg-panel);
+          box-shadow: var(--st-card-edge);
+        }
+        .rail {
+          all: unset;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--st-space-2);
+          width: 100%;
+          height: 100%;
+          padding-block: var(--st-space-3);
+          color: var(--st-text-muted);
+          cursor: default;
+          border-radius: inherit;
+        }
+        .rail:hover {
+          color: var(--st-text-strong);
+          background: var(--st-bg-hover);
+        }
+        .rail:focus-visible {
+          outline: var(--st-focus-ring-width) solid var(--st-border-focus);
+          outline-offset: -3px;
+        }
+        .rail-label {
+          writing-mode: vertical-rl;
+          font: var(--st-weight-medium) calc(var(--st-text-1) * 0.94) / 1 var(--st-font-mono);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+        :host(:not([data-card])) .rail {
+          background: var(--st-bg-panel);
+        }
+      `,
+    ],
+  },
+);
+
+/**
+ * Collapses or expands a pane. Inside a pane it toggles that pane; elsewhere use for="pane-id".
+ *
+ * <st-panel-header><st-heading>Layers</st-heading><st-spacer></st-spacer><st-pane-toggle></st-pane-toggle></st-panel-header>
+ */
+export const PaneToggle = c(
+  ({ label }) => {
+    const host = useHost();
+    const [open, setOpen] = useState(true);
+    const paneOf = () => {
+      const el = host.current as HTMLElement & { for?: string };
+      const id = el.getAttribute("for");
+      return (
+        id ? (el.getRootNode() as Document | ShadowRoot).getElementById?.(id) : el.closest("st-pane")
+      ) as (PaneEl & { toggle?(force?: boolean): void }) | null;
+    };
+    useEffect(() => {
+      const pane = paneOf();
+      if (!pane) return;
+      const sync = () => setOpen(!pane.collapsed);
+      sync();
+      const mo = new MutationObserver(sync);
+      mo.observe(pane, { attributes: true, attributeFilter: ["collapsed"] });
+      return () => mo.disconnect();
+    }, []);
+    const name = paneOf()?.label;
+    return (
+      <host shadowDom>
+        <button
+          type="button"
+          part="button"
+          aria-expanded={open ? "true" : "false"}
+          aria-label={label ?? `${open ? "Collapse" : "Expand"}${name ? ` ${name}` : " panel"}`}
+          title={label ?? (open ? "Collapse" : "Expand")}
+          onclick={() => paneOf()?.toggle?.()}
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <rect
+              x="2.5"
+              y="3"
+              width="11"
+              height="10"
+              rx="2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.3"
+            />
+            <path d="M6.5 3v10" stroke="currentColor" stroke-width="1.3" />
+          </svg>
+        </button>
+      </host>
+    );
+  },
+  {
+    props: {
+      /** Accessible name. Defaults to "Collapse/Expand <pane label>". */
+      label: String,
+    },
+    styles: [
+      hostReset,
+      css`
+        :host {
+          display: inline-flex;
+          flex: none;
+        }
+        button {
+          all: unset;
+          display: grid;
+          place-items: center;
+          width: var(--st-control-height);
+          height: var(--st-control-height);
+          border-radius: var(--st-radius-2);
+          color: var(--st-text-muted);
+          cursor: default;
+        }
+        button:hover {
+          background: var(--st-bg-hover);
+          color: var(--st-text-strong);
+        }
+        button:focus-visible {
+          outline: var(--st-focus-ring-width) solid var(--st-border-focus);
+          outline-offset: var(--st-focus-ring-offset);
+        }
+        svg {
+          width: var(--st-icon-size);
+          height: var(--st-icon-size);
         }
       `,
     ],

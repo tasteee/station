@@ -17,11 +17,7 @@ body {
   width: 180px;
 }
 .side {
-  width: 248px;
-  flex: none;
-}
-.inspector {
-  width: 264px;
+  min-width: 0;
 }
 .view-popover {
   width: 200px;
@@ -105,10 +101,6 @@ body {
   bottom: var(--st-space-4);
   left: 50%;
   translate: -50% 0;
-  padding: var(--st-space-1);
-  background: var(--st-bg-panel);
-  border-radius: var(--st-radius-4);
-  box-shadow: var(--st-shadow-floating);
 }
 
 /* ---- Inspector ---- */

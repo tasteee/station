@@ -22,6 +22,11 @@ Station treats the interface as a **precision instrument**: calm, exact, graysca
 4. **Soft geometry, dense controls.**
    Large radii (`--st-radius-5`, `--st-radius-6`) for cards, regions and floating panels; medium radii (`--st-radius`, 6px by default) for controls, because editors pack controls tightly. Pills for search, zoom and selection rows where they help. Separate regions with tone and spacing before reaching for borders. Shadows only for things that float (menus, popovers, dialogs, the tool dock).
 
+   - **Card layout:** `<st-split kind="cards">` puts panes on `--st-bg-backdrop` as rounded cards with gaps. Dividers become invisible gaps with a grip on hover.
+   - **Collapsible panels:** a `collapsible` pane with a `label` (and `icon`) collapses to a slim rail you can click to expand; `collapse="hide"` removes it instead. `<st-pane-toggle>` in a panel header (or anywhere with `for="pane-id"`) toggles it. Sizes and collapsed state persist with `autosave`.
+   - **Tool dock:** `<st-toolbar floating>` is a pill with round tools; position it over the canvas.
+   - **Large titles** (`st-heading size="large"`) are light and tight.
+
 5. **Depth from tone, not lines.**
    Neutral grays (`--st-gray-chroma: 0`). Canvas → card → raised card step in tone. Fields are recessed wells: a faint fill plus a hairline edge.
 
@@ -43,6 +48,8 @@ Station treats the interface as a **precision instrument**: calm, exact, graysca
 | `--st-signal-edge` | none | Hairline on fills close to the surface (lime on light). |
 | `--st-accent-solid` | gray 12 | Primary actions. |
 | `--st-radius-5`, `--st-radius-6` | 18px, 24px | Cards, regions, floating panels. |
+| `--st-bg-backdrop` | gray 6 / near-black | Behind card layouts. |
+| `--st-card-edge` | inset top highlight | The lit top edge of a card. |
 
 ## Checklist for a new component
 

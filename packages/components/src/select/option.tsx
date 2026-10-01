@@ -39,7 +39,7 @@ export const Option = c(
           gap: var(--st-space-1-5);
           height: var(--st-control-height);
           padding-inline: var(--st-space-1) var(--st-space-2);
-          border-radius: var(--st-radius-1);
+          border-radius: var(--st-radius-2);
           color: var(--st-text-strong);
           font-size: var(--st-control-font-size);
           white-space: nowrap;

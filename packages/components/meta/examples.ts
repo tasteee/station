@@ -145,6 +145,13 @@ export const examples: Example[] = [
     <st-divider></st-divider>
     <st-icon-button icon="zoom-in" label="Zoom in"></st-icon-button>
   </st-toolbar>
+  <st-toolbar label="Tool dock" floating>
+    <st-toggle-button tone="accent" icon="arrows-move" label="Move" pressed></st-toggle-button>
+    <st-toggle-button tone="accent" icon="square" label="Rectangle"></st-toggle-button>
+    <st-toggle-button tone="accent" icon="typography" label="Text"></st-toggle-button>
+    <st-divider></st-divider>
+    <st-toggle-button tone="accent" icon="pencil" label="Draw"></st-toggle-button>
+  </st-toolbar>
 </st-column>`,
   },
   {
@@ -340,6 +347,21 @@ export const examples: Example[] = [
     html: `<st-split style="height:140px;border:1px solid var(--st-border-subtle)">
   <st-pane size="160" min="100" collapsible><st-column padding="3"><st-text>Sidebar</st-text></st-column></st-pane>
   <st-pane><st-column padding="3"><st-text>Canvas</st-text></st-column></st-pane>
+</st-split>`,
+  },
+  {
+    id: "split-cards",
+    title: "Card layout with collapsible panels",
+    covers: ["st-split", "st-pane", "st-pane-toggle"],
+    html: `<st-split kind="cards" style="height:220px">
+  <st-pane size="180" min="140" collapsible label="Layers" icon="stack">
+    <st-panel-header><st-heading>Layers</st-heading><st-spacer></st-spacer><st-pane-toggle></st-pane-toggle></st-panel-header>
+    <st-column padding="3"><st-text tone="muted">Collapse me to a rail.</st-text></st-column>
+  </st-pane>
+  <st-pane><st-column padding="3"><st-text>Canvas</st-text></st-column></st-pane>
+  <st-pane size="180" collapsible label="Inspector" icon="adjustments" collapsed>
+    <st-panel-header><st-heading>Inspector</st-heading><st-spacer></st-spacer><st-pane-toggle></st-pane-toggle></st-panel-header>
+  </st-pane>
 </st-split>`,
   },
   {

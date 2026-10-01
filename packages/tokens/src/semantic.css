@@ -9,6 +9,12 @@
   --st-bg-panel: light-dark(var(--st-gray-1), var(--st-gray-2));
   --st-bg-section: light-dark(var(--st-gray-2), var(--st-gray-3));
   --st-bg-well: light-dark(var(--st-gray-3), var(--st-gray-1));
+  /* Behind floating cards (st-split kind="cards"): deep enough that panel cards read as objects. */
+  --st-bg-backdrop: light-dark(
+    var(--st-gray-6),
+    oklch(12.5% var(--st-gray-chroma) var(--st-gray-hue))
+  );
+  --st-card-edge: inset 0 1px 0 light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.05));
 
   /* ---- Signal: what is live (focus, selection, "on", playhead) ----
      Grayscale by default: ink on light, light ink on dark, soft gray tints.
@@ -120,6 +126,7 @@
   --st-text-6: calc(var(--st-font-size) * pow(var(--st-type-ratio), 4));
   --st-leading-tight: 1.2;
   --st-leading: 1.4;
+  --st-weight-light: 300;
   --st-weight-normal: 400;
   --st-weight-medium: 500;
   --st-weight-strong: 600;

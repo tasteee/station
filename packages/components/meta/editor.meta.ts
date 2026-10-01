@@ -24,14 +24,23 @@ export const editor: ElementMeta[] = [
     module: "@station/components/split",
     className: "Split",
     description:
-      "Resizable panes. Fixed panes have a size; the rest fill. Drag, arrow keys, or double-click a divider.",
+      'Resizable panes. Fixed panes have a size; the rest fill. Drag, arrow keys, or double-click a divider. kind="cards" lays panes out as rounded cards with gaps on the backdrop.',
     attributes: [
       a("orientation", ["horizontal", "vertical"], "horizontal = side by side.", { default: "horizontal" }),
-      a("autosave", "string", "Remember sizes in localStorage under this key."),
+      a(
+        "kind",
+        ["cards"],
+        "cards = rounded panes with gaps on --st-bg-backdrop. Omit for edge-to-edge panes with dividers.",
+      ),
+      a("autosave", "string", "Remember sizes and collapsed state in localStorage under this key."),
     ],
-    events: [INPUT, CHANGE],
+    events: [INPUT, { name: "change", description: "A resize or collapse was committed." }],
     slots: [{ name: "", description: "st-pane elements." }],
     parts: [{ name: "handle", description: "Each divider." }],
+    cssProperties: [
+      { name: "--st-split-gap", description: "Gap around and between cards. Default space-3." },
+      { name: "--st-split-card-radius", description: "Card corner radius. Default radius-5." },
+    ],
   },
   {
     tag: "st-pane",
@@ -44,9 +53,42 @@ export const editor: ElementMeta[] = [
       a("max", "number", "Largest size."),
       a("collapsible", "boolean", "Double-click / Enter on the divider collapses it."),
       a("collapsed", "boolean", "Collapsed state."),
-      a("collapsed-size", "number", "Size when collapsed, e.g. an icon strip. Default 0."),
+      a("collapsed-size", "number", "Size when collapsed. Default 40 with a label (rail), else 0."),
+      a("label", "string", "Pane name: shown on the collapsed rail and used by st-pane-toggle."),
+      a("icon", "string", "Icon on the collapsed rail."),
+      a(
+        "collapse",
+        ["rail", "hide"],
+        "Collapsed look: a labeled rail you can click to expand, or hidden entirely.",
+        {
+          default: "rail",
+        },
+      ),
+    ],
+    methods: [
+      {
+        name: "toggle",
+        signature: "(force?: boolean): void",
+        description: "Collapse or expand (force: true = expand).",
+      },
+    ],
+    events: [
+      { name: "openchange", type: "CustomEvent<{ open: boolean }>", description: "Expanded or collapsed." },
     ],
     slots: [{ name: "", description: "Pane content." }],
+    parts: [{ name: "rail", description: "The collapsed rail button." }],
+  },
+  {
+    tag: "st-pane-toggle",
+    module: "@station/components/pane-toggle",
+    className: "PaneToggle",
+    description:
+      'Button that collapses or expands a pane. Inside a pane (e.g. its header) it toggles that pane; elsewhere set for="pane-id".',
+    attributes: [
+      { name: "for", type: "string", description: "Id of the st-pane to toggle. Default: the closest pane." },
+      a("label", "string", "Accessible name. Default: Collapse/Expand + the pane's label."),
+    ],
+    parts: [{ name: "button", description: "The button." }],
   },
   {
     tag: "st-tree",

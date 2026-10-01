@@ -14,7 +14,6 @@ body {
 .studio {
   /* Chrome is grayscale (Station default). Only the artboard, the user's
      own design, carries color, plus one opt-in lime button (Share). */
-  --st-radius: 8px;
   --st-font-size: 12.5px;
 
   /* Content colors for the design on the artboard (not UI chrome). */
@@ -22,11 +21,10 @@ body {
   --content-lime-end: oklch(93% 0.16 110);
   --content-ink: oklch(20% 0.04 135);
 
-  /* ---- Page surfaces ---- */
-  --canvas: light-dark(oklch(84.5% 0 0), oklch(14% 0 0));
-  --card: light-dark(oklch(95.5% 0 0), oklch(20% 0 0));
-  --card-raised: light-dark(oklch(98.5% 0 0), oklch(24% 0 0));
-  --card-edge: light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.05));
+  /* ---- Page surfaces: system tokens ---- */
+  --canvas: var(--st-bg-backdrop);
+  --card: var(--st-bg-panel);
+  --card-raised: light-dark(oklch(100% 0 0), var(--st-gray-3));
   --divider: light-dark(oklch(0% 0 0 / 0.07), oklch(100% 0 0 / 0.07));
   --gray-sheen: linear-gradient(
     155deg,
@@ -39,7 +37,6 @@ body {
     light-dark(oklch(95% 0.09 105), oklch(29% 0.06 125)) 55%,
     light-dark(oklch(94% 0.035 40), oklch(23% 0.02 100)) 100%
   );
-  --radius-card: 22px;
   --radius-pill: 999px;
 
   display: grid;
@@ -100,12 +97,9 @@ body {
   padding-inline: 14px;
 }
 
-/* ---------- layout ---------- */
+/* ---------- layout: st-split kind="cards" ---------- */
 .layout {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 300px;
-  gap: 12px;
-  padding: 0 12px 12px;
+  padding-top: 0; /* the top bar sits above the cards */
   min-height: 0;
 }
 .card {
@@ -113,10 +107,22 @@ body {
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  border-radius: var(--radius-card);
+  border-radius: var(--st-radius-5);
   background: var(--card);
-  box-shadow: inset 0 1px 0 var(--card-edge);
-  min-height: 0;
+  box-shadow: var(--st-card-edge);
+}
+/* Expanded panes carry their own padding; collapsed ones become rails. */
+.side:not([collapsed]) {
+  gap: 12px;
+  padding: 16px;
+}
+.canvas-pane {
+  position: relative;
+}
+/* The inspector pane is bare: its sections are stacked cards on the backdrop. */
+.inspector-pane:not([collapsed]) {
+  background: transparent;
+  box-shadow: none;
 }
 .card-head {
   display: flex;
@@ -196,6 +202,11 @@ body {
 /* ---------- center: canvas ---------- */
 .canvas {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
   padding: 18px 20px;
   overflow: hidden;
 }
@@ -369,29 +380,12 @@ body {
   white-space: nowrap;
 }
 
-/* Floating tool dock: a pill with round tools; the active tool is an ink disc. */
+/* Floating tool dock: st-toolbar floating, positioned over the canvas. */
 .dock {
   position: absolute;
   left: 50%;
   bottom: 22px;
   translate: -50% 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px;
-  border-radius: var(--radius-pill);
-  background: var(--card-raised);
-  box-shadow: var(--st-shadow-floating);
-}
-.dock st-toggle-button {
-  --st-control-height: 34px;
-  border-radius: var(--radius-pill);
-}
-.dock-sep {
-  width: 1px;
-  height: 20px;
-  margin-inline: 4px;
-  background: var(--divider);
 }
 .zoom {
   position: absolute;
@@ -402,6 +396,7 @@ body {
 
 /* ---------- right: inspector ---------- */
 .inspector {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -409,7 +404,7 @@ body {
   overflow: auto;
   scrollbar-width: none;
 }
-.card-lime {
+.card-sheen {
   background: var(--gray-sheen);
 }
 .readout {
@@ -464,16 +459,6 @@ body {
 }
 
 @media (max-width: 1100px) {
-  .layout {
-    grid-template-columns: 1fr;
-    overflow: auto;
-  }
-  .studio {
-    height: auto;
-  }
-  .canvas {
-    min-height: 560px;
-  }
   .page-nav {
     display: none;
   }

@@ -125,6 +125,12 @@ export const controls: ElementMeta[] = [
     className: "Toolbar",
     description: "role=toolbar with one tab stop; arrow keys move between buttons.",
     attributes: [
+      {
+        name: "floating",
+        property: "floating",
+        type: "boolean",
+        description: "Pill tool dock: round buttons, floating shadow.",
+      },
       a("kind", ["solid", "outline", "ghost"], "Kind for child buttons.", { default: "ghost" }),
       SIZE,
       a("label", "string", "Accessible toolbar name."),
