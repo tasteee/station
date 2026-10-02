@@ -64,6 +64,11 @@ import "./define/data-table.ts";
 import "./define/timeline.ts";
 import "./define/dock.ts";
 import "./define/dock-panel.ts";
+import "./define/viewport.ts";
+import "./define/transform-box.ts";
+import "./define/artboard.ts";
+import "./define/measure.ts";
+import "./define/minimap.ts";
 
 export type { IconDefinition } from "@station/icons";
 export { getIcon, hasIcon, registerIcons } from "@station/icons";

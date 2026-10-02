@@ -66,10 +66,9 @@
             </st-segmented-control>
           </div>
 
-          <div class="stage">
-            <section class="artboard" aria-label="Artboard: Landing">
-              <span class="artboard-name">Landing</span>
-              <div class="hero">
+          <st-viewport id="canvas" class="stage" label="Landing canvas" grid="dots" snap marquee min-zoom="0.1" max-zoom="16">
+            <st-artboard id="landing" class="artboard" x="0" y="0" width="640" height="364" label="Landing">
+              <div class="layer hero" data-id="hero">
                 <div class="hero-copy">
                   <span class="hero-kicker">Summer Sessions</span>
                   <span class="hero-title">Music on the roof, every Friday.</span>
@@ -77,28 +76,25 @@
                 </div>
                 <div class="hero-art" aria-hidden="true"></div>
               </div>
-              <div class="tiles">
-                <!-- The selected frame -->
-                <div class="tile tile-lime selected">
-                  <span class="tile-label">Tickets sold</span>
-                  <span class="tile-value">1,208</span>
-                  <span class="tile-delta">▲ 18%</span>
-                  <span class="handle tl"></span><span class="handle tr"></span><span class="handle bl"></span><span class="handle br"></span>
-                  <span class="size-tag">320 × 168</span>
-                </div>
-                <div class="tile">
-                  <span class="tile-label">Artists</span>
-                  <span class="tile-value">24</span>
-                  <span class="tile-bar"><i style="width: 72%"></i></span>
-                </div>
-                <div class="tile">
-                  <span class="tile-label">Nights left</span>
-                  <span class="tile-value">9</span>
-                  <span class="tile-bar"><i style="width: 38%"></i></span>
-                </div>
+              <div class="layer tile tile-lime" data-id="tickets">
+                <span class="tile-label">Tickets sold</span>
+                <span class="tile-value">1,208</span>
+                <span class="tile-delta">▲ 18%</span>
               </div>
-            </section>
-          </div>
+              <div class="layer tile" data-id="artists">
+                <span class="tile-label">Artists</span>
+                <span class="tile-value">24</span>
+                <span class="tile-bar"><i style="width: 72%"></i></span>
+              </div>
+              <div class="layer tile" data-id="nights">
+                <span class="tile-label">Nights left</span>
+                <span class="tile-value">9</span>
+                <span class="tile-bar"><i style="width: 38%"></i></span>
+              </div>
+            </st-artboard>
+            <st-transform-box slot="overlay" id="selection" label="Tickets tile" rotatable hidden></st-transform-box>
+            <st-measure slot="overlay" id="spacing" hidden></st-measure>
+          </st-viewport>
 
           <!-- Floating tool dock -->
           <st-toolbar class="dock" label="Tools" floating>
@@ -111,7 +107,8 @@
             <st-toggle-button tone="accent" icon="hand-stop" label="Hand" shortcut="H"></st-toggle-button>
             <st-toggle-button tone="accent" icon="message" label="Comment" shortcut="C"></st-toggle-button>
           </st-toolbar>
-          <st-zoom-control class="zoom" value="75"></st-zoom-control>
+          <st-minimap class="minimap" for="canvas" label="Canvas overview"></st-minimap>
+          <st-zoom-control class="zoom" for="canvas"></st-zoom-control>
         </main>
         </st-pane>
 
@@ -125,21 +122,21 @@
               <st-icon-button kind="ghost" icon="dots" label="More"></st-icon-button>
               <st-pane-toggle></st-pane-toggle>
             </div>
-            <h2 class="title big">Tickets tile</h2>
+            <h2 class="title big" id="sel-name">Tickets tile</h2>
             <div class="readout">
-              <span><b>320</b><small>W</small></span>
-              <span><b>168</b><small>H</small></span>
-              <span><b>24</b><small>Radius</small></span>
+              <span><b id="ro-w">320</b><small>W</small></span>
+              <span><b id="ro-h">168</b><small>H</small></span>
+              <span><b id="ro-r">0°</b><small>Rotation</small></span>
             </div>
           </section>
 
           <section class="card">
             <div class="card-head"><h3 class="title">Layout</h3></div>
             <div class="grid2">
-              <st-number-field label="X" abbr="X" value="48" unit="px"></st-number-field>
-              <st-number-field label="Y" abbr="Y" value="412" unit="px"></st-number-field>
-              <st-number-field label="Width" abbr="W" value="320" unit="px"></st-number-field>
-              <st-number-field label="Height" abbr="H" value="168" unit="px"></st-number-field>
+              <st-number-field label="X" abbr="X" value="0" unit="px" data-key="x" class="geo"></st-number-field>
+              <st-number-field label="Y" abbr="Y" value="0" unit="px" data-key="y" class="geo"></st-number-field>
+              <st-number-field label="Width" abbr="W" value="0" unit="px" data-key="width" class="geo"></st-number-field>
+              <st-number-field label="Height" abbr="H" value="0" unit="px" data-key="height" class="geo"></st-number-field>
             </div>
             <st-switch checked>Auto layout</st-switch>
             <st-checkbox checked>Clip content</st-checkbox>
