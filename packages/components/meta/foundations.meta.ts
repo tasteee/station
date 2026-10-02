@@ -99,7 +99,7 @@ export const foundations: ElementMeta[] = [
     attributes: [
       { name: "tone", type: TONE, description: "Text color. Omit for body text." },
       { name: "size", type: ["small", "medium", "large"], default: "medium", description: "Font size step." },
-      { name: "weight", type: ["normal", "medium", "strong"], description: "Font weight." },
+      { name: "weight", type: ["light", "normal", "medium", "strong"], description: "Font weight." },
       { name: "mono", type: "boolean", description: "Monospace font." },
       { name: "numeric", type: "boolean", description: "Fixed-width digits that don't jitter (DM Mono)." },
       { name: "truncate", type: "boolean", description: "Single line with an ellipsis." },
@@ -116,9 +116,9 @@ export const foundations: ElementMeta[] = [
       { name: "size", type: ["small", "medium", "large"], default: "medium", description: "Font size step." },
       {
         name: "weight",
-        type: ["normal", "medium", "strong"],
-        default: "strong",
-        description: "Font weight.",
+        type: ["light", "normal", "medium", "strong"],
+        default: "medium",
+        description: 'Font weight. size="large" defaults to light.',
       },
       { name: "truncate", type: "boolean", description: "Single line with an ellipsis." },
     ],
@@ -138,8 +138,8 @@ export const foundations: ElementMeta[] = [
       { name: "bordered", type: "boolean", description: "1px subtle border." },
       {
         name: "rounded",
-        type: ["", "small"],
-        description: "Round the corners. Empty = radius-3, small = radius-2.",
+        type: ["", "small", "large"],
+        description: "Round the corners. Empty = radius-3, small = radius-2, large = radius-5 (cards).",
       },
       ...padding,
       ...flexChild,

@@ -18,7 +18,11 @@ const KIND = a(
   ["solid", "outline", "ghost"],
   "Visual weight. Inherited from st-button-group / st-toolbar when unset.",
 );
-const TONE = a("tone", ["accent", "danger"], "Color meaning. Omit for neutral.");
+const TONE = a(
+  "tone",
+  ["accent", "signal", "danger"],
+  'Color meaning. Omit for neutral. signal = the opt-in signal color (grayscale ink unless an ancestor sets signal="lime" etc.).',
+);
 const DISABLED = a("disabled", "boolean", "Not interactive; removed from the tab order.");
 const LABEL_REQUIRED = a(
   "label",
@@ -121,6 +125,12 @@ export const controls: ElementMeta[] = [
     className: "Toolbar",
     description: "role=toolbar with one tab stop; arrow keys move between buttons.",
     attributes: [
+      {
+        name: "floating",
+        property: "floating",
+        type: "boolean",
+        description: "Pill tool dock: round buttons, floating shadow.",
+      },
       a("kind", ["solid", "outline", "ghost"], "Kind for child buttons.", { default: "ghost" }),
       SIZE,
       a("label", "string", "Accessible toolbar name."),

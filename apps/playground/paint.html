@@ -143,6 +143,7 @@
             <st-segment value="paint">Image editor</st-segment>
             <st-segment value="mixer">Audio mixer</st-segment>
             <st-segment value="assets">Assets</st-segment>
+            <st-segment value="studio">Studio</st-segment>
           </st-segmented-control>
           <st-icon-button id="open-palette" size="small" icon="command" label="Command palette" shortcut="Mod+K"></st-icon-button>
         </st-row>
@@ -208,9 +209,8 @@
             <st-icon-button class="swap" size="small" icon="arrows-exchange" label="Swap colors" shortcut="X" id="swap"></st-icon-button>
           </div>
         </st-surface>
-        <st-divider></st-divider>
 
-        <st-split grow autosave="paint-main">
+        <st-split grow kind="cards" autosave="paint-main" style="--st-split-gap: 6px">
           <!-- Document -->
           <st-pane>
             <st-column grow class="doc-area">
@@ -220,13 +220,9 @@
                   <st-tab value="cover">album-cover.psd @ 50%</st-tab>
                 </st-tabs>
               </st-panel-header>
-              <div class="rulers" id="rulers">
-                <span class="corner"></span>
-                <st-ruler id="ruler-x"></st-ruler>
-                <st-ruler id="ruler-y" orientation="vertical"></st-ruler>
-                <div class="canvas" id="canvas">
-                  <div class="document" id="document">
-                    <svg viewBox="0 0 600 800" preserveAspectRatio="none" aria-label="Poster artwork">
+              <st-viewport id="canvas" class="canvas" rulers label="Document canvas" min-zoom="0.05" max-zoom="32">
+                <st-artboard id="document" class="document" x="0" y="0" width="600" height="800" label="poster-final.psd">
+                  <svg viewBox="0 0 600 800" preserveAspectRatio="none" aria-label="Poster artwork">
                       <defs>
                         <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="0" stop-color="#1b1446" />
@@ -250,11 +246,10 @@
                       <text x="300" y="175" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="20" fill="#ffffffb0" letter-spacing="6">SUMMER SESSIONS</text>
                       </g>
                     </svg>
-                  </div>
-                </div>
-              </div>
+                </st-artboard>
+              </st-viewport>
               <st-row class="doc-status" padding-x="2" gap="3">
-                <st-zoom-control size="small" id="zoom" value="66.67"></st-zoom-control>
+                <st-zoom-control size="small" id="zoom" for="canvas"></st-zoom-control>
                 <st-text size="small" tone="muted" numeric>600 × 800 px (72 ppi)</st-text>
                 <st-spacer></st-spacer>
                 <st-text size="small" tone="muted" id="cursor-pos" numeric></st-text>

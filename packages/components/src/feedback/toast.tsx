@@ -94,7 +94,7 @@ export const Toast = c(
           max-width: min(440px, calc(100vw - 32px));
           min-height: 36px;
           padding: var(--st-space-1-5) var(--st-space-2) var(--st-space-1-5) var(--st-space-3);
-          border-radius: var(--st-radius-3);
+          border-radius: var(--st-radius-4);
           background: var(--st-gray-12);
           color: var(--st-gray-1);
           box-shadow: var(--st-shadow-floating);

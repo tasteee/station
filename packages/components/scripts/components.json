@@ -234,6 +234,12 @@
     "tag": "st-pane"
   },
   {
+    "file": "pane-toggle",
+    "class": "PaneToggle",
+    "src": "split/split.tsx",
+    "tag": "st-pane-toggle"
+  },
+  {
     "file": "tree",
     "class": "Tree",
     "src": "tree/tree.tsx",
@@ -382,5 +388,35 @@
     "class": "DockPanel",
     "src": "dock/dock.tsx",
     "tag": "st-dock-panel"
+  },
+  {
+    "file": "viewport",
+    "class": "Viewport",
+    "src": "canvas/viewport.tsx",
+    "tag": "st-viewport"
+  },
+  {
+    "file": "transform-box",
+    "class": "TransformBox",
+    "src": "canvas/transform-box.tsx",
+    "tag": "st-transform-box"
+  },
+  {
+    "file": "artboard",
+    "class": "Artboard",
+    "src": "canvas/artboard.tsx",
+    "tag": "st-artboard"
+  },
+  {
+    "file": "measure",
+    "class": "Measure",
+    "src": "canvas/measure.tsx",
+    "tag": "st-measure"
+  },
+  {
+    "file": "minimap",
+    "class": "Minimap",
+    "src": "canvas/minimap.tsx",
+    "tag": "st-minimap"
   }
 ]

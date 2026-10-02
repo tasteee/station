@@ -19,6 +19,7 @@
             <st-segment value="paint">Image editor</st-segment>
             <st-segment value="mixer">Audio mixer</st-segment>
             <st-segment value="assets">Assets</st-segment>
+            <st-segment value="studio">Studio</st-segment>
           </st-segmented-control>
           <st-spacer></st-spacer>
           <st-search-field class="search" size="small" label="Search layers" placeholder="Search layers"></st-search-field>
@@ -47,11 +48,11 @@
           <st-button size="small" kind="solid" tone="accent" icon="download" class="open-export">Export</st-button>
         </st-row>
       </st-surface>
-      <st-divider></st-divider>
+      
 
-      <st-row grow y-align="stretch">
+      <st-split grow kind="cards" autosave="design-main">
         <!-- Layers panel -->
-        <st-panel class="side">
+        <st-pane size="248" min="200" max="360" collapsible label="Layers" icon="stack"><st-panel class="side" grow>
           <st-panel-header>
             <st-heading>Layers</st-heading>
             <st-badge id="layer-count"></st-badge>
@@ -63,6 +64,7 @@
               <st-divider></st-divider>
               <st-menu-item icon="arrow-bar-to-up" shortcut="Alt+L">Collapse all</st-menu-item>
             </st-menu>
+            <st-pane-toggle></st-pane-toggle>
           </st-panel-header>
           <st-scroll-area grow axis="y">
             <st-column padding-y="1" id="layers"></st-column>
@@ -97,11 +99,11 @@
               <st-icon-button id="delete-layer" icon="trash" label="Delete layer" shortcut="Delete" tone="danger"></st-icon-button>
             </st-button-group>
           </st-panel-footer>
-        </st-panel>
-        <st-divider></st-divider>
+        </st-panel></st-pane>
+        
 
         <!-- Canvas -->
-        <st-surface level="canvas" grow class="canvas">
+        <st-pane><st-surface level="canvas" grow class="canvas">
           <st-scroll-area style="height: 100%">
             <st-column padding="8" gap="6" x-align="center">
               <st-surface level="panel" bordered rounded class="artboard">
@@ -115,9 +117,12 @@
                     <div class="swatches" data-scale="gray"></div>
                   </st-column>
                   <st-column gap="2">
-                    <st-heading size="small" tone="muted">SIGNAL · LIVE STATES</st-heading>
-                    <div class="swatches" data-scale="signal"></div>
-                    <div class="signal-gradient" aria-hidden="true"></div>
+                    <st-heading size="small" tone="muted">SIGNAL · GRAYSCALE BY DEFAULT, COLOR OPT-IN</st-heading>
+                    <div class="signal-row">
+                      <div class="signal-chip"><div class="signal-gradient" aria-hidden="true"></div><st-text size="small" tone="muted">default</st-text></div>
+                      <div class="signal-chip" signal="lime"><div class="signal-gradient" aria-hidden="true"></div><st-text size="small" tone="muted">signal="lime"</st-text></div>
+                      <div class="signal-chip" signal="orange"><div class="signal-gradient" aria-hidden="true"></div><st-text size="small" tone="muted">signal="orange"</st-text></div>
+                    </div>
                   </st-column>
                   <st-column gap="2">
                     <st-heading size="small" tone="muted">ACCENT · PRIMARY ACTIONS</st-heading>
@@ -162,9 +167,9 @@
             </st-column>
           </st-scroll-area>
 
-          <!-- Floating toolbar: leaves the flow, so it gets a shadow. -->
+          <!-- Floating tool dock: st-toolbar floating (pill, round tools, the only shadow). -->
           <div class="floating">
-            <st-toolbar id="tools" label="Tools" size="large">
+            <st-toolbar id="tools" label="Tools" floating>
               <st-toggle-button tone="accent" icon="pointer" label="Move" shortcut="V" pressed></st-toggle-button>
               <st-toggle-button tone="accent" icon="frame" label="Frame" shortcut="F"></st-toggle-button>
               <st-toggle-button tone="accent" icon="square" label="Rectangle" shortcut="R"></st-toggle-button>
@@ -175,11 +180,11 @@
               <st-toggle-button tone="accent" icon="message" label="Comment" shortcut="C"></st-toggle-button>
             </st-toolbar>
           </div>
-        </st-surface>
-        <st-divider></st-divider>
+        </st-surface></st-pane>
+        
 
         <!-- Inspector -->
-        <st-panel class="side inspector">
+        <st-pane size="264" min="240" max="380" collapsible label="Inspector" icon="adjustments"><st-panel class="side inspector" grow>
           <st-tabs value="design" label="Inspector" divided grow>
             <st-tab value="design">Design</st-tab>
             <st-tab value="prototype">Prototype</st-tab>
@@ -283,10 +288,10 @@
               </st-section>
             </st-tab-panel>
           </st-tabs>
-        </st-panel>
-      </st-row>
+        </st-panel></st-pane>
+      </st-split>
 
-      <st-divider></st-divider>
+      
       <st-surface level="panel">
         <st-row class="status" padding-x="3" gap="3">
           <st-row gap="1"><st-badge dot tone="success"></st-badge><st-text size="small" tone="muted">Tier 2 · structure + overlays</st-text></st-row>

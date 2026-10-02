@@ -150,8 +150,8 @@ export const Radio = c(
           border-color: var(--st-gray-9);
         }
         :host([checked]) .dot {
-          border: calc(var(--_box) * 0.3) solid var(--st-signal);
-          background: oklch(100% 0 0);
+          border: calc(var(--_box) * 0.3) solid var(--st-signal-fill);
+          background: var(--st-text-on-signal);
         }
       `,
     ],

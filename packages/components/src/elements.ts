@@ -7,6 +7,11 @@ export { ButtonGroup } from "./button/button-group.tsx";
 export { IconButton } from "./button/icon-button.tsx";
 export { ToggleButton } from "./button/toggle-button.tsx";
 export { Toolbar } from "./button/toolbar.tsx";
+export { Artboard } from "./canvas/artboard.tsx";
+export { Measure } from "./canvas/measure.tsx";
+export { Minimap } from "./canvas/minimap.tsx";
+export { TransformBox } from "./canvas/transform-box.tsx";
+export { Viewport } from "./canvas/viewport.tsx";
 export { Checkbox } from "./choice/checkbox.tsx";
 export { Radio, RadioGroup } from "./choice/radio.tsx";
 export { Switch } from "./choice/switch.tsx";
@@ -48,7 +53,7 @@ export { Option } from "./select/option.tsx";
 export { Select } from "./select/select.tsx";
 export { define } from "./shared/define.ts";
 export { RangeSlider, Slider } from "./slider/slider.tsx";
-export { Pane, Split } from "./split/split.tsx";
+export { Pane, PaneToggle, Split } from "./split/split.tsx";
 export {
   DataTable,
   type TableColumn,

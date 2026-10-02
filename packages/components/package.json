@@ -95,7 +95,13 @@
     "./data-table": "./src/define/data-table.ts",
     "./timeline": "./src/define/timeline.ts",
     "./dock": "./src/define/dock.ts",
-    "./dock-panel": "./src/define/dock-panel.ts"
+    "./dock-panel": "./src/define/dock-panel.ts",
+    "./pane-toggle": "./src/define/pane-toggle.ts",
+    "./viewport": "./src/define/viewport.ts",
+    "./transform-box": "./src/define/transform-box.ts",
+    "./artboard": "./src/define/artboard.ts",
+    "./measure": "./src/define/measure.ts",
+    "./minimap": "./src/define/minimap.ts"
   },
   "publishConfig": {
     "exports": {
@@ -378,6 +384,30 @@
       "./dock-panel": {
         "types": "./dist/define/dock-panel.d.ts",
         "default": "./dist/define/dock-panel.js"
+      },
+      "./pane-toggle": {
+        "types": "./dist/define/pane-toggle.d.ts",
+        "default": "./dist/define/pane-toggle.js"
+      },
+      "./viewport": {
+        "types": "./dist/define/viewport.d.ts",
+        "default": "./dist/define/viewport.js"
+      },
+      "./transform-box": {
+        "types": "./dist/define/transform-box.d.ts",
+        "default": "./dist/define/transform-box.js"
+      },
+      "./artboard": {
+        "types": "./dist/define/artboard.d.ts",
+        "default": "./dist/define/artboard.js"
+      },
+      "./measure": {
+        "types": "./dist/define/measure.d.ts",
+        "default": "./dist/define/measure.js"
+      },
+      "./minimap": {
+        "types": "./dist/define/minimap.d.ts",
+        "default": "./dist/define/minimap.js"
       }
     }
   },

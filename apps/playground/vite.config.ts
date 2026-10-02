@@ -12,6 +12,7 @@ export default defineConfig({
         paint: resolve(import.meta.dirname, "paint.html"),
         mixer: resolve(import.meta.dirname, "mixer.html"),
         assets: resolve(import.meta.dirname, "assets.html"),
+        studio: resolve(import.meta.dirname, "studio.html"),
       },
     },
   },

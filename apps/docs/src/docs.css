@@ -4,15 +4,16 @@ body {
   margin: 0;
 }
 
+/* Soft-card shell: nav and content are cards on the backdrop. */
 .app {
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100dvh;
+  background: var(--st-bg-backdrop);
 }
 
 .top {
-  border-bottom: 1px solid var(--st-border-subtle);
-  background: var(--st-bg-panel);
+  background: transparent;
 }
 .top-row {
   height: 48px;
@@ -28,12 +29,19 @@ body {
 .body {
   display: grid;
   grid-template-columns: 232px minmax(0, 1fr);
+  gap: var(--st-space-3);
+  padding: 0 var(--st-space-3) var(--st-space-3);
   min-height: 0;
+}
+.side,
+.main {
+  border-radius: var(--st-radius-5);
+  background: var(--st-bg-panel);
+  box-shadow: var(--st-card-edge);
 }
 .side {
   min-height: 0;
-  border-right: 1px solid var(--st-border-subtle);
-  background: var(--st-bg-panel);
+  overflow: hidden;
 }
 .side-scroll {
   height: 100%;
@@ -98,7 +106,7 @@ body {
 }
 .example {
   border: 1px solid var(--st-border-subtle);
-  border-radius: var(--st-radius-3);
+  border-radius: var(--st-radius-4);
   background: var(--st-bg-panel);
   overflow: hidden;
 }
@@ -117,6 +125,11 @@ body {
   align-items: flex-start;
   gap: var(--st-space-3);
   flex-wrap: wrap;
+}
+/* Layout-sized elements fill the example stage instead of shrinking to content. */
+.stage-inner > :is(st-split, st-data-table, st-timeline, st-tabs, st-panel) {
+  flex: 1 1 100%;
+  min-width: 0;
 }
 .chip {
   padding: 1px var(--st-space-1-5);
@@ -152,7 +165,7 @@ body {
 }
 .code {
   border: 1px solid var(--st-border-subtle);
-  border-radius: var(--st-radius-3);
+  border-radius: var(--st-radius-4);
   background: var(--st-bg-section);
   overflow: hidden;
 }
@@ -191,7 +204,7 @@ code.type {
 
 .table-wrap {
   border: 1px solid var(--st-border-subtle);
-  border-radius: var(--st-radius-3);
+  border-radius: var(--st-radius-4);
   overflow: auto;
 }
 table {
@@ -223,8 +236,6 @@ tbody tr:last-child td {
   }
   .side {
     max-height: 28dvh;
-    border-right: 0;
-    border-bottom: 1px solid var(--st-border-subtle);
   }
   .page {
     padding: var(--st-space-5) var(--st-space-4);

@@ -7,7 +7,7 @@ A web-component design system for **dense, interaction-heavy editor UIs**: UI de
 - **Themeable from a few knobs.** Change a hue, a unit or a radius and everything derives from it.
 - **Works everywhere.** Custom elements. Plain HTML, React, Vue, Angular, Svelte.
 
-See [`docs/PLAN.md`](docs/PLAN.md) for the full plan and [`docs/DESIGN.md`](docs/DESIGN.md) for the design language (Instrument + Signal Orange).
+See [`docs/PLAN.md`](docs/PLAN.md) for the full plan and [`docs/DESIGN.md`](docs/DESIGN.md) for the design language (Instrument: grayscale chrome, color opt-in).
 
 ## Packages
 
@@ -153,9 +153,32 @@ Every control: host is the control (focus, ARIA via `ElementInternals`), `input`
 | `st-vector-field` | X Y / W H / X Y Z in one control, scrub labels, aspect lock (`linkable`) |
 | `st-inline-edit` | Double-click / F2 to rename text in place |
 | `st-breadcrumbs` + `st-crumb` | Path bar; middle crumbs fold into "…" when narrow |
-| `st-zoom-control` | −/+ through presets, typed %, menu with Fit |
+| `st-zoom-control` | −/+ through presets, typed %, menu with Fit. `for="viewport-id"` binds it to an `st-viewport` |
 
 **Timing note.** Methods and accessors (`evaluate`, `layout`, `valueAt`…) exist after the first render. Await `el.updated` before calling them on a freshly created element.
+
+## Canvas
+
+Building blocks for Figma-, Illustrator- and Photoshop-style canvases. Data-driven: they report, your app updates its objects.
+
+| Element | What it does |
+|---|---|
+| `st-viewport` | Pan and zoom surface. Wheel pans, Mod+wheel or pinch zooms to the cursor, Space/middle-drag pans, `+`/`−`, Shift+0 (100%), Shift+1 (fit). `rulers`, `grid="dots\|lines"`, guides dragged out of rulers, `snap`, `marquee`, `autosave`. Methods: `fit`, `zoomTo`, `panBy`, `toDocument`, `toClient`, `snapRect`. Publishes the view as `--st-view-zoom/-x/-y` |
+| `st-transform-box` | Selection handles in the viewport overlay: move, 8-way resize, rotate. Shift = proportional / 15° steps, Alt = from center, arrows nudge. Snaps to objects, artboards, guides and grid |
+| `st-artboard` | A frame in document coordinates with a constant-size name |
+| `st-measure` | Distance line between two document points |
+| `st-minimap` | Overview with the visible area; click or drag to move the view |
+
+```html
+<st-viewport id="canvas" rulers grid="dots" snap marquee>
+  <st-artboard x="0" y="0" width="1440" height="900" label="Desktop">…your content…</st-artboard>
+  <st-transform-box slot="overlay" x="40" y="40" width="200" height="120" rotatable></st-transform-box>
+</st-viewport>
+<st-zoom-control for="canvas"></st-zoom-control>
+<st-minimap for="canvas"></st-minimap>
+```
+
+The snap math (`snapRect`, `rectLines`, `boundsOf`…) lives in `@station/behaviors` for canvases drawn with `<canvas>` or WebGL.
 
 ## Framework typings
 

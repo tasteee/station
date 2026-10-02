@@ -7,6 +7,7 @@
 @import url("./knobs.css") layer(station.tokens);
 @import url("./generated/scales.css") layer(station.tokens);
 @import url("./semantic.css") layer(station.tokens);
+@import url("./signal.css") layer(station.tokens);
 @import url("./generated/space.css") layer(station.base);
 @import url("./base.css") layer(station.base);
 @import url("./layout.css") layer(station.base);
