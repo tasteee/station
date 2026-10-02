@@ -607,4 +607,37 @@ export const examples: Example[] = [
   <st-dock-panel name="history" label="History" icon="history" group="b"><st-column padding="3"><st-text>History</st-text></st-column></st-dock-panel>
 </st-dock>`,
   },
+  {
+    id: "canvas",
+    title: "Canvas: viewport, artboards, selection, measure",
+    covers: ["st-viewport", "st-artboard", "st-transform-box", "st-measure"],
+    html: `<st-viewport id="example-canvas" label="Example canvas" rulers grid="dots" snap marquee zoom="0.5" x="-40" y="-60" style="width:100%;height:320px">
+  <st-artboard id="home" x="0" y="0" width="640" height="400" label="Home"></st-artboard>
+  <st-artboard id="detail" x="720" y="0" width="360" height="400" label="Detail"></st-artboard>
+  <st-transform-box slot="overlay" x="40" y="40" width="240" height="140" targets="card" rotatable label="Card"></st-transform-box>
+  <st-measure slot="overlay" x1="280" y1="110" x2="400" y2="110"></st-measure>
+</st-viewport>`,
+    setup: (root) => {
+      const vp = root.querySelector("st-viewport") as Any;
+      vp.objects = [
+        { id: "card", x: 40, y: 40, width: 240, height: 140 },
+        { id: "chart", x: 400, y: 40, width: 200, height: 140 },
+      ];
+    },
+  },
+  {
+    id: "minimap",
+    title: "Minimap and zoom bound to a viewport",
+    covers: ["st-minimap"],
+    html: `<st-row gap="3" y-align="start" style="width:100%">
+  <st-viewport id="mini-canvas" label="Board" grid="lines" style="flex:1;height:200px">
+    <st-artboard x="0" y="0" width="800" height="500" label="Board"></st-artboard>
+    <st-artboard x="900" y="200" width="400" height="300" label="Notes"></st-artboard>
+  </st-viewport>
+  <st-column gap="2">
+    <st-minimap for="mini-canvas"></st-minimap>
+    <st-zoom-control for="mini-canvas" size="small"></st-zoom-control>
+  </st-column>
+</st-row>`,
+  },
 ];

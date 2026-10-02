@@ -217,30 +217,19 @@ body {
 }
 .stage {
   flex: 1;
-  display: grid;
-  place-items: center;
-  min-height: 0;
   border-radius: 16px;
-  background-color: light-dark(oklch(92% 0 0), oklch(17% 0 0));
-  background-image: radial-gradient(light-dark(oklch(0% 0 0 / 0.08), oklch(100% 0 0 / 0.06)) 1px, transparent 1px);
-  background-size: 16px 16px;
+  --st-bg-canvas: light-dark(oklch(92% 0 0), oklch(17% 0 0));
 }
 .artboard {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: min(620px, 88%);
-  padding: 18px;
-  border-radius: 18px;
-  background: var(--card-raised);
+  --st-artboard-fill: var(--card-raised);
 }
-.artboard-name {
+.artboard::part(body) {
+  border-radius: 18px;
+}
+/* Layers are placed by the app from document data (see studio.ts). */
+.layer {
   position: absolute;
-  top: -20px;
-  left: 2px;
-  font-size: var(--st-text-1);
-  color: var(--st-text-muted);
+  box-sizing: border-box;
 }
 .hero {
   display: grid;
@@ -285,13 +274,7 @@ body {
     linear-gradient(180deg, oklch(70% 0.1 300), oklch(78% 0.12 20));
   min-height: 120px;
 }
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
 .tile {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -338,48 +321,6 @@ body {
   color: var(--content-ink);
 }
 
-/* Selection chrome on the canvas: signal ring + handles + size tag. */
-.selected {
-  outline: 1.5px solid var(--st-signal);
-  outline-offset: 3px;
-}
-.handle {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
-  background: var(--card-raised);
-  box-shadow: 0 0 0 1.5px var(--st-signal);
-}
-.handle.tl {
-  top: -7px;
-  left: -7px;
-}
-.handle.tr {
-  top: -7px;
-  right: -7px;
-}
-.handle.bl {
-  bottom: -7px;
-  left: -7px;
-}
-.handle.br {
-  bottom: -7px;
-  right: -7px;
-}
-.size-tag {
-  position: absolute;
-  bottom: -30px;
-  left: 50%;
-  translate: -50% 0;
-  padding: 2px 8px;
-  border-radius: var(--radius-pill);
-  background: var(--st-signal);
-  color: var(--st-text-on-signal);
-  font: 10.5px/1.5 var(--st-font-mono);
-  white-space: nowrap;
-}
-
 /* Floating tool dock: st-toolbar floating, positioned over the canvas. */
 .dock {
   position: absolute;
@@ -392,6 +333,14 @@ body {
   right: 28px;
   bottom: 30px;
   border-radius: var(--radius-pill);
+}
+.minimap {
+  position: absolute;
+  left: 28px;
+  bottom: 30px;
+  width: 168px;
+  height: 104px;
+  border-radius: 14px;
 }
 
 /* ---------- right: inspector ---------- */

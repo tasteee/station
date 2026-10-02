@@ -36,6 +36,9 @@ Station treats the interface as a **precision instrument**: calm, exact, graysca
 7. **Fast, physical motion.**
    80–160ms with one ease curve. State changes, not choreography. `prefers-reduced-motion` turns it off.
 
+8. **Canvas marks are thin, exact and grayscale.**
+   Guides, snap lines, the marquee, selection handles and measurements use `--st-canvas-mark` (the signal, so grayscale by default) with a faint halo so they read on any artwork. Handles and labels keep their screen size at every zoom. Snap lines are dashed; guides are solid. Nothing on the canvas animates.
+
 ## Tokens
 
 | Token | Default (grayscale) | Use |
