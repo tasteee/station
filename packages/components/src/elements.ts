@@ -48,7 +48,7 @@ export { Option } from "./select/option.tsx";
 export { Select } from "./select/select.tsx";
 export { define } from "./shared/define.ts";
 export { RangeSlider, Slider } from "./slider/slider.tsx";
-export { Pane, Split } from "./split/split.tsx";
+export { Pane, PaneToggle, Split } from "./split/split.tsx";
 export {
   DataTable,
   type TableColumn,

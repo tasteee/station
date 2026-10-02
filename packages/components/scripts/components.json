@@ -234,6 +234,12 @@
     "tag": "st-pane"
   },
   {
+    "file": "pane-toggle",
+    "class": "PaneToggle",
+    "src": "split/split.tsx",
+    "tag": "st-pane-toggle"
+  },
+  {
     "file": "tree",
     "class": "Tree",
     "src": "tree/tree.tsx",

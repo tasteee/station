@@ -38,6 +38,7 @@ import "./define/progress.ts";
 import "./define/spinner.ts";
 import "./define/split.ts";
 import "./define/pane.ts";
+import "./define/pane-toggle.ts";
 import "./define/tree.ts";
 import "./define/menubar.ts";
 import "./define/toolbox.ts";

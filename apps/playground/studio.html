@@ -31,12 +31,14 @@
         </st-row>
       </header>
 
-      <div class="layout">
+      <st-split kind="cards" autosave="studio" class="layout">
         <!-- Left: layers -->
-        <aside class="card side" aria-label="Layers">
+        <st-pane size="260" min="200" max="380" collapsible label="Layers" icon="stack" class="side">
           <div class="card-head">
             <h2 class="title">Layers</h2>
+            <st-spacer></st-spacer>
             <st-icon-button kind="ghost" icon="plus" label="Add layer"></st-icon-button>
+            <st-pane-toggle></st-pane-toggle>
           </div>
           <st-search-field label="Search layers" placeholder="Search" class="side-search"></st-search-field>
           <st-tree id="layers" label="Layers" renamable reorderable class="tree"></st-tree>
@@ -48,10 +50,11 @@
               <button type="button" class="page-pill">Components</button>
             </div>
           </div>
-        </aside>
+        </st-pane>
 
         <!-- Center: canvas -->
-        <main class="card canvas" aria-label="Canvas">
+        <st-pane class="canvas-pane">
+        <main class="canvas" aria-label="Canvas">
           <div class="canvas-head">
             <h1 class="title big">Landing</h1>
             <st-badge>Desktop · 1440</st-badge>
@@ -98,26 +101,29 @@
           </div>
 
           <!-- Floating tool dock -->
-          <div class="dock" role="toolbar" aria-label="Tools">
+          <st-toolbar class="dock" label="Tools" floating>
             <st-toggle-button tone="accent" icon="pointer" label="Move" shortcut="V" pressed></st-toggle-button>
             <st-toggle-button tone="accent" icon="frame" label="Frame" shortcut="F"></st-toggle-button>
             <st-toggle-button tone="accent" icon="square" label="Rectangle" shortcut="R"></st-toggle-button>
             <st-toggle-button tone="accent" icon="vector-bezier-2" label="Pen" shortcut="P"></st-toggle-button>
             <st-toggle-button tone="accent" icon="typography" label="Text" shortcut="T"></st-toggle-button>
-            <span class="dock-sep" aria-hidden="true"></span>
+            <st-divider></st-divider>
             <st-toggle-button tone="accent" icon="hand-stop" label="Hand" shortcut="H"></st-toggle-button>
             <st-toggle-button tone="accent" icon="message" label="Comment" shortcut="C"></st-toggle-button>
-          </div>
+          </st-toolbar>
           <st-zoom-control class="zoom" value="75"></st-zoom-control>
         </main>
+        </st-pane>
 
-        <!-- Right: inspector -->
-        <aside class="inspector" aria-label="Inspector">
-          <section class="card card-lime">
+        <!-- Right: inspector (a bare pane holding stacked cards) -->
+        <st-pane size="300" min="260" max="420" collapsible label="Inspector" icon="adjustments" class="inspector-pane">
+        <div class="inspector">
+          <section class="card card-sheen">
             <div class="card-head">
               <span class="micro">Frame</span>
               <st-spacer></st-spacer>
               <st-icon-button kind="ghost" icon="dots" label="More"></st-icon-button>
+              <st-pane-toggle></st-pane-toggle>
             </div>
             <h2 class="title big">Tickets tile</h2>
             <div class="readout">
@@ -164,8 +170,9 @@
             </div>
             <st-progress label="Rendering" value="64"></st-progress>
           </section>
-        </aside>
-      </div>
+        </div>
+        </st-pane>
+      </st-split>
     </div>
     <script type="module" src="./src/studio.ts"></script>
   </body>

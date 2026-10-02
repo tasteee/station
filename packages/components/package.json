@@ -95,7 +95,8 @@
     "./data-table": "./src/define/data-table.ts",
     "./timeline": "./src/define/timeline.ts",
     "./dock": "./src/define/dock.ts",
-    "./dock-panel": "./src/define/dock-panel.ts"
+    "./dock-panel": "./src/define/dock-panel.ts",
+    "./pane-toggle": "./src/define/pane-toggle.ts"
   },
   "publishConfig": {
     "exports": {
@@ -378,6 +379,10 @@
       "./dock-panel": {
         "types": "./dist/define/dock-panel.d.ts",
         "default": "./dist/define/dock-panel.js"
+      },
+      "./pane-toggle": {
+        "types": "./dist/define/pane-toggle.d.ts",
+        "default": "./dist/define/pane-toggle.js"
       }
     }
   },

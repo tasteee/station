@@ -107,7 +107,8 @@ describe("themes", () => {
 describe("type and size scale", () => {
   it("type scale derives from --st-font-size and --st-type-ratio", () => {
     const root = mount(`<st-heading size="large">T</st-heading><st-text size="small">t</st-text>`);
-    expect(Number.parseFloat(style(root.children[0]!).fontSize)).toBeCloseTo(12 * 1.125 ** 2, 1);
+    // Large headings sit at step 6 (ratio^4): the light, tight title voice.
+    expect(Number.parseFloat(style(root.children[0]!).fontSize)).toBeCloseTo(12 * 1.125 ** 4, 1);
     expect(Number.parseFloat(style(root.children[1]!).fontSize)).toBeCloseTo(12 / 1.125, 1);
   });
 

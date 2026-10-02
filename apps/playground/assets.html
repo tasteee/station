@@ -33,12 +33,11 @@
           <st-button size="small" kind="solid" tone="accent" icon="download">Import</st-button>
         </st-row>
       </st-surface>
-      <st-divider></st-divider>
 
-      <st-split grow autosave="assets-main">
-        <st-pane size="220" min="160" max="360" collapsible>
+      <st-split grow kind="cards" autosave="assets-main">
+        <st-pane size="220" min="160" max="360" collapsible label="Folders" icon="folder">
           <st-panel grow>
-            <st-panel-header><st-heading size="small" tone="muted">FOLDERS</st-heading></st-panel-header>
+            <st-panel-header><st-heading size="small" tone="muted">FOLDERS</st-heading><st-spacer></st-spacer><st-pane-toggle></st-pane-toggle></st-panel-header>
             <st-tree id="folders" grow label="Folders" selection-mode="single"></st-tree>
           </st-panel>
         </st-pane>
@@ -47,9 +46,9 @@
             <st-empty-state slot="empty"><st-icon name="search"></st-icon><st-heading>Nothing here</st-heading><st-text size="small">Try another folder or search.</st-text></st-empty-state>
           </st-data-table>
         </st-pane>
-        <st-pane size="280" min="220" collapsible>
+        <st-pane size="280" min="220" collapsible label="Details" icon="file">
           <st-panel grow class="details" id="details">
-            <st-panel-header divided><st-heading>Details</st-heading></st-panel-header>
+            <st-panel-header divided><st-heading>Details</st-heading><st-spacer></st-spacer><st-pane-toggle></st-pane-toggle></st-panel-header>
             <st-scroll-area grow axis="y">
               <st-column padding="3" gap="3">
                 <div class="preview" id="preview"></div>
@@ -76,8 +75,6 @@
           </st-panel>
         </st-pane>
       </st-split>
-
-      <st-divider></st-divider>
       <st-surface level="panel">
         <st-row class="status" padding-x="3" gap="3">
           <st-text size="small" tone="muted" id="count"></st-text>
