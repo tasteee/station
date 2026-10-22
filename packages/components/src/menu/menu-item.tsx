@@ -87,7 +87,7 @@ export const MenuItem = c(
           flex: none;
           height: var(--st-control-height);
           padding-inline: var(--st-space-2);
-          border-radius: var(--st-radius-1);
+          border-radius: var(--st-radius-2); /* concentric with the menu's radius-4 minus its padding */
           color: var(--st-text-strong);
           font-size: var(--st-control-font-size, var(--st-text-2));
           white-space: nowrap;

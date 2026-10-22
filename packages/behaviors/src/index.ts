@@ -48,4 +48,15 @@ export {
   type ShortcutPlatform,
   shortcutKeys,
 } from "./shortcut.ts";
+export {
+  boundsOf,
+  gridLines,
+  intersects,
+  rectLines,
+  type SnapRect,
+  type SnapResult,
+  type SnapTargets,
+  snapRect,
+  snapValue,
+} from "./snap.ts";
 export { createTypeahead } from "./typeahead.ts";

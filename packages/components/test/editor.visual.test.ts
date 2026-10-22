@@ -91,3 +91,25 @@ it("toolbox", async () => {
     120,
   );
 });
+
+it("card layout, rail and floating toolbar", async () => {
+  await matchBothThemes(
+    "cards",
+    `<st-column gap="3">
+      <st-split kind="cards" style="height:140px">
+        <st-pane size="150" collapsible label="Layers" icon="folder">
+          <st-panel-header><st-heading>Layers</st-heading><st-spacer></st-spacer><st-pane-toggle></st-pane-toggle></st-panel-header>
+        </st-pane>
+        <st-pane><st-column padding="3"><st-heading size="large">Canvas</st-heading></st-column></st-pane>
+        <st-pane size="150" collapsible label="Inspector" icon="square" collapsed></st-pane>
+      </st-split>
+      <st-toolbar label="Tools" floating>
+        <st-toggle-button tone="accent" icon="brush" label="Brush" pressed></st-toggle-button>
+        <st-toggle-button tone="accent" icon="pencil" label="Pencil"></st-toggle-button>
+        <st-divider></st-divider>
+        <st-toggle-button tone="accent" icon="square" label="Shape"></st-toggle-button>
+      </st-toolbar>
+    </st-column>`,
+    420,
+  );
+});

@@ -8,8 +8,10 @@ const ITEMS = "st-button, st-icon-button, st-toggle-button";
 /**
  * role="toolbar" with one tab stop: arrow keys move between buttons.
  * Children inherit `kind` (default ghost) and `size`.
+ * `floating` makes it a pill tool dock with round buttons and a floating shadow.
  *
  * <st-toolbar label="Text formatting" size="small">…</st-toolbar>
+ * <st-toolbar label="Tools" floating>…</st-toolbar>
  */
 export const Toolbar = c(
   ({ kind, label, orientation }) => {
@@ -51,6 +53,7 @@ export const Toolbar = c(
       size: { type: String, reflect: true },
       label: { type: String, reflect: true },
       orientation: { type: String, reflect: true, value: (): "horizontal" | "vertical" => "horizontal" },
+      floating: { type: Boolean, reflect: true },
     },
     styles: [
       hostReset,
@@ -67,6 +70,21 @@ export const Toolbar = c(
         ::slotted(st-divider) {
           align-self: stretch;
           margin-block: var(--st-space-1);
+        }
+        /* Floating tool dock: pill bar, round buttons, the only shadow on the page. */
+        :host([floating]) {
+          --st-radius: 999px;
+          --st-control-height: var(--st-toolbar-control-height, calc(var(--st-control-large) + 6px));
+          gap: var(--st-space-1);
+          padding: var(--st-space-1-5);
+          border-radius: 999px;
+          background: var(--st-bg-panel);
+          box-shadow: var(--st-shadow-floating);
+          width: max-content;
+        }
+        :host([floating]) ::slotted(st-divider) {
+          margin-inline: var(--st-space-1);
+          margin-block: var(--st-space-1-5);
         }
       `,
     ],

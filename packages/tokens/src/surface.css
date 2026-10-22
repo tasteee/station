@@ -21,6 +21,7 @@
 :where(st-surface)[bordered] { border: 1px solid var(--st-border-subtle); }
 :where(st-surface)[rounded] { border-radius: var(--st-radius-3); }
 :where(st-surface)[rounded="small"] { border-radius: var(--st-radius-2); }
+:where(st-surface)[rounded="large"] { border-radius: var(--st-radius-5); }
 
 /* ---- st-scroll-area: thin, quiet scrollbars ---- */
 :where(st-scroll-area) {

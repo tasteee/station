@@ -17,11 +17,7 @@ body {
   width: 180px;
 }
 .side {
-  width: 248px;
-  flex: none;
-}
-.inspector {
-  width: 264px;
+  min-width: 0;
 }
 .view-popover {
   width: 200px;
@@ -105,10 +101,6 @@ body {
   bottom: var(--st-space-4);
   left: 50%;
   translate: -50% 0;
-  padding: var(--st-space-1);
-  background: var(--st-bg-panel);
-  border-radius: var(--st-radius-4);
-  box-shadow: var(--st-shadow-floating);
 }
 
 /* ---- Inspector ---- */
@@ -126,8 +118,19 @@ body {
 .inspector {
   --st-property-label-width: 72px;
 }
+.signal-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--st-space-2);
+}
+.signal-chip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--st-space-1);
+}
 .signal-gradient {
   height: 28px;
   border-radius: var(--st-radius-2);
   background: var(--st-signal-gradient);
+  box-shadow: var(--st-signal-edge);
 }

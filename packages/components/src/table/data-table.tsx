@@ -494,7 +494,7 @@ export const DataTable = c(
         }
         .tr[data-selected] {
           background: var(--st-bg-selected);
-          color: var(--st-text-strong);
+          color: var(--st-text-selected);
         }
         .viewport:focus-within .tr[data-selected] {
           background: var(--st-bg-selected-strong);

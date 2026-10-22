@@ -14,7 +14,7 @@ export const dialogStyles = css`
     max-height: calc(100vh - 64px);
     padding: 0;
     border: 0;
-    border-radius: var(--st-radius-4);
+    border-radius: var(--st-radius-5);
     background: var(--st-bg-panel);
     color: var(--st-text);
     box-shadow: var(--st-shadow-dialog);

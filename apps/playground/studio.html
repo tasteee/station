@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Station · Studio</title>
+  </head>
+  <body>
+    <div class="studio" id="studio" theme="light">
+      <!-- Top bar: sits on the canvas, no surface -->
+      <header class="top">
+        <st-row gap="3" class="top-row">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="crumb-title">Station Studio</span>
+          <span class="crumb-sep" aria-hidden="true">/</span>
+          <span class="crumb-page">Summer Sessions · Landing</span>
+          <st-spacer></st-spacer>
+          <st-segmented-control class="page-nav" size="small" value="studio" label="Playground page">
+            <st-segment value="design">UI design</st-segment>
+            <st-segment value="paint">Image editor</st-segment>
+            <st-segment value="mixer">Audio mixer</st-segment>
+            <st-segment value="assets">Assets</st-segment>
+            <st-segment value="studio">Studio</st-segment>
+          </st-segmented-control>
+          <st-segmented-control size="small" value="light" label="Theme" id="theme">
+            <st-segment value="light" icon="sun" label="Light"></st-segment>
+            <st-segment value="dark" icon="moon" label="Dark"></st-segment>
+          </st-segmented-control>
+          <span class="avatars" aria-hidden="true"><i style="--a: 28"></i><i style="--a: 200"></i><i style="--a: 320"></i></span>
+          <st-button kind="solid" tone="signal" signal="lime" class="share" icon="link">Share</st-button>
+        </st-row>
+      </header>
+
+      <st-split kind="cards" autosave="studio" class="layout">
+        <!-- Left: layers -->
+        <st-pane size="260" min="200" max="380" collapsible label="Layers" icon="stack" class="side">
+          <div class="card-head">
+            <h2 class="title">Layers</h2>
+            <st-spacer></st-spacer>
+            <st-icon-button kind="ghost" icon="plus" label="Add layer"></st-icon-button>
+            <st-pane-toggle></st-pane-toggle>
+          </div>
+          <st-search-field label="Search layers" placeholder="Search" class="side-search"></st-search-field>
+          <st-tree id="layers" label="Layers" renamable reorderable class="tree"></st-tree>
+          <div class="card-foot">
+            <span class="micro">Pages</span>
+            <div class="pages">
+              <button type="button" class="page-pill" aria-current="page">Landing</button>
+              <button type="button" class="page-pill">Checkout</button>
+              <button type="button" class="page-pill">Components</button>
+            </div>
+          </div>
+        </st-pane>
+
+        <!-- Center: canvas -->
+        <st-pane class="canvas-pane">
+        <main class="canvas" aria-label="Canvas">
+          <div class="canvas-head">
+            <h1 class="title big">Landing</h1>
+            <st-badge>Desktop · 1440</st-badge>
+            <st-spacer></st-spacer>
+            <st-segmented-control size="small" value="design" label="Mode">
+              <st-segment value="design">Design</st-segment>
+              <st-segment value="prototype">Prototype</st-segment>
+              <st-segment value="dev">Dev</st-segment>
+            </st-segmented-control>
+          </div>
+
+          <st-viewport id="canvas" class="stage" label="Landing canvas" grid="dots" snap marquee min-zoom="0.1" max-zoom="16">
+            <st-artboard id="landing" class="artboard" x="0" y="0" width="640" height="364" label="Landing">
+              <div class="layer hero" data-id="hero">
+                <div class="hero-copy">
+                  <span class="hero-kicker">Summer Sessions</span>
+                  <span class="hero-title">Music on the roof, every Friday.</span>
+                  <span class="hero-cta">Get tickets</span>
+                </div>
+                <div class="hero-art" aria-hidden="true"></div>
+              </div>
+              <div class="layer tile tile-lime" data-id="tickets">
+                <span class="tile-label">Tickets sold</span>
+                <span class="tile-value">1,208</span>
+                <span class="tile-delta">▲ 18%</span>
+              </div>
+              <div class="layer tile" data-id="artists">
+                <span class="tile-label">Artists</span>
+                <span class="tile-value">24</span>
+                <span class="tile-bar"><i style="width: 72%"></i></span>
+              </div>
+              <div class="layer tile" data-id="nights">
+                <span class="tile-label">Nights left</span>
+                <span class="tile-value">9</span>
+                <span class="tile-bar"><i style="width: 38%"></i></span>
+              </div>
+            </st-artboard>
+            <st-transform-box slot="overlay" id="selection" label="Tickets tile" rotatable hidden></st-transform-box>
+            <st-measure slot="overlay" id="spacing" hidden></st-measure>
+          </st-viewport>
+
+          <!-- Floating tool dock -->
+          <st-toolbar class="dock" label="Tools" floating>
+            <st-toggle-button tone="accent" icon="pointer" label="Move" shortcut="V" pressed></st-toggle-button>
+            <st-toggle-button tone="accent" icon="frame" label="Frame" shortcut="F"></st-toggle-button>
+            <st-toggle-button tone="accent" icon="square" label="Rectangle" shortcut="R"></st-toggle-button>
+            <st-toggle-button tone="accent" icon="vector-bezier-2" label="Pen" shortcut="P"></st-toggle-button>
+            <st-toggle-button tone="accent" icon="typography" label="Text" shortcut="T"></st-toggle-button>
+            <st-divider></st-divider>
+            <st-toggle-button tone="accent" icon="hand-stop" label="Hand" shortcut="H"></st-toggle-button>
+            <st-toggle-button tone="accent" icon="message" label="Comment" shortcut="C"></st-toggle-button>
+          </st-toolbar>
+          <st-minimap class="minimap" for="canvas" label="Canvas overview"></st-minimap>
+          <st-zoom-control class="zoom" for="canvas"></st-zoom-control>
+        </main>
+        </st-pane>
+
+        <!-- Right: inspector (a bare pane holding stacked cards) -->
+        <st-pane size="300" min="260" max="420" collapsible label="Inspector" icon="adjustments" class="inspector-pane">
+        <div class="inspector">
+          <section class="card card-sheen">
+            <div class="card-head">
+              <span class="micro">Frame</span>
+              <st-spacer></st-spacer>
+              <st-icon-button kind="ghost" icon="dots" label="More"></st-icon-button>
+              <st-pane-toggle></st-pane-toggle>
+            </div>
+            <h2 class="title big" id="sel-name">Tickets tile</h2>
+            <div class="readout">
+              <span><b id="ro-w">320</b><small>W</small></span>
+              <span><b id="ro-h">168</b><small>H</small></span>
+              <span><b id="ro-r">0°</b><small>Rotation</small></span>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><h3 class="title">Layout</h3></div>
+            <div class="grid2">
+              <st-number-field label="X" abbr="X" value="0" unit="px" data-key="x" class="geo"></st-number-field>
+              <st-number-field label="Y" abbr="Y" value="0" unit="px" data-key="y" class="geo"></st-number-field>
+              <st-number-field label="Width" abbr="W" value="0" unit="px" data-key="width" class="geo"></st-number-field>
+              <st-number-field label="Height" abbr="H" value="0" unit="px" data-key="height" class="geo"></st-number-field>
+            </div>
+            <st-switch checked>Auto layout</st-switch>
+            <st-checkbox checked>Clip content</st-checkbox>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><h3 class="title">Fill</h3><st-spacer></st-spacer><st-icon-button kind="ghost" icon="plus" label="Add fill"></st-icon-button></div>
+            <st-color-field label="Fill" value="#b7f34a" alpha></st-color-field>
+            <div class="row-line">
+              <span class="row-label">Opacity</span>
+              <st-slider label="Opacity" value="100" class="grow"></st-slider>
+            </div>
+            <st-radio-group label="Blend" value="normal" orientation="horizontal">
+              <st-radio value="normal">Normal</st-radio>
+              <st-radio value="multiply">Multiply</st-radio>
+            </st-radio-group>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><h3 class="title">Export</h3></div>
+            <div class="row-line">
+              <st-select label="Format" value="png" class="grow">
+                <st-option value="png">PNG · 2x</st-option>
+                <st-option value="svg">SVG</st-option>
+                <st-option value="pdf">PDF</st-option>
+              </st-select>
+              <st-button kind="solid" tone="accent" icon="download">Export</st-button>
+            </div>
+            <st-progress label="Rendering" value="64"></st-progress>
+          </section>
+        </div>
+        </st-pane>
+      </st-split>
+    </div>
+    <script type="module" src="./src/studio.ts"></script>
+  </body>
+</html>

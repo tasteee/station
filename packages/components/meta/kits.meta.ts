@@ -94,6 +94,7 @@ export const kits: ElementMeta[] = [
       a("min", "number", "Minimum percent.", { default: 1 }),
       a("max", "number", "Maximum percent.", { default: 6400 }),
       a("no-fit", "boolean", "Hide the Fit menu item."),
+      a("for", "string", "Id of an st-viewport to follow and drive (zoom, Fit)."),
       SIZE,
     ],
     events: [

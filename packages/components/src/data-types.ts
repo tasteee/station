@@ -150,3 +150,36 @@ export interface DockGroup {
   /** Only the tab bar shows. */
   minimized: boolean;
 }
+
+/** A rectangle in canvas document coordinates. */
+export interface CanvasRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** Something on the canvas the viewport should know about (snapping, marquee, fit, minimap). */
+export interface CanvasObject extends CanvasRect {
+  id: string;
+}
+
+/** A guide line. axis "x" = vertical line at x; axis "y" = horizontal line at y. */
+export interface CanvasGuide {
+  id: string;
+  axis: "x" | "y";
+  position: number;
+}
+
+/** Position and zoom of a st-viewport. x/y = document point at the top-left of the visible area. */
+export interface CanvasView {
+  zoom: number;
+  x: number;
+  y: number;
+}
+
+export interface TransformDetail extends CanvasRect {
+  rotation: number;
+  /** What moved: "move", "rotate", "keyboard" or a handle (n, ne, e, se, s, sw, w, nw). */
+  handle: string;
+}

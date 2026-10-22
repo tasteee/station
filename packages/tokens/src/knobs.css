@@ -6,12 +6,13 @@
 :root {
   /* Color */
   --st-gray-hue: 255;
-  --st-gray-chroma: 0.006;
+  --st-gray-chroma: 0; /* neutral. Try 0.006 for a cool tint. */
   --st-accent-hue: var(--st-gray-hue);
   --st-accent-chroma: 0; /* 0 = monochrome near-black: primary actions. */
-  /* Signal: the one live color. Focus, selection, "on", playhead. Signal Orange by default. */
+  /* Signal scale (--st-signal-1..12). The UI itself is grayscale; color is opt-in
+     with signal="lime" | "orange" (signal.css) or tone="signal" on a control. */
   --st-signal-hue: 40;
-  --st-signal-hue-end: 62; /* gradients sweep toward this hue (orange → amber) */
+  --st-signal-hue-end: 62;
   --st-signal-chroma: 0.21;
   --st-status-chroma: 0.2;
   --st-danger-hue: 25;
@@ -23,7 +24,7 @@
   --st-density: 1;
 
   /* Shape */
-  --st-radius: 4px;
+  --st-radius: 6px; /* controls; cards and regions use the larger steps */
 
   /* Type */
   --st-font-sans: "DM Sans Variable", "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;

@@ -55,6 +55,7 @@ export const Switch = c(
         }
         :host([checked]) .track {
           background: var(--st-signal-gradient);
+          box-shadow: var(--st-signal-edge);
         }
         :host([checked]) .thumb {
           background: oklch(100% 0 0);

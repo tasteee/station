@@ -1,4 +1,4 @@
-import { c, css, useHost, useProp, useRef } from "atomico";
+import { c, css, useEffect, useHost, useProp, useRef } from "atomico";
 import { fire } from "../shared/events.ts";
 import { hostReset } from "../shared/styles.ts";
 
@@ -8,11 +8,13 @@ const fmt = (n: number) => `${Number(n.toFixed(n < 10 ? 2 : 1))}%`;
 /**
  * Zoom for canvases and timelines: − / + step through presets, type a percentage,
  * or pick from the menu. "Fit" fires a `fit` event for the app to handle.
+ * `for="viewport-id"` binds it to an st-viewport: it follows the view and drives it.
  *
  * <st-zoom-control value="66.67"></st-zoom-control>
+ * <st-zoom-control for="canvas"></st-zoom-control>
  */
 export const ZoomControl = c(
-  ({ min, max, noFit }) => {
+  ({ min, max, noFit, for: target }) => {
     const host = useHost<HTMLElement & { value?: number }>();
     const [value, setValue] = useProp<number>("value");
     const input = useRef<HTMLInputElement>();
@@ -28,6 +30,36 @@ export const ZoomControl = c(
       }
       if (input.current) input.current.value = fmt(next);
     };
+    // Bound to a viewport: mirror its zoom, and send changes and Fit back to it.
+    useEffect(() => {
+      if (!target) return;
+      const h = host.current;
+      type Vp = HTMLElement & { zoom?: number; zoomTo?(z: number): void; fit?(): void };
+      const vp = () => (h.getRootNode() as Document | ShadowRoot).getElementById?.(target) as Vp | null;
+      const follow = () => {
+        const z = vp()?.zoom;
+        if (z) setValue(Math.round(z * 10000) / 100);
+      };
+      const onView = (e: Event) => {
+        if (e.target === vp()) follow();
+      };
+      const onChange = (e: Event) => {
+        const v = (e as CustomEvent<{ value: number }>).detail?.value;
+        if (v) vp()?.zoomTo?.(v / 100);
+      };
+      const onFit = () => vp()?.fit?.();
+      const root = h.getRootNode();
+      root.addEventListener("viewchange", onView);
+      h.addEventListener("change", onChange);
+      h.addEventListener("fit", onFit);
+      queueMicrotask(follow);
+      return () => {
+        root.removeEventListener("viewchange", onView);
+        h.removeEventListener("change", onChange);
+        h.removeEventListener("fit", onFit);
+      };
+    }, [target]);
+
     const step = (dir: 1 | -1) => {
       const next =
         dir > 0 ? PRESETS.find((p) => p > v + 0.01) : [...PRESETS].reverse().find((p) => p < v - 0.01);
@@ -132,6 +164,7 @@ export const ZoomControl = c(
       min: { type: Number, reflect: true },
       max: { type: Number, reflect: true },
       noFit: { type: Boolean, reflect: true },
+      for: { type: String, reflect: true },
       size: { type: String, reflect: true },
     },
     styles: [

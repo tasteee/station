@@ -37,7 +37,7 @@ export const listboxStyles = css`
     overflow: auto;
     padding: var(--st-space-1);
     border: 0;
-    border-radius: var(--st-radius-3);
+    border-radius: var(--st-radius-4);
     background: var(--st-bg-panel);
     color: var(--st-text);
     box-shadow: var(--st-shadow-popover);

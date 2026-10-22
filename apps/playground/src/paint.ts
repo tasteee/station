@@ -275,51 +275,22 @@ options.addEventListener("click", (e: Event) => {
 });
 toolbox.addEventListener("change", () => requestAnimationFrame(paintGradientChip));
 
-// ---------- Rulers + cursor ----------
+// ---------- Canvas: st-viewport handles pan, zoom, rulers and guides ----------
 const canvas = $("#canvas");
-const doc = $("#document");
-const rulerX = $("#ruler-x");
-const rulerY = $("#ruler-y");
-let zoom = 0.667;
-function layoutRulers() {
-  doc.style.width = `${600 * zoom}px`;
-  doc.style.height = `${800 * zoom}px`;
-  const c = canvas.getBoundingClientRect();
-  const d = doc.getBoundingClientRect();
-  rulerX.zoom = zoom;
-  rulerY.zoom = zoom;
-  rulerX.offset = (c.left - d.left) / zoom;
-  rulerY.offset = (c.top - d.top) / zoom;
-}
-new ResizeObserver(layoutRulers).observe(canvas);
-canvas.addEventListener("scroll", layoutRulers);
-const zoomControl = $("#zoom");
-zoomControl.addEventListener("change", () => {
-  zoom = zoomControl.value / 100;
-  layoutRulers();
-});
-zoomControl.addEventListener("fit", () => {
-  const c = canvas.getBoundingClientRect();
-  zoom = Math.min((c.width - 96) / 600, (c.height - 96) / 800);
-  zoomControl.value = Math.round(zoom * 10000) / 100;
-  layoutRulers();
-});
+canvas.updated.then(() => requestAnimationFrame(() => canvas.fit(undefined, 48)));
 canvas.addEventListener("pointermove", (e: PointerEvent) => {
-  const x = rulerX.valueAt(e.clientX);
-  const y = rulerY.valueAt(e.clientY);
-  rulerX.marker = x;
-  rulerY.marker = y;
-  $("#cursor-pos").textContent = `X ${Math.round(x)}  Y ${Math.round(y)}`;
+  const p = canvas.toDocument(e.clientX, e.clientY);
+  $("#cursor-pos").textContent = `X ${Math.round(p.x)}  Y ${Math.round(p.y)}`;
 });
 canvas.addEventListener("pointerleave", () => {
-  rulerX.marker = null;
-  rulerY.marker = null;
   $("#cursor-pos").textContent = "";
 });
 $("#toggle-rulers").addEventListener("select", (e: Event) => {
-  $("#rulers").toggleAttribute("data-no-rulers", !(e as CustomEvent).detail.checked);
-  requestAnimationFrame(layoutRulers);
+  canvas.rulers = (e as CustomEvent).detail.checked;
 });
+// Hand tool = drag to pan (Space-drag works with any tool).
+const syncHand = () => (canvas.tool = toolbox.value === "hand" ? "hand" : null);
+toolbox.addEventListener("change", syncHand);
 
 // ---------- Foreground / background colors ----------
 let fg = "#ffd27a";
@@ -449,7 +420,7 @@ $("#curve-reset").addEventListener("click", () => {
 // Histogram from the artwork's real pixels, remapped through the curves.
 let base: { red: number[]; green: number[]; blue: number[]; lum: number[] } | null = null;
 async function measure() {
-  const svg = doc.querySelector("svg")!.cloneNode(true) as SVGSVGElement;
+  const svg = $("#document").querySelector("svg")!.cloneNode(true) as SVGSVGElement;
   svg.querySelector("#art")?.removeAttribute("filter");
   svg.setAttribute("width", "150");
   svg.setAttribute("height", "200");
